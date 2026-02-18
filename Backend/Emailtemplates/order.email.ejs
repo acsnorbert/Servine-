@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Your Order Confirmation</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0a0a0a;
+      font-family: "Georgia", "Times New Roman", serif;
+      color: #eaeaea;
+    }
+
+    .wrapper {
+      width: 100%;
+      padding: 60px 20px;
+      background-color: #0a0a0a;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #0e0e0e;
+      padding: 50px 45px;
+      border-radius: 10px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 28px;
+      letter-spacing: 6px;
+      color: #d4af37;
+      margin-bottom: 40px;
+    }
+
+    .content h2 {
+      font-size: 20px;
+      font-weight: normal;
+      margin-bottom: 24px;
+      color: #ffffff;
+    }
+
+    .content p {
+      font-size: 15px;
+      line-height: 1.8;
+      color: #cccccc;
+      margin-bottom: 28px;
+    }
+
+    /* Order Summary */
+    .summary-box {
+      border-top: 1px solid rgba(212, 175, 55, 0.25);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+      padding: 25px 0;
+      margin: 35px 0;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #dcdcdc;
+      margin-bottom: 8px;
+    }
+
+    .summary-row strong {
+      color: #ffffff;
+    }
+
+    /* Items Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th {
+      text-align: left;
+      font-size: 12px;
+      font-weight: normal;
+      letter-spacing: 1px;
+      color: #d4af37;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    td {
+      padding: 14px 0;
+      font-size: 14px;
+      color: #e0e0e0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    td:last-child,
+    th:last-child {
+      text-align: right;
+    }
+
+    .total-row td {
+      padding-top: 18px;
+      font-weight: bold;
+      border-bottom: none;
+      color: #ffffff;
+    }
+
+    .signature {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #b5b5b5;
+    }
+
+    .footer {
+      margin-top: 50px;
+      font-size: 11px;
+      color: #777777;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="container">
+      <div class="logo">SERVINE</div>
+
+      <div class="content">
+        <h2>Dear <%= username %>,</h2>
+
+        <p>
+          Thank you for your order.
+          We are pleased to confirm that your purchase has been successfully received
+          and is currently being prepared with care.
+        </p>
+
+        <div class="summary-box">
+          <div class="summary-row">
+            <span>Order Number</span>
+            <strong>#<%= orderNumber %></strong>
+          </div>
+          <div class="summary-row">
+            <span>Order Date</span>
+            <strong><%= orderDate %></strong>
+          </div>
+          <div class="summary-row">
+            <span>Location</span>
+            <strong><%= location %></strong>
+          </div>
+        </div>
+
+        <!-- Ordered Items -->
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Qty</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% items.forEach(item => { %>
+              <tr>
+                <td><%= item.name %></td>
+                <td><%= item.quantity %></td>
+                <td><%= item.price %></td>
+              </tr>
+            <% }) %>
+
+            <tr class="total-row">
+              <td colspan="2">Total</td>
+              <td><%= totalPrice %></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p style="margin-top: 35px;">
+          You will receive another notification once your order has been dispatched.
+          Should you require any assistance, our support team is always at your service.
+        </p>
+
+        <div class="signature">
+          With elegance,<br />
+          <strong>The SERVINE Team</strong>
+        </div>
+      </div>
+
+      <div class="footer">
+        © <%= new Date().getFullYear() %> SERVINE · Crafted with distinction
+      </div>
+    </div>
+  </div>
+</body>
+</html>
