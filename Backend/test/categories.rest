@@ -1,0 +1,42 @@
+@host = http://localhost
+@port = 3000
+@url = {{host}}:{{port}}
+
+@adminToken =
+
+### Összes kategória lekérése
+GET {{url}}/api/categories
+Content-Type: application/json
+
+### Egy kategória részletei
+GET {{url}}/api/categories/1
+Content-Type: application/json
+
+### Új kategória létrehozása
+POST {{url}}/api/categories
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "name": "Tesz Kategória",
+  "parent_id": null
+}
+
+### Al-kategória létrehozása
+POST {{url}}/api/categories
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "name": "Férfi pólók",
+  "parent_id": 1
+}
+
+### Kategória módosítása
+PUT {{url}}/api/categories/10
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "name": "Férfi pólók - akció"
+}

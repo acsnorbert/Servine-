@@ -1,0 +1,46 @@
+@host = http://localhost
+@port = 3000
+@url = {{host}}:{{port}}
+
+@adminToken = 
+
+### Összes termék lekérése (nyilvános)
+GET {{url}}/api/products
+Content-Type: application/json
+
+### Egy termék részletei
+GET {{url}}/api/products/1
+Content-Type: application/json
+
+### Termék keresés
+GET {{url}}/api/products/search?q=ing
+Content-Type: application/json
+
+### Új termék létrehozása (csak admin)
+POST {{url}}/api/products
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "name": "Férfi póló - teszt",
+  "description": "Kényelmes pamut póló",
+  "price": 4990,
+  "stock": 50,
+  "sku": "POLO-T001",
+  "category_id": 1,
+  "image": "https://example.com/polo.jpg"
+}
+
+### Termék módosítása
+PUT {{url}}/api/products/5
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "price": 5490,
+  "stock": 45
+}
+
+### Termék törlése
+DELETE {{url}}/api/products/5
+Authorization: Bearer {{adminToken}}

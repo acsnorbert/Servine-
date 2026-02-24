@@ -1,0 +1,45 @@
+@host = http://localhost
+@port = 3000
+@url = {{host}}:{{port}}
+
+@userToken = 
+@adminToken = 
+
+### Új rendelés leadása
+POST {{url}}/api/orders
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "items": [
+    {
+      "product_id": 1,
+      "quantity": 2
+    },
+    {
+      "product_id": 3,
+      "quantity": 1
+    }
+  ]
+}
+
+### Saját rendelések listázása
+GET {{url}}/api/orders/my
+Authorization: Bearer {{userToken}}
+
+### Egy rendelés részletei
+GET {{url}}/api/orders/1
+Authorization: Bearer {{userToken}}
+
+### Összes rendelés (csak admin)
+GET {{url}}/api/orders
+Authorization: Bearer {{adminToken}}
+
+### Rendelés státusz módosítása (admin)
+PUT {{url}}/api/orders/1/status
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "status": "Kiszállítva"
+}

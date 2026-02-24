@@ -1,0 +1,32 @@
+@host = http://localhost
+@port = 3000
+@url = {{host}}:{{port}}
+
+@userToken = 
+
+### Egy termék összes értékelése
+GET {{url}}/api/reviews/product/1
+
+### Új értékelés hozzáadása
+POST {{url}}/api/reviews/product/1
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "rating": 5,
+  "comment": "Nagyon tetszik, gyors szállítás!"
+}
+
+### Értékelés módosítása (saját)
+PUT {{url}}/api/reviews/3
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "rating": 4,
+  "comment": "Jó, de a méret kicsit kicsi volt"
+}
+
+### Értékelés törlése
+DELETE {{url}}/api/reviews/3
+Authorization: Bearer {{userToken}}

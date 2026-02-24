@@ -1,5 +1,9 @@
 const app = require("./config/app");
 const {sequelize} = require("./models/index");
+const cors = require('cors');
+app.use(cors({
+  origin: 'http://localhost:4200'
+}));
 
 const port = process.env.PORT || 4000; 
 
