@@ -1,31 +1,44 @@
-.home {
-  background: url('../../../../public/gold_marble.png') ;
-  font-family: 'Poppins', sans-serif;
-  background-size: cover;
-  margin: 0 auto;
-  padding: 0 auto;
-  height: 97vh;
-}
-/* NAVBAR */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
+/* =====================
+   BASE
+   ===================== */
+.home {
+  background: url('/gold_marble.png') center center / cover no-repeat;
+  font-family: 'Poppins', sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* =====================
+   NAVBAR
+   ===================== */
 .navbar {
   position: absolute;
-  top: 30px;
+  top: 24px;
   width: 100%;
   display: flex;
   justify-content: center;
-  z-index: 5;
+  z-index: 10;
+  animation: fadeDown 0.8s ease 0.2s both;
 
   .nav-links {
     display: flex;
-    gap: 40px;
+    gap: 36px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50px;
+    padding: 12px 36px;
 
     a {
       color: #ddd;
       text-decoration: none;
-      font-size: 18px;
+      font-size: 16px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: color 0.3s;
 
       &:hover {
         color: #d4af37;
@@ -34,95 +47,326 @@
   }
 }
 
-/* HERO */
-
+/* =====================
+   HERO
+   ===================== */
 .hero {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 80px;
+  height: 100vh;
+  position: relative;
 }
 
-/* BRAND TITLE */
-
+/* =====================
+   BRAND TITLE
+   ===================== */
 .brand-title {
   position: absolute;
-  top: 120px;
+  top: 140px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 140px;
-  letter-spacing: 15px;
   color: #d4af37;
   font-weight: 300;
   z-index: 1;
-  opacity: 0.9;
+  opacity: 0;
+  white-space: nowrap;
+  margin: 0;
+  text-shadow: 0 0 80px rgba(212, 175, 55, 0.25);
+  animation: titleReveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
 }
 
-/* LEFT CONTENT */
-
+/* =====================
+   LEFT CONTENT
+   ===================== */
 .hero-left {
-  max-width: 350px;
+  max-width: 360px;
   z-index: 3;
+  position: relative;
+  margin-top: 120px;
+  animation: slideInLeft 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
 
   p {
-    margin-bottom: 30px;
-    line-height: 1.6;
+    margin-bottom: 34px;
+    line-height: 1.8;
     color: #ccc;
+    font-size: 17px;
   }
 }
 
 .primary-btn {
   background: #d4af37;
   border: none;
-  padding: 14px 30px;
+  padding: 16px 34px;
   border-radius: 30px;
   color: black;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.3s;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  transition: background 0.3s, transform 0.2s;
 
   &:hover {
     background: #f1c65c;
+    transform: translateX(4px);
   }
 }
 
-/* CENTER IMAGE */
-
+/* =====================
+   CENTER IMAGE
+   ===================== */
 .hero-center {
-  position: relative;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
   z-index: 2;
+  animation: slideInBottom 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
 
   .womanpng {
-    position: relative;
+    height: 620px;
     object-fit: contain;
+    display: block;
   }
 }
 
-/* RIGHT SIDE */
-
+/* =====================
+   RIGHT SIDE
+   ===================== */
 .hero-right {
   display: flex;
   align-items: center;
   gap: 20px;
   z-index: 3;
+  position: relative;
+  margin-left: auto;
+  margin-top: 120px;
+  animation: slideInRight 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
 }
 
 .card {
-  width: 150px;
-  height: 180px;
-  background: #eee;
-  color: black;
-  border-radius: 30px;
+  width: 160px;
+  height: 200px;
+  background: rgba(240, 235, 225, 0.88);
+  backdrop-filter: blur(6px);
+  color: #777;
+  border-radius: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .arrow-btn {
   background: transparent;
   border: none;
-  font-size: 28px;
-  color: white;
+  font-size: 26px;
+  color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
+  padding: 4px;
+  transition: color 0.3s, transform 0.2s;
+
+  &:hover {
+    color: #d4af37;
+    transform: scale(1.2);
+  }
+}
+
+/* =====================
+   TABLET — max 1024px
+   ===================== */
+@media (max-width: 1024px) {
+  .hero {
+    padding: 0 40px;
+  }
+
+  .brand-title {
+    font-size: 100px;
+    top: 80px;
+  }
+
+  .hero-left {
+    max-width: 240px;
+
+    p {
+      font-size: 13px;
+    }
+  }
+
+  .hero-center .womanpng {
+    height: 480px;
+  }
+
+  .card {
+    width: 110px;
+    height: 140px;
+  }
+
+  .hero-right {
+    gap: 10px;
+  }
+}
+
+/* =====================
+   MOBILE — max 768px
+   ===================== */
+@media (max-width: 768px) {
+  .home {
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .navbar .nav-links {
+    gap: 16px;
+    padding: 10px 20px;
+
+    a {
+      font-size: 13px;
+    }
+  }
+
+  .hero {
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0;
+    height: 100dvh;
+    position: relative;
+  }
+
+  .brand-title {
+    font-size: 52px;
+    top: 70px;
+    white-space: nowrap;
+  }
+
+  .hero-left {
+    position: absolute;
+    top: 145px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 320px;
+    width: 90%;
+    text-align: center;
+    animation: fadeIn 0.9s ease 0.7s both;
+
+    p {
+      font-size: 12px;
+      margin-bottom: 16px;
+      color: #bbb;
+    }
+  }
+
+  .hero-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+
+    .womanpng {
+      height: 58dvh;
+    }
+  }
+
+  .hero-right {
+    display: none;
+  }
+
+  .primary-btn {
+    font-size: 13px;
+    padding: 11px 22px;
+  }
+}
+
+/* =====================
+   KIS MOBIL — max 480px
+   ===================== */
+@media (max-width: 480px) {
+  .navbar .nav-links {
+    gap: 10px;
+    padding: 8px 14px;
+
+    a {
+      font-size: 11px;
+    }
+  }
+
+  .brand-title {
+    font-size: 38px;
+    top: 65px;
+  }
+
+  .hero-left {
+    top: 125px;
+
+    p {
+      font-size: 11px;
+    }
+  }
+
+  .hero-center .womanpng {
+    height: 52dvh;
+  }
+}
+
+/* =====================
+   KEYFRAME ANIMATIONS
+   ===================== */
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes titleReveal {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+  }
+  to {
+    opacity: 0.9;
+    filter: blur(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-80px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(80px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInBottom {
+  from { opacity: 0; transform: translateX(-50%) translateY(140px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(16px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@media (max-width: 768px) {
+  @keyframes titleReveal {
+    from { opacity: 0; filter: blur(6px); }
+    to   { opacity: 0.9; filter: blur(0); }
+  }
+}
+
+@media (max-width: 480px) {
+  @keyframes titleReveal {
+    from { opacity: 0; filter: blur(6px); }
+    to   { opacity: 0.9; filter: blur(0); }
+  }
 }
