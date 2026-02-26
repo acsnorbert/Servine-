@@ -1,5 +1,5 @@
 const { Product, Category, Review, Sequelize, operatorMap } = require('../models/index');
-const { Op } = Sequelize;
+const { Op } = require('sequelize');
 
 // Összes termék lekérése szűrőkkel
 async function getAllProducts(req, res) {

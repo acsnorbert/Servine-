@@ -3,7 +3,7 @@
 @url = {{host}}:{{port}}
 
 ### Regisztráció – sikeres
-POST {{url}}/auth/register
+POST {{url}}/api/auth/register
 Content-Type: application/json
 
 {

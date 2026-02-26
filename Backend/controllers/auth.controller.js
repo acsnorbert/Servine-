@@ -133,7 +133,7 @@ async function resetPassword(req, res) {
     if (!user) {
       return res.status(404).json({ message: 'Felhasználó nem található.' });
     }
-
+    
     user.password = password;
     await user.save();
 
