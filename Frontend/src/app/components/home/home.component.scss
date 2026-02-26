@@ -1,13 +1,11 @@
 .home {
-  height: 100vh;
-  background: url('/assets/gold-marble.jpg') center/cover no-repeat;
-  background-color: #000;
-  color: white;
+  background: url('../../../../public/gold_marble.png') ;
   font-family: 'Poppins', sans-serif;
-  position: relative;
-  overflow: hidden;
+  background-size: cover;
+  margin: 0 auto;
+  padding: 0 auto;
+  height: 97vh;
 }
-
 /* NAVBAR */
 
 .navbar {
@@ -42,9 +40,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 100%;
   padding: 0 80px;
-  position: relative;
 }
 
 /* BRAND TITLE */
@@ -96,8 +92,8 @@
   position: relative;
   z-index: 2;
 
-  img {
-    height: 650px;
+  .womanpng {
+    position: relative;
     object-fit: contain;
   }
 }
@@ -121,7 +117,6 @@
   align-items: center;
   justify-content: center;
   font-size: 14px;
-  transform: rotate(-15deg);
 }
 
 .arrow-btn {
