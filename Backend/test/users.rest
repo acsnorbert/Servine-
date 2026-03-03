@@ -1,0 +1,33 @@
+@host = http://localhost
+@port = 3000
+@url = {{host}}:{{port}}
+
+
+@userToken = 
+@adminToken = 
+
+
+### Saját profil lekérése (auth kell)
+GET {{url}}/api/users/me
+Authorization: Bearer {{userToken}}
+
+### Összes felhasználó listázása (csak admin)
+GET {{url}}/api/users
+Authorization: Bearer {{adminToken}}
+
+### Egy konkrét felhasználó adatainak lekérése (admin vagy saját maga)
+GET {{url}}/api/users/2
+Authorization: Bearer {{adminToken}}
+
+### Saját adatok módosítása (pl. név vagy email váltás)
+PATCH {{url}}/api/users/me
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "name": "Teszt User Új Név",
+  "email": "ujemail@example.com"
+}
+### Felhasználó törlése (csak admin!)
+DELETE {{url}}/api/users/3
+Authorization: Bearer {{adminToken}}
