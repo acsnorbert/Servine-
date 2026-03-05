@@ -1,8 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-/* =====================
-   BASE
-   ===================== */
+/* változók */
+$card-side-w:   108px;
+$card-side-h:   158px;
+$card-active-w: 132px;
+$card-active-h: 190px;
+$gap:           10px;
+
+/* alap */
 .home {
   background: url('/gold_marble.png') center center / cover no-repeat;
   font-family: 'Poppins', sans-serif;
@@ -11,9 +16,7 @@
   position: relative;
 }
 
-/* =====================
-   NAVBAR
-   ===================== */
+/* navigációs sáv */
 .navbar {
   position: absolute;
   top: 24px;
@@ -39,17 +42,12 @@
       font-size: 16px;
       cursor: pointer;
       transition: color 0.3s;
-
-      &:hover {
-        color: #d4af37;
-      }
+      &:hover { color: #d4af37; }
     }
   }
 }
 
-/* =====================
-   HERO
-   ===================== */
+/* hero szekció */
 .hero {
   display: flex;
   align-items: center;
@@ -59,9 +57,7 @@
   position: relative;
 }
 
-/* =====================
-   BRAND TITLE
-   ===================== */
+/* márka cím */
 .brand-title {
   position: absolute;
   top: 140px;
@@ -78,9 +74,7 @@
   animation: titleReveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
 }
 
-/* =====================
-   LEFT CONTENT
-   ===================== */
+/* bal oldali tartalom */
 .hero-left {
   max-width: 360px;
   z-index: 3;
@@ -114,9 +108,7 @@
   }
 }
 
-/* =====================
-   CENTER IMAGE
-   ===================== */
+/* középső kép */
 .hero-center {
   position: absolute;
   left: 50%;
@@ -132,13 +124,11 @@
   }
 }
 
-/* =====================
-   RIGHT SIDE
-   ===================== */
+/* jobb oldali slider */
 .hero-right {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
   z-index: 3;
   position: relative;
   margin-left: auto;
@@ -146,34 +136,107 @@
   animation: slideInRight 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
 }
 
-.card {
-  width: 160px;
-  height: 200px;
-  background: rgba(240, 235, 225, 0.88);
-  backdrop-filter: blur(6px);
-  color: #777;
-  border-radius: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 2px;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  transform: rotate(180deg);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+/* külső viewport: csak a 3 kártya szélessége látszik */
+.slider-viewport {
+  width: $card-side-w + $card-active-w + $card-side-w + $gap * 2;
+  height: $card-active-h + 10px;
+  overflow: hidden;
+  position: relative;
 }
 
+/* belső sáv: 3 kártyát tartalmaz egymás mellett */
+.slider-track {
+  display: flex;
+  align-items: center;
+  gap: $gap;
+  height: 100%;
+  // az activeIndex változásakor az Angular újrarendeli a tömböt,
+  // a kártyák méret-transition-je adja a slide érzetet
+  transition: none;
+}
+
+/* termék kártyák */
+.card {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 8px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+
+  // minden vizuális változás simán átmegy
+  transition:
+    width  0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 0.4s ease,
+    opacity 0.4s ease,
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.4s ease;
+
+  /* oldalsó kártyák */
+  &.side {
+    width: $card-side-w;
+    height: $card-side-h;
+    filter: blur(1.2px) brightness(0.78);
+    opacity: 0.68;
+    transform: scale(0.92);
+    cursor: pointer;
+
+    &:hover {
+      filter: blur(0.4px) brightness(0.9);
+      opacity: 0.85;
+      transform: scale(0.96);
+    }
+
+    .card-name { font-size: 9px;   color: #999; }
+    .card-sub  { font-size: 7px;   color: #bbb; }
+  }
+
+  /* aktív / középső kártya */
+  &.active {
+    width: $card-active-w;
+    height: $card-active-h;
+    filter: none;
+    opacity: 1;
+    transform: scale(1);
+    cursor: default;
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.2),
+      0 0 0 1px rgba(212, 175, 55, 0.3);
+
+    .card-name { font-size: 10px; color: #333; }
+    .card-sub  { font-size: 8px;  color: #888; }
+  }
+}
+
+.card-name {
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-align: center;
+  transition: font-size 0.4s ease, color 0.4s ease;
+}
+
+.card-sub {
+  font-weight: 300;
+  letter-spacing: 1px;
+  text-align: center;
+  transition: font-size 0.4s ease, color 0.4s ease;
+}
+
+/* nyíl gombok */
 .arrow-btn {
   background: transparent;
   border: none;
-  font-size: 26px;
-  color: rgba(255, 255, 255, 0.7);
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.65);
   cursor: pointer;
-  padding: 4px;
+  padding: 4px 2px;
   transition: color 0.3s, transform 0.2s;
+  flex-shrink: 0;
 
   &:hover {
     color: #d4af37;
@@ -181,190 +244,80 @@
   }
 }
 
-/* =====================
-   TABLET — max 1024px
-   ===================== */
+/* tablet nézet */
 @media (max-width: 1024px) {
-  .hero {
-    padding: 0 40px;
-  }
+  .hero { padding: 0 40px; }
+  .brand-title { font-size: 100px; top: 80px; }
+  .hero-left { max-width: 240px; p { font-size: 13px; } }
+  .hero-center .womanpng { height: 480px; }
 
-  .brand-title {
-    font-size: 100px;
-    top: 80px;
-  }
-
-  .hero-left {
-    max-width: 240px;
-
-    p {
-      font-size: 13px;
-    }
-  }
-
-  .hero-center .womanpng {
-    height: 480px;
+  .slider-viewport {
+    width: 88px + 112px + 88px + 16px;
+    height: 172px;
   }
 
   .card {
-    width: 110px;
-    height: 140px;
-  }
-
-  .hero-right {
-    gap: 10px;
+    &.side   { width: 88px;  height: 130px; }
+    &.active { width: 112px; height: 162px; }
   }
 }
 
-/* =====================
-   MOBILE — max 768px
-   ===================== */
+/* mobil nézet */
 @media (max-width: 768px) {
-  .home {
-    height: 100dvh;
-    overflow: hidden;
-  }
-
-  .navbar .nav-links {
-    gap: 16px;
-    padding: 10px 20px;
-
-    a {
-      font-size: 13px;
-    }
-  }
-
+  .home { height: 100dvh; overflow: hidden; }
+  .navbar .nav-links { gap: 16px; padding: 10px 20px; a { font-size: 13px; } }
   .hero {
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 0;
-    height: 100dvh;
-    position: relative;
+    flex-direction: column; justify-content: flex-end;
+    align-items: center; padding: 0; height: 100dvh;
   }
-
-  .brand-title {
-    font-size: 52px;
-    top: 70px;
-    white-space: nowrap;
-  }
-
+  .brand-title { font-size: 52px; top: 70px; white-space: nowrap; }
   .hero-left {
-    position: absolute;
-    top: 145px;
-    left: 50%;
-    transform: translateX(-50%);
-    max-width: 320px;
-    width: 90%;
-    text-align: center;
+    position: absolute; top: 145px; left: 50%; transform: translateX(-50%);
+    max-width: 320px; width: 90%; text-align: center;
     animation: fadeIn 0.9s ease 0.7s both;
-
-    p {
-      font-size: 12px;
-      margin-bottom: 16px;
-      color: #bbb;
-    }
+    p { font-size: 12px; margin-bottom: 16px; color: #bbb; }
   }
-
   .hero-center {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 0;
-
-    .womanpng {
-      height: 58dvh;
-    }
+    position: absolute; left: 50%; transform: translateX(-50%); bottom: 0;
+    .womanpng { height: 58dvh; }
   }
-
-  .hero-right {
-    display: none;
-  }
-
-  .primary-btn {
-    font-size: 13px;
-    padding: 11px 22px;
-  }
+  .hero-right { display: none; }
+  .primary-btn { font-size: 13px; padding: 11px 22px; }
 }
 
-/* =====================
-   KIS MOBIL — max 480px
-   ===================== */
 @media (max-width: 480px) {
-  .navbar .nav-links {
-    gap: 10px;
-    padding: 8px 14px;
-
-    a {
-      font-size: 11px;
-    }
-  }
-
-  .brand-title {
-    font-size: 38px;
-    top: 65px;
-  }
-
-  .hero-left {
-    top: 125px;
-
-    p {
-      font-size: 11px;
-    }
-  }
-
-  .hero-center .womanpng {
-    height: 52dvh;
-  }
+  .navbar .nav-links { gap: 10px; padding: 8px 14px; a { font-size: 11px; } }
+  .brand-title { font-size: 38px; top: 65px; }
+  .hero-left { top: 125px; p { font-size: 11px; } }
+  .hero-center .womanpng { height: 52dvh; }
 }
 
-/* =====================
-   KEYFRAME ANIMATIONS
-   ===================== */
+/* animációk */
 @keyframes fadeDown {
   from { opacity: 0; transform: translateY(-20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes titleReveal {
-  from {
-    opacity: 0;
-    filter: blur(10px);
-  }
-  to {
-    opacity: 0.9;
-    filter: blur(0);
-  }
+  from { opacity: 0; filter: blur(10px); }
+  to   { opacity: 0.9; filter: blur(0); }
 }
-
 @keyframes slideInLeft {
   from { opacity: 0; transform: translateX(-80px); }
   to   { opacity: 1; transform: translateX(0); }
 }
-
 @keyframes slideInRight {
   from { opacity: 0; transform: translateX(80px); }
   to   { opacity: 1; transform: translateX(0); }
 }
-
 @keyframes slideInBottom {
   from { opacity: 0; transform: translateX(-50%) translateY(140px); }
   to   { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
-
 @keyframes fadeIn {
   from { opacity: 0; transform: translateX(-50%) translateY(16px); }
   to   { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
-
 @media (max-width: 768px) {
-  @keyframes titleReveal {
-    from { opacity: 0; filter: blur(6px); }
-    to   { opacity: 0.9; filter: blur(0); }
-  }
-}
-
-@media (max-width: 480px) {
   @keyframes titleReveal {
     from { opacity: 0; filter: blur(6px); }
     to   { opacity: 0.9; filter: blur(0); }
