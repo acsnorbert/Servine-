@@ -1,40 +1,54 @@
+<!-- navigációs sáv -->
 <div class="home">
-  <!-- NAVBAR -->
   <nav class="navbar">
     <div class="nav-links">
-      <a>About us</a>
-      <a>Products</a>
-      <a>Profile</a>
-      <a>Contact us</a>
+      <a routerLink="/aboutus">About us</a>
+      <a routerLink="/products">Products</a>
+      <a routerLink="/profile">Profile</a>
+      <a routerLink="/contactus">Contact us</a>
     </div>
   </nav>
 
-  <!-- HERO SECTION -->
+  <!-- hero szekció -->
   <section class="hero">
     <h1 class="brand-title">SERVINE</h1>
 
-    <!-- LEFT CONTENT -->
+    <!-- bal oldali tartalom -->
     <div class="hero-left">
       <p>
         Discover the latest trend with us, where you can find anything
         for yourself or your partner. Modern style with a touch of elegance.
       </p>
-      <button class="primary-btn">
-        Discover Collections →
-      </button>
+      <button class="primary-btn">Discover Collections →</button>
     </div>
 
-    <!-- CENTER IMAGE -->
+    <!-- középső kép -->
     <div class="hero-center">
       <img class="womanpng" src="ServineLandingpagewoman.png" alt="Perfume Model">
     </div>
 
-    <!-- RIGHT SLIDER PLACEHOLDER -->
+    <!-- jobb oldali slider -->
     <div class="hero-right">
-      <button class="arrow-btn">←</button>
-      <div class="card">PLACEHOLDER</div>
-      <div class="card">PLACEHOLDER</div>
-      <button class="arrow-btn">→</button>
+      <button class="arrow-btn" (click)="prev()">←</button>
+
+      <!-- külső keret: ez vágja le a kilógó kártyákat -->
+      <div class="slider-viewport">
+        <!-- belső sáv: mindig a középső kártya látszik középen -->
+        <div class="slider-track">
+          <div
+            class="card"
+            *ngFor="let item of orderedCards; let i = index"
+            [class.active]="i === 1"
+            [class.side]="i !== 1"
+            (click)="i === 0 ? prev() : i === 2 ? next() : null"
+          >
+            <span class="card-name">{{ item.card.name }}</span>
+            <span class="card-sub">{{ item.card.sub }}</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="arrow-btn" (click)="next()">→</button>
     </div>
   </section>
 </div>
