@@ -1,0 +1,33 @@
+.login-page {
+    background: url('/gold_marble.png') no-repeat center center;
+    background-size: cover;
+  
+    .login-form {
+      flex: 1;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: gold;
+  
+      .text-gold {
+        color: gold;
+      }
+  
+      .btn-gold {
+        background-color: gold;
+        color: black;
+        font-weight: bold;
+  
+        &:hover {
+          background-color: #d4af37;
+        }
+      }
+    }
+  
+    .login-image {
+      flex: 1;
+      background-color: rgba(0, 0, 0, 0.5);
+      .placeholder {
+        border: 2px dashed gold;
+        padding: 2rem;
+      }
+    }
+  }

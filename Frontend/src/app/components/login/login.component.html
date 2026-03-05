@@ -1,0 +1,22 @@
+<div class="login-page d-flex vh-100">
+    <div class="login-form d-flex flex-column justify-content-center align-items-center p-5">
+      <h2 class="text-gold mb-4">Welcome Back</h2>
+      <form class="w-100" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="email" class="form-label text-gold">Email</label>
+          <input type="email" id="email" class="form-control form-control-lg" [(ngModel)]="email" name="email" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label text-gold">Password</label>
+          <input type="password" id="password" class="form-control form-control-lg" [(ngModel)]="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-gold w-100">Login</button>
+      </form>
+    </div>
+  
+    <div class="login-image d-flex justify-content-center align-items-center">
+      <div class="placeholder text-center text-gold">
+        <h3>Image Placeholder</h3>
+      </div>
+    </div>
+  </div>
