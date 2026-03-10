@@ -1,1 +1,174 @@
-<p>product works!</p>
+<div class="page-wrapper">
+
+    <!-- BACK LINK -->
+    <a class="back-link" routerLink="/products">
+      <span class="back-arrow">←</span> Vissza a termékekhez
+    </a>
+  
+    <div class="product-layout" @fadeSlide>
+  
+      <!-- ═══════════════════════════
+           BAL — Képgaléria
+           ═══════════════════════════ -->
+      <div class="gallery-section">
+  
+        <div class="main-image-wrapper">
+          <div class="discount-badge" *ngIf="product.originalPrice > product.price">
+            -{{ getDiscount() }}%
+          </div>
+          
+          <button class="favorite-btn" (click)="toggleFavorite()" [class.active]="isFavorite">
+            {{ isFavorite ? '♥' : '♡' }}
+          </button>
+        </div>
+  
+        <div class="thumbnails">
+          <div
+            class="thumb"
+            *ngFor="let img of product.images; let i = index"
+            [class.active]="selectedImageIndex === i"
+            (click)="selectImage(i)">
+          </div>
+        </div>
+      </div>
+  
+      <!-- ═══════════════════════════
+           JOBB — Termék infó
+           ═══════════════════════════ -->
+      <div class="info-section">
+  
+        <div class="product-category">{{ product.category }}</div>
+        <h1 class="product-name">{{ product.name }}</h1>
+  
+        <!-- Értékelés -->
+        <div class="rating-row">
+          <div class="stars">
+            <span
+              *ngFor="let type of getStarTypes(product.rating)"
+              class="star"
+              [class.filled]="type === 'filled'">
+              ★
+            </span>
+          </div>
+          <span class="rating-value">{{ product.rating }}.0</span>
+          <span class="review-count">({{ product.reviewCount }} értékelés)</span>
+        </div>
+  
+        <div class="gold-divider"></div>
+  
+        <!-- Ár -->
+        <div class="price-row">
+          <span class="price-current">{{ product.price | number:'1.0-0' }} Ft</span>
+          <span class="price-original" *ngIf="product.originalPrice > product.price">
+            {{ product.originalPrice | number:'1.0-0' }} Ft
+          </span>
+        </div>
+  
+        <div class="gold-divider"></div>
+  
+        <!-- Méretválasztó -->
+        <div class="size-section">
+          <div class="size-label">
+            Méret
+            <span class="size-guide">Mérettáblázat →</span>
+          </div>
+          <div class="size-grid">
+            <button
+              class="size-btn"
+              *ngFor="let size of sizes"
+              [class.active]="selectedSize === size"
+              (click)="selectSize(size)">
+              {{ size }}
+            </button>
+          </div>
+          <span class="size-hint" *ngIf="!selectedSize">Kérjük válasszon méretet</span>
+        </div>
+  
+        <!-- Mennyiség + Kosár -->
+        <div class="action-row">
+          <div class="qty-control">
+            <button class="qty-btn" (click)="decreaseQty()">-</button>
+            <span class="qty-value">{{ quantity }}</span>
+            <button class="qty-btn" (click)="increaseQty()">+</button>
+          </div>
+          <button class="cart-btn" (click)="addToCart()" [disabled]="!selectedSize">
+            Kosárba →
+          </button>
+        </div>
+  
+        <!-- Extra infók -->
+        <div class="extras">
+          <div class="extra-item">
+            
+            <span>Ingyenes szállítás 20 000 Ft felett</span>
+          </div>
+          <div class="extra-item">
+            <span>30 napos visszaküldési lehetőség</span>
+          </div>
+          <div class="extra-item">
+            <span>Prémium minőség, kézzel válogatva</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- LEÍRÁS + ÉRTÉKELÉSEK TAB -->
+    <div class="tabs-section" @fadeSlide>
+      <div class="tab-header">
+        <button class="tab-btn" [class.active]="activeTab === 'description'" (click)="activeTab = 'description'">
+          Leírás
+        </button>
+        <button class="tab-btn" [class.active]="activeTab === 'reviews'" (click)="activeTab = 'reviews'">
+          Értékelések ({{ product.reviewCount }})
+        </button>
+      </div>
+  
+      <!-- Leírás -->
+      <div class="tab-content glass-card" *ngIf="activeTab === 'description'" @fadeIn>
+        <p class="description-text">{{ product.description }}</p>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="detail-label">Anyag</span>
+            <span class="detail-value">95% pamut, 5% elasztán</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Szabás</span>
+            <span class="detail-value">Regular fit</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Mosás</span>
+            <span class="detail-value">30°C-on mosható</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Gyártás</span>
+            <span class="detail-value">Európai gyártmány</span>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Értékelések -->
+      <div class="tab-content" *ngIf="activeTab === 'reviews'" @fadeIn>
+        <div class="reviews-list">
+          <div class="review-card glass-card" *ngFor="let review of reviews">
+            <div class="review-header">
+              <div class="review-avatar">{{ review.author[0] }}</div>
+              <div class="review-meta">
+                <span class="review-author">{{ review.author }}</span>
+                <span class="review-date">{{ review.date }}</span>
+              </div>
+              <div class="review-stars">
+                <span
+                  *ngFor="let type of getStarTypes(review.rating)"
+                  class="star small"
+                  [class.filled]="type === 'filled'">
+                  ★
+                </span>
+              </div>
+            </div>
+            <p class="review-comment">{{ review.comment }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </div>
