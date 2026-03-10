@@ -36,7 +36,7 @@
               </div>
               <div class="d-flex flex-column">
                 <button type="button" class="btn login-btn w-70 mt-4" (click)="login()">Bejelentkezés</button>
-                <button type="button" class="btn register-btn w-70 mt-3" (click)="login()">Nincs még fiókja? Regisztráljon!</button>
+                <button type="button" class="btn register-btn w-70 mt-3" [routerLink]="['/registration']"  >Nincs még fiókja? Regisztráljon!</button>
               </div>
              
             </div>

@@ -1,0 +1,108 @@
+
+.register-page {
+  height: 100vh;
+  
+  background: radial-gradient(circle at top, #1c1c1c, #000);
+  background: url('/gold_marble.png') center center / cover no-repeat;
+  font-family: 'Poppins', sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.form-check-input:checked {
+    background-color: #d4a84f;
+    border-color: #f5d49a;
+}
+.form-check-input:focus {
+    border-color: #d4a84f;
+    outline: 0;
+    box-shadow: 0 0 0 0.1rem rgba(245, 212, 154, 0.75);
+}
+
+.form-control:focus {
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+    border-color: #d4a84f;
+    outline: 0;
+    box-shadow: 0 0 0 0.1rem rgba(245, 212, 154, 0.75);
+}
+.register-wrapper {
+  background: #111;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+#forgotpass{
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+#forgotpass:hover{
+  color: #d4a84f;
+}
+
+.register-card {
+
+  padding: 60px;
+  color: white;
+
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(212,175,55,0.2), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(212,175,55,0.2), transparent 40%);
+
+}
+
+.register-title {
+  font-size: 60px;
+  font-weight: 300;
+  color: #e6c17c;
+}
+
+.small-text {
+  color: #ccc;
+  align-items: center;
+  gap: 10px;
+}
+
+.small-text a {
+  color: #ddd;
+  text-decoration: none;
+}
+
+.login-btn {
+  background: linear-gradient(90deg, #d4a84f, #f5d49a);
+  background-size: 200% 100%; 
+  border: none;
+  border-radius: 30px;
+  transition: 0.3s ease;
+}
+
+.login-btn:hover {
+  background-position: 100% 0;
+}
+
+.register-btn {
+  background: linear-gradient(90deg, #e3c083, #f7e2b3);
+  background-size: 200% 100%; 
+  border: none;
+  border-radius: 30px;
+  transition: 0.3s ease;
+}
+
+.register-btn:hover {
+  background-position: 100% 0;
+}
+
+
+.image-panel {
+  background: #444;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+}
+
+.image-panel img {
+  max-height: 450px;
+}
