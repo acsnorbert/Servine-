@@ -1,0 +1,30 @@
+/* navigációs sáv */
+.navbar {
+  position: absolute;
+  top: 24px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+  animation: fadeDown 0.8s ease 0.2s both;
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50px;
+    padding: 12px 36px;
+
+    a {
+      color: #ddd;
+      text-decoration: none;
+      font-size: 16px;
+      cursor: pointer;
+      transition: color 0.3s;
+      &:hover { color: #d4af37; }
+    }
+  }
+}
