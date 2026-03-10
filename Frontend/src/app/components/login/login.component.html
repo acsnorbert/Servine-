@@ -1,22 +1,61 @@
-<div class="login-page d-flex vh-100">
-    <div class="login-form d-flex flex-column justify-content-center align-items-center p-5">
-      <h2 class="text-gold mb-4">Welcome Back</h2>
-      <form class="w-100" (ngSubmit)="onSubmit()">
-        <div class="mb-3">
-          <label for="email" class="form-label text-gold">Email</label>
-          <input type="email" id="email" class="form-control form-control-lg" [(ngModel)]="email" name="email" required>
+<div class="login-page">
+
+  <div class="container-fluid h-100">
+    <div class="row h-100 align-items-center justify-content-center">
+
+      <div class="col-lg-10">
+
+        <div class="login-wrapper row">
+
+          <!-- Bal oldal -->
+          <div class="col-md-6 login-card">
+
+            <h1 class="login-title">Login</h1>
+
+            <div class="mt-4">
+              <div class="form-floating mb-3">
+                <input type="email"  class="form-control w-100 mb-3" id="floatingInput" placeholder="name@example.com" [(ngModel)]="email">
+                <label for="floatingInput">Email address</label>
+              </div>
+              <div class="form-floating">
+                <input type="password" class="form-control w-100 mb-3" id="floatingPassword" placeholder="Password" [(ngModel)]="password">
+                <label for="floatingPassword">Password</label>
+              </div>
+
+              <div class="d-flex justify-content-between small-text">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" [(ngModel)]="remember">
+                  <label class="form-check-label" for="flexCheckDefault">
+                    Emlékezz rám
+                  </label>
+                </div>
+                
+
+                <a id="forgotpass">Elfelejtettem a jelszavam</a>
+
+              </div>
+              <div class="d-flex flex-column">
+                <button type="button" class="btn login-btn w-70 mt-4" (click)="login()">Bejelentkezés</button>
+                <button type="button" class="btn register-btn w-70 mt-3" (click)="login()">Nincs még fiókja? Regisztráljon!</button>
+              </div>
+             
+            </div>
+
+          </div>
+
+          <!-- Jobb oldal -->
+          <div class="col-md-6 image-panel">
+
+            
+            <img src="ServineLandingpagewoman.png" alt="Perfume Model">
+
+          </div>
+
         </div>
-        <div class="mb-3">
-          <label for="password" class="form-label text-gold">Password</label>
-          <input type="password" id="password" class="form-control form-control-lg" [(ngModel)]="password" name="password" required>
-        </div>
-        <button type="submit" class="btn btn-gold w-100">Login</button>
-      </form>
-    </div>
-  
-    <div class="login-image d-flex justify-content-center align-items-center">
-      <div class="placeholder text-center text-gold">
-        <h3>Image Placeholder</h3>
+
       </div>
+
     </div>
   </div>
+
+</div>

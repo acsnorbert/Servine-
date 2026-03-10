@@ -1,23 +1,28 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    CommonModule,
-    FormsModule
+   FormsModule,
+    ButtonModule,
+    InputTextModule,
+    CheckboxModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  email: string = '';
-  password: string = '';
+   email = '';
+  password = '';
+  remember = false;
 
-  onSubmit() {
-    console.log('Login attempt:', this.email, this.password);
-    
+  login() {
+    console.log(this.email, this.password);
   }
 }
