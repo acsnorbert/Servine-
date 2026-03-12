@@ -1,0 +1,112 @@
+.dashboard-container{
+    background: url('/gold_marble.png') center center / cover no-repeat;
+    font-family: 'Poppins', sans-serif;
+    
+    overflow: hidden;
+    position: relative;
+    padding:30px;
+    color:white;
+  }
+  
+  /* STAT CARDS */
+  
+  .stat-card{
+    background:#111;
+    border-radius:14px;
+    padding:20px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    border:1px solid #222;
+    transition:0.3s;
+  }
+  
+  .stat-card:hover{
+    border-color:#d4a84f;
+    transform:translateY(-2px);
+  }
+  
+  .stat-icon{
+    width:50px;
+    height:50px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#d4a84f,#f5d49a);
+    color:#000;
+    font-size:22px;
+  }
+  
+  .stat-title{
+    font-size:14px;
+    color:#aaa;
+  }
+  
+  .stat-value{
+    font-size:24px;
+    font-weight:600;
+    color:#f1d190;
+  }
+  
+  /* MAIN CARDS */
+  
+  .dashboard-card{
+    background:#111;
+    border-radius:16px;
+    padding:25px;
+    border:1px solid #222;
+  }
+  
+  .card-header{
+    font-size:18px;
+    margin-bottom:20px;
+    color:#e6c17c;
+  }
+  
+  /* ACTIVITY */
+  
+  .activity-list{
+    list-style:none;
+    padding:0;
+    margin:0;
+  }
+  
+  .activity-list li{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 0;
+    border-bottom:1px solid #1e1e1e;
+    color:#ccc;
+  }
+  
+  .activity-dot{
+    width:8px;
+    height:8px;
+    background:#d4a84f;
+    border-radius:50%;
+  }
+  
+  /* TABLE */
+  
+  :host ::ng-deep .p-datatable{
+    background:#111;
+    border-radius:12px;
+    overflow:hidden;
+  }
+  
+  :host ::ng-deep .p-datatable-thead > tr > th{
+    background:#151515;
+    color:#d4a84f;
+    border:none;
+  }
+  
+  :host ::ng-deep .p-datatable-tbody > tr{
+    background:#111;
+    color:#ccc;
+  }
+  
+  :host ::ng-deep .p-datatable-tbody > tr:hover{
+    background:#1a1a1a;
+  }

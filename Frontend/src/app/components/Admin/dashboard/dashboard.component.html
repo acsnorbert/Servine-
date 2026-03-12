@@ -1,1 +1,160 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+
+    <!-- STAT CARDS -->
+    <div class="row g-4 mb-4">
+  
+      <div class="col-xl-3 col-md-6">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="pi pi-users"></i>
+          </div>
+  
+          <div>
+            <div class="stat-title">Users</div>
+            <div class="stat-value">1,284</div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-xl-3 col-md-6">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="pi pi-shopping-cart"></i>
+          </div>
+  
+          <div>
+            <div class="stat-title">Orders</div>
+            <div class="stat-value">324</div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-xl-3 col-md-6">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="pi pi-dollar"></i>
+          </div>
+  
+          <div>
+            <div class="stat-title">Revenue</div>
+            <div class="stat-value">$12,540</div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-xl-3 col-md-6">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="pi pi-chart-line"></i>
+          </div>
+  
+          <div>
+            <div class="stat-title">Growth</div>
+            <div class="stat-value">+14%</div>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  
+    <!-- CHART + ACTIVITY -->
+    <div class="row g-4 mb-4">
+  
+      <div class="col-lg-8">
+        <div class="dashboard-card">
+  
+          <div class="card-header">
+            Revenue Overview
+          </div>
+  
+          <p-chart
+            type="line"
+            [data]="chartData"
+            [options]="chartOptions"
+            height="300">
+          </p-chart>
+  
+        </div>
+      </div>
+  
+      <div class="col-lg-4">
+        <div class="dashboard-card">
+  
+          <div class="card-header">
+            Recent Activity
+          </div>
+  
+          <ul class="activity-list">
+  
+            <li>
+              <span class="activity-dot"></span>
+              New user registered
+            </li>
+  
+            <li>
+              <span class="activity-dot"></span>
+              Order #3021 completed
+            </li>
+  
+            <li>
+              <span class="activity-dot"></span>
+              Payment received
+            </li>
+  
+            <li>
+              <span class="activity-dot"></span>
+              New support ticket
+            </li>
+  
+          </ul>
+  
+        </div>
+      </div>
+  
+    </div>
+  
+    <!-- TABLE -->
+    <div class="dashboard-card">
+  
+      <div class="card-header">
+        Latest Users
+      </div>
+  
+      <p-table
+        [value]="users"
+        responsiveLayout="scroll"
+        styleClass="p-datatable-sm">
+  
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Role</th>
+          </tr>
+        </ng-template>
+  
+        <ng-template pTemplate="body" let-user>
+          <tr>
+  
+            <td>{{user.name}}</td>
+  
+            <td>{{user.email}}</td>
+  
+            <td>
+              <p-tag
+                [value]="user.status"
+                severity="success">
+              </p-tag>
+            </td>
+  
+            <td>{{user.role}}</td>
+  
+          </tr>
+        </ng-template>
+  
+      </p-table>
+  
+    </div>
+  
+  </div>

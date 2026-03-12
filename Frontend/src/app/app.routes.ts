@@ -9,6 +9,7 @@ import { DashboardComponent } from './components/Admin/dashboard/dashboard.compo
 import { OrderItemsComponent } from './components/Admin/order-items/order-items.component';
 import { OrdersComponent } from './components/Admin/orders/orders.component';
 import { UsersComponent } from './components/Admin/users/users.component';
+import { ProductsComponent } from './components/Admin/products/products.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -26,7 +27,7 @@ export const routes: Routes = [
     { path: 'dashboard', component: DashboardComponent }, 
     { path: 'order_items', component: OrderItemsComponent }, 
     { path: 'orders', component:OrdersComponent }, 
-    { path: 'product', component: ProductComponent}, 
+    { path: 'products', component: ProductsComponent}, 
     { path: 'users', component: UsersComponent }, 
     
     
