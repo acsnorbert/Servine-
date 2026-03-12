@@ -4,6 +4,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProductComponent } from './components/product/product.component';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { ProductListComponent } from './components/product-list/product-list.component';
 import { CategoriesComponent } from './components/Admin/categories/categories.component';
 import { DashboardComponent } from './components/Admin/dashboard/dashboard.component';
 import { OrderItemsComponent } from './components/Admin/order-items/order-items.component';
@@ -20,6 +21,9 @@ export const routes: Routes = [
     { path: 'profile', component: ProfileComponent }, 
     { path: 'login', component: LoginComponent },
     { path: 'registration', component: RegistrationComponent },
+    { path: 'product', component: ProductComponent },
+    { path: 'products', component: ProductListComponent },
+
     
 
     //ADMIN
