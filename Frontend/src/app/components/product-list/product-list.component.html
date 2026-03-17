@@ -1,86 +1,99 @@
 <div class="page-wrapper">
 
-    <!-- ── FEJLÉC ── -->
-    <div class="page-header" @fadeSlide>
-      <h1 class="page-title">KOLLEKCIÓ</h1>
-      <p class="page-subtitle">{{ filteredProducts.length }} termék</p>
-    </div>
-  
-    <!-- ── SZŰRŐ SOR ── -->
-    <div class="filter-bar" @fadeSlide>
-  
-      <!-- Kategória gombok -->
-      <div class="category-tabs">
-        <button
-          class="cat-btn"
-          *ngFor="let cat of categories"
-          [class.active]="selectedCategory === cat.key"
-          (click)="setCategory(cat.key)">
-          {{ cat.label }}
-        </button>
-      </div>
-      
-    </div>
-  
-    <!-- ── TERMÉKRÁCS ── -->
-    <div class="products-grid" *ngIf="filteredProducts.length > 0; else emptyState">
-      <div
-        class="product-card"
-        *ngFor="let product of filteredProducts"
-        [routerLink]="['/products', product.id]"
-        @fadeSlide>
-  
-        <!-- Kép terület -->
-        <div class="card-image">
-          <div class="card-image-placeholder">
-          </div>
-  
-          <!-- Badgek -->
-          <span class="badge badge-new" *ngIf="product.isNew">Új</span>
-          <span class="badge badge-sale" *ngIf="product.originalPrice && !product.isNew">
-            -{{ getDiscount(product) }}%
-          </span>
-  
-          <!-- Hover overlay -->
-          <div class="card-overlay">
-            <span class="overlay-text">Részletek →</span>
-          </div>
-        </div>
-  
-        <!-- Infó -->
-        <div class="card-info">
-          <div class="card-category">{{ product.category }}</div>
-          <div class="card-name">{{ product.name }}</div>
-  
-          <!-- Értékelés -->
-          <div class="card-rating">
-            <span
-              *ngFor="let type of getStarTypes(product.rating)"
-              class="star"
-              [class.filled]="type === 'filled'">★</span>
-            <span class="rating-count">({{ product.reviewCount }})</span>
-          </div>
-  
-          <!-- Ár -->
-          <div class="card-price-row">
-            <span class="card-price">{{ product.price | number:'1.0-0' }} Ft</span>
-            <span class="card-price-original" *ngIf="product.originalPrice">
-              {{ product.originalPrice | number:'1.0-0' }} Ft
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  
-    <!-- ── ÜRES ÁLLAPOT ── -->
-    <ng-template #emptyState>
-      <div class="empty-state" @fadeSlide>
-        <p class="empty-title">Nem található termék</p>
-        <p class="empty-sub">Próbálj más keresési feltételt!</p>
-        <button class="reset-btn" (click)="searchQuery = ''; selectedCategory = 'all'">
-          Szűrők törlése
-        </button>
-      </div>
-    </ng-template>
-  
+  <!-- ── FEJLÉC ── -->
+  <div class="page-header" @fadeSlide>
+    <h1 class="page-title">KOLLEKCIÓ</h1>
+    <p class="page-subtitle" *ngIf="!isLoading">{{ filteredProducts.length }} termék</p>
   </div>
+
+  <!-- ── SZŰRŐ SOR ── -->
+  <div class="filter-bar" @fadeSlide>
+    <div class="category-tabs">
+      <button
+        class="cat-btn"
+        *ngFor="let cat of categories"
+        [class.active]="selectedCategory === cat.key"
+        (click)="setCategory(cat.key)">
+        <span class="cat-icon">{{ cat.icon }}</span>
+        {{ cat.label }}
+      </button>
+    </div>
+
+    <div class="filter-right">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          (ngModelChange)="onSearchChange()"
+          placeholder="Keresés..."
+          class="search-input" />
+      </div>
+
+      <select class="sort-select" [(ngModel)]="sortBy" (ngModelChange)="onSortChange()">
+        <option value="default">Sorrend</option>
+        <option value="price_asc">Ár: növekvő</option>
+        <option value="price_desc">Ár: csökkenő</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ── BETÖLTÉS ── -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- ── HIBA ── -->
+  <div class="error-state" *ngIf="errorMessage && !isLoading" @fadeSlide>
+    <div class="error-icon">⚠</div>
+    <p>{{ errorMessage }}</p>
+    <button class="reset-btn" (click)="resetFilters()">Újrapróbálás</button>
+  </div>
+
+  <!-- ── TERMÉKRÁCS ── -->
+  <div class="products-grid"
+    *ngIf="!isLoading && !errorMessage && filteredProducts.length > 0">
+    <div
+      class="product-card"
+      *ngFor="let product of filteredProducts"
+      [routerLink]="['/products', product.id]"
+      @fadeSlide>
+
+      <!-- Kép -->
+      <div class="card-image">
+        <img
+          *ngIf="product.image; else iconPlaceholder"
+          [src]="product.image"
+          [alt]="product.name"
+          class="card-img" />
+        <ng-template #iconPlaceholder>
+          <div class="card-image-placeholder">
+            <span class="card-icon">{{ getCategoryIcon(product.category?.name) }}</span>
+          </div>
+        </ng-template>
+
+        <div class="card-overlay">
+          <span class="overlay-text">Részletek →</span>
+        </div>
+      </div>
+
+      <!-- Infó -->
+      <div class="card-info">
+        <div class="card-category">{{ product.category?.name }}</div>
+        <div class="card-name">{{ product.name }}</div>
+        <div class="card-price">{{ product.price | number:'1.0-0' }} Ft</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ÜRES ÁLLAPOT ── -->
+  <div class="empty-state"
+    *ngIf="!isLoading && !errorMessage && filteredProducts.length === 0"
+    @fadeSlide>
+    <div class="empty-icon">🔍</div>
+    <p class="empty-title">Nem található termék</p>
+    <p class="empty-sub">Próbálj más keresési feltételt!</p>
+    <button class="reset-btn" (click)="resetFilters()">Szűrők törlése</button>
+  </div>
+
+</div>
