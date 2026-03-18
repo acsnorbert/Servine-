@@ -1,47 +1,127 @@
-<!-- navigációs sáv -->
-<div class="home">
-  
+<!-- hero -->
+<section class="hero">
 
-  <!-- hero szekció -->
-  <section class="hero">
-    <h1 class="brand-title">SERVINE</h1>
+  <div class="hero__title-row">
+    <span class="hero__brand">SERVINE</span>
+  </div>
 
-    <!-- bal oldali tartalom -->
-    <div class="hero-left">
-      <p>
-        Discover the latest trend with us, where you can find anything
-        for yourself or your partner. Modern style with a touch of elegance.
+  <div class="hero__stage">
+    <img class="hero__model" src="main.png" alt="Servine" />
+
+    <div class="hero__left">
+      <p class="overline">Maison de Parfum · Est. 2019</p>
+      <p class="hero__tagline">
+        Crafted for those who leave<br>
+        a memory behind. Each fragrance<br>
+        is a chapter — worn, not just applied.
       </p>
-      <button class="primary-btn">Discover Collections →</button>
+      <a class="hero__cta" [routerLink]="['/products']">
+        Explore Collection <span>→</span>
+      </a>
     </div>
 
-    <!-- középső kép -->
-    <div class="hero-center">
-      <img class="womanpng" src="ServineLandingpagewoman.png" alt="Perfume Model">
-    </div>
-
-    <!-- jobb oldali slider -->
-    <div class="hero-right">
-      <button class="arrow-btn" (click)="prev()">←</button>
-
-      <!-- külső keret: ez vágja le a kilógó kártyákat -->
-      <div class="slider-viewport">
-        <!-- belső sáv: mindig a középső kártya látszik középen -->
-        <div class="slider-track">
-          <div
-            class="card"
-            *ngFor="let item of orderedCards; let i = index"
-            [class.active]="i === 1"
-            [class.side]="i !== 1"
-            (click)="i === 0 ? prev() : i === 2 ? next() : null"
-          >
-            <span class="card-name">{{ item.card.name }}</span>
-            <span class="card-sub">{{ item.card.sub }}</span>
-          </div>
+    <div class="hero__right">
+      <div class="stats">
+        <div class="stat">
+          <span class="stat__n">48</span>
+          <span class="stat__l">Fragrances</span>
+        </div>
+        <div class="stat">
+          <span class="stat__n">12</span>
+          <span class="stat__l">Collections</span>
+        </div>
+        <div class="stat">
+          <span class="stat__n">6</span>
+          <span class="stat__l">Awards</span>
         </div>
       </div>
-
-      <button class="arrow-btn" (click)="next()">→</button>
     </div>
-  </section>
-</div>
+  </div>
+<!-- slider -->
+  <div class="hero__bar">
+    <div class="slider-wrap">
+      <div
+        class="slide-card"
+        *ngFor="let item of orderedCards; let i = index"
+        [class.active]="i === 1"
+        (click)="i === 0 ? prev() : i === 2 ? next() : null"
+      >
+        <span class="slide-card__num">0{{ item.origIndex + 1 }}</span>
+        <span class="slide-card__name">{{ item.card.name }}</span>
+        <span class="slide-card__note">{{ item.card.sub }}</span>
+      </div>
+    </div>
+    <div class="controls">
+      <button (click)="prev()">←</button>
+      <div class="dots">
+        <span
+          *ngFor="let p of products; let i = index"
+          [class.active]="i === activeIndex"
+          (click)="activeIndex = i"
+        ></span>
+      </div>
+      <button (click)="next()">→</button>
+    </div>
+  </div>
+
+</section>
+
+<!-- about -->
+<section class="about">
+  <div class="about__content">
+    <p class="section-label">Our Story</p>
+    <h2 class="about__heading">
+      Born from silence,<br>
+      <em>refined by time.</em>
+    </h2>
+    <p class="about__text">
+      Servine was founded on a single belief: that a fragrance should not simply
+      smell beautiful — it should carry weight. Each bottle holds weeks of
+      careful composition, rare materials, and the quiet obsession of our
+      in-house perfumers.
+    </p>
+  </div>
+  <div class="about__img-wrap">
+    <div class="about__frame"></div>
+  </div>
+</section>
+
+<!-- kollekcio -->
+<section class="collection">
+  <div class="section-header">
+    <div>
+      <p class="section-label">Featured</p>
+      <h2 class="section-title">Current Collection</h2>
+    </div>
+    <a class="view-all" [routerLink]="['/products']">View all →</a>
+  </div>
+  <div class="grid">
+    <div class="prod-card">
+      <div class="prod-card__img" style="background: linear-gradient(135deg,#1c1200,#0c0c0d);"></div>
+      <div class="prod-card__overlay">
+        <div class="prod-card__info">
+          <span class="prod-card__name">Velours Noir</span>
+          <span class="prod-card__note">Oud · Amber · Sandalwood</span>
+        </div>
+      </div>
+    </div>
+    <div class="prod-card">
+      <div class="prod-card__img" style="background: linear-gradient(135deg,#0e1410,#0c0c0d);"></div>
+      <div class="prod-card__overlay">
+        <div class="prod-card__info">
+          <span class="prod-card__name">Forêt Blanche</span>
+          <span class="prod-card__note">Cedar · Vetiver · Musk</span>
+        </div>
+      </div>
+    </div>
+    <div class="prod-card">
+      <div class="prod-card__img" style="background: linear-gradient(135deg,#140e0e,#0c0c0d);"></div>
+      <div class="prod-card__overlay">
+        <div class="prod-card__info">
+          <span class="prod-card__name">Poudre d'Or</span>
+          <span class="prod-card__note">Rose · Iris · Vanilla</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
