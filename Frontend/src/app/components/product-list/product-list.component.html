@@ -1,21 +1,26 @@
 <div class="page-wrapper">
 
-  <!-- ── FEJLÉC ── -->
+  <!-- FEJLÉC -->
   <div class="page-header" @fadeSlide>
     <h1 class="page-title">KOLLEKCIÓ</h1>
     <p class="page-subtitle" *ngIf="!isLoading">{{ filteredProducts.length }} termék</p>
   </div>
 
-  <!-- ── SZŰRŐ SOR ── -->
+  <!-- SZŰRŐ SOR -->
   <div class="filter-bar" @fadeSlide>
     <div class="category-tabs">
       <button
         class="cat-btn"
+        [class.active]="selectedCategory === null"
+        (click)="setCategory(null)">
+        Összes
+      </button>
+      <button
+        class="cat-btn"
         *ngFor="let cat of categories"
-        [class.active]="selectedCategory === cat.key"
-        (click)="setCategory(cat.key)">
-        <span class="cat-icon">{{ cat.icon }}</span>
-        {{ cat.label }}
+        [class.active]="selectedCategory === cat.category_id"
+        (click)="setCategory(cat.category_id)">
+        {{ cat.name }}
       </button>
     </div>
 
@@ -38,28 +43,27 @@
     </div>
   </div>
 
-  <!-- ── BETÖLTÉS ── -->
+  <!-- BETÖLTÉS -->
   <div class="loading-state" *ngIf="isLoading">
     <div class="spinner"></div>
   </div>
 
-  <!-- ── HIBA ── -->
+  <!-- HIBA -->
   <div class="error-state" *ngIf="errorMessage && !isLoading" @fadeSlide>
     <div class="error-icon">⚠</div>
     <p>{{ errorMessage }}</p>
     <button class="reset-btn" (click)="resetFilters()">Újrapróbálás</button>
   </div>
 
-  <!-- ── TERMÉKRÁCS ── -->
+  <!-- TERMÉKRÁCS -->
   <div class="products-grid"
     *ngIf="!isLoading && !errorMessage && filteredProducts.length > 0">
     <div
       class="product-card"
       *ngFor="let product of filteredProducts"
-      [routerLink]="['/products', product.id]"
+      [routerLink]="['/products', product.product_id]"
       @fadeSlide>
 
-      <!-- Kép -->
       <div class="card-image">
         <img
           *ngIf="product.image; else iconPlaceholder"
@@ -68,25 +72,22 @@
           class="card-img" />
         <ng-template #iconPlaceholder>
           <div class="card-image-placeholder">
-            <span class="card-icon">{{ getCategoryIcon(product.category?.name) }}</span>
+            <span class="card-icon">✦</span>
           </div>
         </ng-template>
-
         <div class="card-overlay">
           <span class="overlay-text">Részletek →</span>
         </div>
       </div>
 
-      <!-- Infó -->
       <div class="card-info">
-        <div class="card-category">{{ product.category?.name }}</div>
         <div class="card-name">{{ product.name }}</div>
         <div class="card-price">{{ product.price | number:'1.0-0' }} Ft</div>
       </div>
     </div>
   </div>
 
-  <!-- ── ÜRES ÁLLAPOT ── -->
+  <!-- ÜRES ÁLLAPOT -->
   <div class="empty-state"
     *ngIf="!isLoading && !errorMessage && filteredProducts.length === 0"
     @fadeSlide>
