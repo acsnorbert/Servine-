@@ -118,18 +118,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.applyLocalFilters();
   }
 
-  resetFilters(): void {
-    this.searchQuery = '';
-    this.selectedCategory = null;
-    this.sortBy = 'default';
-    this.errorMessage = '';
-    this.loadProducts();
-  }
-
-  getCategoryIcon(categoryId: number): string {
-    // Majd a valódi kategória nevek alapján igazítható
-    return '✦';
-  }
 
   getStarTypes(rating: number): string[] {
     return [1, 2, 3, 4, 5].map(i => i <= rating ? 'filled' : 'empty');

@@ -10,26 +10,23 @@ $text-main:    #ddd;
 $text-muted:   #777;
 $text-dim:     #555;
 
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  
+}
+
 :host {
   display: block;
   background: #0d0d0d;
   font-family: 'Poppins', sans-serif;
-  height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden;
   color: $text-main;
   position: relative;
-
-  &::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(212,175,55,0.06) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 80% at 80% 90%, rgba(212,175,55,0.04) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 0;
-  }
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .page-wrapper {
@@ -38,6 +35,7 @@ $text-dim:     #555;
   max-width: 1200px;
   margin: 0 auto;
   padding: 48px 32px 100px;
+  margin-top: 2%;
 }
 
 .back-link {
