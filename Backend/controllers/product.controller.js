@@ -1,4 +1,4 @@
-const { Product, Category, Review, Sequelize, operatorMap } = require('../models/index');
+const { Product, Category, Review, Sequelize, operatorMap, User } = require('../models/index');
 const { Op } = require('sequelize');
 
 // Összes termék lekérése szűrőkkel

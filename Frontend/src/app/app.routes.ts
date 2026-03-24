@@ -23,6 +23,7 @@ export const routes: Routes = [
     { path: 'registration', component: RegistrationComponent },
     { path: 'product', component: ProductComponent },
     { path: 'products', component: ProductListComponent },
+    { path: 'products/:id', component: ProductComponent },
 
     
 

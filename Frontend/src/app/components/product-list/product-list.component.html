@@ -52,7 +52,6 @@
   <div class="error-state" *ngIf="errorMessage && !isLoading" @fadeSlide>
     <div class="error-icon">⚠</div>
     <p>{{ errorMessage }}</p>
-    <button class="reset-btn" (click)="resetFilters()">Újrapróbálás</button>
   </div>
 
   <!-- TERMÉKRÁCS -->
@@ -61,7 +60,7 @@
     <div
       class="product-card"
       *ngFor="let product of filteredProducts"
-      [routerLink]="['/products', product.product_id]"
+      [routerLink]="['/products', product.id]"
       @fadeSlide>
 
       <div class="card-image">
@@ -94,7 +93,6 @@
     <div class="empty-icon">🔍</div>
     <p class="empty-title">Nem található termék</p>
     <p class="empty-sub">Próbálj más keresési feltételt!</p>
-    <button class="reset-btn" (click)="resetFilters()">Szűrők törlése</button>
   </div>
 
 </div>
