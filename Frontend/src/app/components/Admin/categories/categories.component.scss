@@ -1,0 +1,116 @@
+.categories-page {
+  background: url('/gold_marble.png') center center / cover no-repeat;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* HEADER */
+
+.categories-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.categories-header h1 {
+  font-size: 36px;
+  color: #e6c17c;
+  margin: 0;
+}
+
+.subtitle {
+  color: #aaa;
+  font-size: 14px;
+}
+
+.actions {
+  display: flex;
+  gap: 15px;
+}
+
+/* TABLE */
+
+.categories-table {
+  background: #0f0f0f;
+  border-radius: 14px;
+  padding: 20px;
+  border: 1px solid #222;
+}
+
+/* NAME */
+
+.name {
+  font-weight: 500;
+  color: #fff;
+}
+
+/* PARENT */
+
+.parent {
+  color: #aaa;
+  font-size: 13px;
+}
+
+/* BADGE */
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.root {
+  background: #1f3d2a;
+  color: #7dffb2;
+}
+
+.child {
+  background: #2b2b2b;
+  color: #f1d190;
+}
+
+/* BUTTONS */
+
+.edit-btn {
+  background: #2a2a2a;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  margin-right: 8px;
+  transition: 0.2s;
+}
+
+.edit-btn:hover {
+  background: #d4a84f;
+  color: black;
+}
+
+.delete-btn {
+  background: #b23b2e;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+.delete-btn:hover {
+  background: #e64b3a;
+}
+
+/* PRIME */
+
+:host ::ng-deep .p-datatable-thead > tr > th {
+  background: #141414;
+  border: none;
+  color: #d4a84f;
+}
+
+:host ::ng-deep .p-datatable-tbody > tr {
+  background: #0f0f0f;
+  border-bottom: 1px solid #1e1e1e;
+}
+
+:host ::ng-deep .p-datatable-tbody > tr:hover {
+  background: #181818;
+}
