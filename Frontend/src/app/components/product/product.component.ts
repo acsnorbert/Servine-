@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { NgFor, NgIf, DecimalPipe, DatePipe } from '@angular/common';
+import { RouterLink, ActivatedRoute, RouterModule } from '@angular/router';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { ProductService } from '../../services/product.service';
+import { ReviewService } from '../../services/review.service';
+import { Product } from '../../interfaces/product';
+import { Review } from '../../interfaces/review';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [NgFor, NgIf, DecimalPipe, DatePipe, RouterLink, RouterModule],
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss'],
   animations: [
@@ -25,65 +29,70 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ])
   ]
 })
-export class ProductComponent {
+export class ProductComponent implements OnInit {
 
-  // Termékadatok - Még beégetett adatokkal
-  product = {
-    name: 'Teszt Ruha 1',
-    category: 'Póló',
-    price: 49990,
-    originalPrice: 64990,
-    description: 'Egy időtlen darab, amely a modern elegancia és a klasszikus szabás tökéletes ötvözete. Prémium anyagból készült, kézzel varrott részletekkel.',
-    rating: 4,
-    reviewCount: 28,
-    images: ['', '', '', '']
-  };
+  product: Product | null = null;
+  reviews: Review[] = [];
+  avgRating = 0;
+  isLoading = true;
+  errorMessage = '';
 
   sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
   selectedSize: string | null = null;
-  selectedImageIndex = 0;
   quantity = 1;
   activeTab: 'description' | 'reviews' = 'description';
   isFavorite = false;
 
+  constructor(
+    private route: ActivatedRoute,
+    private productService: ProductService,
+    private reviewService: ReviewService
+  ) {}
 
-  // Értékelések - Még beégetett adatokkal
-  reviews = [
-    { author: 'Kovács Anna',  rating: 5, date: '2025. január 12.',    comment: 'Gyönyörű darab, pontosan olyan mint a képen. A minőség lenyűgöző, nagyon ajánlom!' },
-    { author: 'Tóth Péter',   rating: 4, date: '2025. január 3.',     comment: 'Szép anyag, jó szabás. Egy mérettel nagyobbat rendeltem mint szoktam, tökéletes lett.' },
-    { author: 'Nagy Eszter',  rating: 4, date: '2024. december 28.',  comment: 'Elegáns és kényelmes egyszerre. Pontosan kerestem ilyet.' },
-  ];
+  ngOnInit(): void {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    if (id) {
+      this.loadProduct(id);
+      this.loadReviews(id);
+    }
+  }
 
-  // Csillagok: 'filled' vagy 'empty' tömb visszaadása
+  private loadProduct(id: number): void {
+    this.productService.getProductById(id).subscribe({
+      next: (res: any) => {
+        this.product = res;
+        this.isLoading = false;
+      },
+      error: () => {
+        this.errorMessage = 'A termék nem található.';
+        this.isLoading = false;
+      }
+    });
+  }
+
+  private loadReviews(productId: number): void {
+    this.reviewService.getReviewByProductId(productId).subscribe({
+      next: (res: any) => {
+        this.reviews = res ?? [];
+        if (this.reviews.length > 0) {
+          const sum = this.reviews.reduce((s, r) => s + r.rating, 0);
+          this.avgRating = Math.round(sum / this.reviews.length);
+        }
+      },
+      error: () => { this.reviews = []; }
+    });
+  }
+
   getStarTypes(rating: number): string[] {
     return [1, 2, 3, 4, 5].map(i => i <= rating ? 'filled' : 'empty');
   }
 
-  getDiscount(): number {
-    return Math.round((1 - this.product.price / this.product.originalPrice) * 100);
-  }
-
-  selectSize(size: string): void {
-    this.selectedSize = size;
-  }
-
-  selectImage(index: number): void {
-    this.selectedImageIndex = index;
-  }
-
-  increaseQty(): void {
-    if (this.quantity < 10) this.quantity++;
-  }
-
-  decreaseQty(): void {
-    if (this.quantity > 1) this.quantity--;
-  }
-
-  toggleFavorite(): void {
-    this.isFavorite = !this.isFavorite;
-  }
+  selectSize(size: string): void { this.selectedSize = size; }
+  increaseQty(): void { if (this.quantity < 10) this.quantity++; }
+  decreaseQty(): void { if (this.quantity > 1) this.quantity--; }
+  toggleFavorite(): void { this.isFavorite = !this.isFavorite; }
 
   addToCart(): void {
-    console.log('Kosárba:', this.product.name, '| Méret:', this.selectedSize, '| Db:', this.quantity);
+    console.log('Kosárba:', this.product?.name, '| Méret:', this.selectedSize, '| Db:', this.quantity);
   }
 }
