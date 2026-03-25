@@ -1,0 +1,47 @@
+<div class="cart-container">
+  <h1 class="page-title">Kosarad</h1>
+
+  <div *ngIf="cartItems.length === 0" class="empty-cart">
+    <p>A kosarad jelenleg üres.</p>
+    <a routerLink="/products" class="btn-primary">Vásárlás folytatása</a>
+  </div>
+
+  <div *ngIf="cartItems.length > 0" class="cart-content">
+    <div class="cart-items">
+      <div class="cart-item" *ngFor="let item of cartItems; let i = index">
+        <div class="item-image">
+          <!--<img [src]="item.product.imageUrl || 'assets/placeholder.png'" [alt]="item.product.name">-->
+        </div>
+        
+        <div class="item-details">
+          <h3>{{ item.product.name }}</h3>
+          <p class="size">Méret: <span>{{ item.size }}</span></p>
+          <p class="price">{{ item.product.price | number }} Ft</p>
+        </div>
+
+        <div class="item-quantity">
+          <span>{{ item.quantity }} db</span>
+        </div>
+
+        <button class="remove-btn" (click)="removeItem(i)">✕</button>
+      </div>
+    </div>
+
+    <div class="cart-summary">
+      <h2>Összesítés</h2>
+      <div class="summary-row">
+        <span>Részösszeg</span>
+        <span>{{ totalPrice | number }} Ft</span>
+      </div>
+      <div class="summary-row">
+        <span>Szállítás</span>
+        <span>Ingyenes</span>
+      </div>
+      <div class="summary-total">
+        <span>Végösszeg</span>
+        <span>{{ totalPrice | number }} Ft</span>
+      </div>
+      <button class="btn-primary checkout-btn" (click)="checkout()">Tovább a fizetéshez</button>
+    </div>
+  </div>
+</div>

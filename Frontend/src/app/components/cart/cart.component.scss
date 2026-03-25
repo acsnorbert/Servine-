@@ -1,0 +1,176 @@
+// Színváltozók a kérésed alapján
+$bg-color: #000000;
+$accent-color: #f1c65c;
+$panel-bg: rgba(255, 255, 255, 0.04);
+$text-light: #ffffff;
+$text-muted: #a0a0a0;
+
+:host {
+  display: block;
+  background-color: $bg-color;
+  color: $text-light;
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: 'Inter', sans-serif; // Opcionális, de modern
+}
+
+.cart-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 40px;
+  color: $text-light;
+}
+
+.empty-cart {
+  text-align: center;
+  padding: 60px;
+  background: $panel-bg;
+  border-radius: 16px;
+  
+  p {
+    font-size: 1.2rem;
+    color: $text-muted;
+    margin-bottom: 24px;
+  }
+}
+
+.cart-content {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+  
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  background: $panel-bg;
+  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 16px;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .item-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #111;
+    margin-right: 24px;
+    
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .item-details {
+    flex-grow: 1;
+
+    h3 {
+      margin: 0 0 8px 0;
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+
+    .size {
+      color: $text-muted;
+      font-size: 0.9rem;
+      margin: 0 0 8px 0;
+      span { color: $text-light; }
+    }
+
+    .price {
+      color: $accent-color;
+      font-weight: 600;
+      margin: 0;
+    }
+  }
+
+  .item-quantity {
+    padding: 0 24px;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+
+  .remove-btn {
+    background: transparent;
+    border: none;
+    color: $text-muted;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #ff4a4a; // Pici piros, ha ráviszi az egeret a törlésre
+    }
+  }
+}
+
+.cart-summary {
+  background: $panel-bg;
+  padding: 32px;
+  border-radius: 16px;
+  height: fit-content;
+
+  h2 {
+    margin: 0 0 24px 0;
+    font-size: 1.5rem;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    color: $text-muted;
+  }
+
+  .summary-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: $text-light;
+  }
+}
+
+.btn-primary {
+  display: inline-block;
+  background-color: $accent-color;
+  color: $bg-color;
+  padding: 16px 32px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  text-align: center;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &.checkout-btn {
+    width: 100%;
+    margin-top: 32px;
+    font-size: 1.1rem;
+  }
+}

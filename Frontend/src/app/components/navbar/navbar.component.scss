@@ -27,4 +27,35 @@
       &:hover { color: #d4af37; }
     }
   }
+  .navbar a.cart-icon {
+  display: flex;
+  align-items: center;
+  position: relative;
+  color: #f1c65c; /* Alapból az arany színedet kapja a kék helyett */
+  padding-left: 24px; /* Távolság a Contact us-tól */
+  border-left: 1px solid rgba(255, 255, 255, 0.1); /* Halvány elválasztó vonal */
+  
+  &:hover {
+    transform: translateY(-2px); /* Pici animáció rámutatáskor */
+  }
+
+  svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .badge {
+    position: absolute;
+    top: -8px;
+    right: -12px;
+    background-color: #f1c65c;
+    color: #000000;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 20px;
+    min-width: 18px;
+    text-align: center;
+  }
+}
 }

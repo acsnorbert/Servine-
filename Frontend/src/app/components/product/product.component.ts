@@ -6,6 +6,7 @@ import { ProductService } from '../../services/product.service';
 import { ReviewService } from '../../services/review.service';
 import { Product } from '../../interfaces/product';
 import { Review } from '../../interfaces/review';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-product',
@@ -46,7 +47,8 @@ export class ProductComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
-    private reviewService: ReviewService
+    private reviewService: ReviewService,
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
@@ -93,6 +95,13 @@ export class ProductComponent implements OnInit {
   toggleFavorite(): void { this.isFavorite = !this.isFavorite; }
 
   addToCart(): void {
-    console.log('Kosárba:', this.product?.name, '| Méret:', this.selectedSize, '| Db:', this.quantity);
+  if (!this.product) return;
+  if (!this.selectedSize) {
+    alert('Kérlek válassz méretet!');
+    return;
   }
+  
+  this.cartService.addToCart(this.product, this.selectedSize, this.quantity);
+  console.log('Kosárba rakva:', this.product.name);
+}
 }

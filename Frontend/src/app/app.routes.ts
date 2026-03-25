@@ -11,6 +11,7 @@ import { OrderItemsComponent } from './components/Admin/order-items/order-items.
 import { OrdersComponent } from './components/Admin/orders/orders.component';
 import { UsersComponent } from './components/Admin/users/users.component';
 import { ProductsComponent } from './components/Admin/products/products.component';
+import { CartComponent } from './components/cart/cart.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -24,6 +25,7 @@ export const routes: Routes = [
     { path: 'product', component: ProductComponent },
     { path: 'products', component: ProductListComponent },
     { path: 'products/:id', component: ProductComponent },
+    { path: 'cart', component: CartComponent },
 
     
 
