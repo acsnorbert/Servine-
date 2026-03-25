@@ -1,1 +1,91 @@
-<p>categories works!</p>
+<div class="categories-page">
+
+  <div class="categories-header">
+
+    <div>
+      <h1>Categories</h1>
+      <span class="subtitle">Manage product categories</span>
+    </div>
+
+    <div class="actions">
+
+      <input
+        pInputText
+        type="text"
+        placeholder="Search category..."
+        [(ngModel)]="search"
+      />
+
+      <button pButton label="Add Category" icon="pi pi-plus"></button>
+
+    </div>
+
+  </div>
+
+
+  <div class="categories-table">
+
+    <p-table
+      [value]="categories"
+      responsiveLayout="scroll"
+      styleClass="category-table"
+    >
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th>ID</th>
+          <th>Parent ID</th>
+          <th>Name</th>
+          <th>Type</th>
+          <th style="width:150px">Actions</th>
+        </tr>
+      </ng-template>
+
+
+      <ng-template pTemplate="body" let-cat>
+        <tr>
+
+          <td>{{ cat.id }}</td>
+
+          <td>
+            <span class="parent">
+              {{ cat.parent_id ?? '— Root' }}
+            </span>
+          </td>
+
+          <td class="name">
+            {{ cat.name }}
+          </td>
+
+          <td>
+            <span
+              class="badge"
+              [ngClass]="{
+                'root': !cat.parent_id,
+                'child': cat.parent_id
+              }"
+            >
+              {{ cat.parent_id ? 'Subcategory' : 'Main category' }}
+            </span>
+          </td>
+
+          <td>
+
+            <button class="edit-btn" (click)="edit(cat)">
+              Edit
+            </button>
+
+            <button class="delete-btn" (click)="delete(cat.id)">
+              Delete
+            </button>
+
+          </td>
+
+        </tr>
+      </ng-template>
+
+    </p-table>
+
+  </div>
+
+</div>

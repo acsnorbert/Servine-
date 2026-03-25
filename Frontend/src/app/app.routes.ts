@@ -34,7 +34,7 @@ export const routes: Routes = [
     { path: 'dashboard', component: DashboardComponent }, 
     { path: 'order_items', component: OrderItemsComponent }, 
     { path: 'orders', component:OrdersComponent }, 
-    { path: 'products', component: ProductsComponent}, 
+    { path: 'product_list', component: ProductsComponent}, 
     { path: 'users', component: UsersComponent }, 
     
     
