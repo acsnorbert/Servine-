@@ -14,9 +14,7 @@ $text-dim:     #555;
   display: block;
   background: #0d0d0d;
   font-family: 'Poppins', sans-serif;
-  height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden;
+  min-height: 100vh;
   color: $text-main;
   position: relative;
 
@@ -37,8 +35,7 @@ $text-dim:     #555;
   z-index: 1;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 60px 32px 100px;
-  margin-top: 5%;
+  padding: 110px 32px 100px;
 }
 
 // ── Fejléc ────────────────────────────────────
@@ -95,8 +92,6 @@ $text-dim:     #555;
   transition: all 0.2s;
   letter-spacing: 0.5px;
 
-  .cat-icon { font-size: 15px; }
-
   &:hover  { border-color: $gold-border; color: $gold; }
   &.active { background: $gold-dim; border-color: $gold; color: $gold; font-weight: 600; }
 }
@@ -118,7 +113,6 @@ $text-dim:     #555;
   transition: border-color 0.3s;
 
   &:focus-within { border-color: $gold-border; }
-
   .search-icon { font-size: 14px; opacity: 0.5; }
 }
 
@@ -184,7 +178,6 @@ $text-dim:     #555;
   gap: 24px;
 }
 
-// ── Termék kártya ─────────────────────────────
 .product-card {
   background: $glass-bg;
   border: 1px solid $glass-border;
@@ -262,14 +255,6 @@ $text-dim:     #555;
   gap: 6px;
 }
 
-.card-category {
-  font-size: 10px;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: $gold;
-  opacity: 0.8;
-}
-
 .card-name {
   font-size: 15px;
   font-weight: 400;
@@ -284,7 +269,7 @@ $text-dim:     #555;
   margin-top: 4px;
 }
 
-// ── Üres / reset ──────────────────────────────
+// ── Üres állapot ──────────────────────────────
 .empty-state {
   text-align: center;
   padding: 80px 20px;
@@ -323,9 +308,8 @@ $text-dim:     #555;
 }
 
 @media (max-width: 480px) {
-  .products-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
-  .page-wrapper  { padding: 48px 16px 80px; 
-    margin-top: 30%;}
+  .products-grid           { grid-template-columns: 1fr 1fr; gap: 14px; }
+  .page-wrapper            { padding: 90px 16px 80px; }
   .page-header .page-title { font-size: 36px; }
 }
 

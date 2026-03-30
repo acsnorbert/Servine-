@@ -10,7 +10,6 @@ $text-main:    #ddd;
 $text-muted:   #777;
 $text-dim:     #555;
 
-// ── Host — nincs overflow, az app.component kezeli ───
 :host {
   display: block;
   background: #0d0d0d;
