@@ -1,0 +1,95 @@
+<div class="page-wrapper">
+
+  <!-- FEJLÉC -->
+  <div class="page-header" @fadeSlide>
+    <h1 class="page-title">KAPCSOLAT</h1>
+    <p class="page-subtitle">Írj nekünk, válaszolunk!</p>
+  </div>
+
+  <div class="contact-grid" @fadeSlide>
+
+    <!-- BAL — Infók -->
+    <div class="info-col">
+
+      <div class="glass-card info-card">
+        <div class="info-item">
+          <span class="info-icon">📍</span>
+          <div>
+            <div class="info-label">Cím</div>
+            <div class="info-value">1234 Budapest, Váci út 12.</div>
+          </div>
+        </div>
+        <div class="gold-divider"></div>
+        <div class="info-item">
+          <span class="info-icon">✉</span>
+          <div>
+            <div class="info-label">E-mail</div>
+            <div class="info-value">haa</div>
+          </div>
+        </div>
+        <div class="gold-divider"></div>
+        <div class="info-item">
+          <span class="info-icon">📞</span>
+          <div>
+            <div class="info-label">Telefon</div>
+            <div class="info-value">+36 30 123 4567</div>
+          </div>
+        </div>
+        <div class="gold-divider"></div>
+        <div class="info-item">
+          <span class="info-icon">🕐</span>
+          <div>
+            <div class="info-label">Nyitvatartás</div>
+            <div class="info-value">H–P: 9:00 – 18:00</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- JOBB — Form -->
+    <div class="form-col">
+
+      <!-- Sikeres küldés -->
+      <div class="glass-card success-card" *ngIf="submitted" @fadeSlide>
+        <div class="success-icon">✓</div>
+        <h2>Üzenet elküldve!</h2>
+        <p>Hamarosan felvesszük veled a kapcsolatot.</p>
+        <button class="primary-btn" (click)="submitted = false">Új üzenet</button>
+      </div>
+
+      <!-- Form -->
+      <div class="glass-card form-card" *ngIf="!submitted" @fadeSlide>
+        <div class="section-title">Küldjön üzenetet</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Név</label>
+            <input type="text" [(ngModel)]="name" placeholder="Teljes név" />
+          </div>
+          <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" [(ngModel)]="email" placeholder="email@example.com" />
+          </div>
+          <div class="form-group full">
+            <label>Tárgy</label>
+            <input type="text" [(ngModel)]="subject" placeholder="Miben segíthetünk?" />
+          </div>
+          <div class="form-group full">
+            <label>Üzenet</label>
+            <textarea [(ngModel)]="message" placeholder="Írja ide üzenetét..." rows="5"></textarea>
+          </div>
+        </div>
+
+        <button
+          class="primary-btn"
+          (click)="send()"
+          [disabled]="!name || !email || !message || submitting">
+          {{ submitting ? 'Küldés...' : 'Üzenet küldése →' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
