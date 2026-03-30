@@ -64,11 +64,10 @@
       @fadeSlide>
 
       <div class="card-image">
-        <img
-          *ngIf="product.image; else iconPlaceholder"
-          [src]="product.image"
-          [alt]="product.name"
-          class="card-img" />
+        <img *ngIf="product.image; else iconPlaceholder"
+     [src]="'/products/' + product.image"
+     [alt]="product.name"
+     class="card-img" />
         <ng-template #iconPlaceholder>
           <div class="card-image-placeholder">
             <span class="card-icon">✦</span>

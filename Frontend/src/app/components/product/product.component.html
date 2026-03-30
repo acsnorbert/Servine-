@@ -22,9 +22,8 @@
       <!-- BAL — Kép -->
       <div class="gallery-section">
         <div class="main-image-wrapper">
-          <img
-            *ngIf="product.image; else iconPlaceholder"
-            [src]="product.image"
+          <img *ngIf="product.image; else iconPlaceholder"
+            [src]="'/products/' + product.image"
             [alt]="product.name"
             class="main-img" />
           <ng-template #iconPlaceholder>

@@ -10,23 +10,25 @@ $text-main:    #ddd;
 $text-muted:   #777;
 $text-dim:     #555;
 
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  
-}
-
+// ── Host ──────────────────────────────────────
 :host {
   display: block;
   background: #0d0d0d;
   font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
   color: $text-main;
   position: relative;
-  overflow-x: hidden;
-  overflow-y: auto;
+
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(212,175,55,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 90%, rgba(212,175,55,0.04) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
 }
 
 .page-wrapper {
@@ -34,8 +36,7 @@ html, body {
   z-index: 1;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 48px 32px 100px;
-  margin-top: 2%;
+  padding: 110px 32px 100px;
 }
 
 .back-link {
@@ -84,11 +85,9 @@ html, body {
 
 // ── Gallery ───────────────────────────────────
 .gallery-section {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
   position: sticky;
   top: 32px;
+  width: 100%;
 }
 
 .main-image-wrapper {
@@ -97,34 +96,28 @@ html, body {
   overflow: hidden;
   background: $glass-bg;
   border: 1px solid $glass-border;
+  width: 100%;
   aspect-ratio: 3 / 4;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .main-image-placeholder {
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
 
   .placeholder-icon { font-size: 120px; opacity: 0.12; }
-}
-
-.discount-badge {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  background: $gold;
-  color: #000;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 4px 12px;
-  border-radius: 20px;
-  letter-spacing: 1px;
-  z-index: 2;
 }
 
 .favorite-btn {
@@ -150,40 +143,11 @@ html, body {
   &.active { color: #e05555; border-color: rgba(224,85,85,0.3); }
 }
 
-.thumbnails { display: flex; gap: 12px; }
-
-.thumb {
-  width: 72px;
-  height: 88px;
-  border-radius: 14px;
-  background: $glass-bg;
-  border: 1px solid $glass-border;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: border-color 0.2s;
-  flex-shrink: 0;
-
-  .thumb-icon { font-size: 28px; opacity: 0.18; }
-
-  &:hover  { border-color: $gold-border; }
-  &.active { border-color: $gold; background: $gold-dim; }
-}
-
 // ── Info ──────────────────────────────────────
 .info-section {
   display: flex;
   flex-direction: column;
   padding-top: 8px;
-}
-
-.product-category {
-  font-size: 11px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: $gold;
-  margin-bottom: 12px;
 }
 
 .product-name {
@@ -195,38 +159,43 @@ html, body {
   margin-bottom: 16px;
 }
 
-.rating-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.stars { display: flex; gap: 2px; }
+.rating-row { display: flex; align-items: center; gap: 10px; }
+.stars      { display: flex; gap: 2px; }
 
 .star {
   font-size: 18px;
   color: $text-dim;
-
   &.filled { color: $gold; }
   &.small  { font-size: 14px; }
 }
 
-.rating-value  { font-size: 15px; font-weight: 600; color: $gold; }
-.review-count  { font-size: 13px; color: $text-muted; }
+.rating-value { font-size: 15px; font-weight: 600; color: $gold; }
+.review-count { font-size: 13px; color: $text-muted; }
 
-.price-row { display: flex; align-items: baseline; gap: 14px; }
+.price-row     { display: flex; align-items: baseline; gap: 14px; }
+.price-current { font-size: 32px; font-weight: 600; color: $gold; letter-spacing: 1px; }
 
-.price-current {
-  font-size: 32px;
-  font-weight: 600;
-  color: $gold;
+.stock-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #50c878;
   letter-spacing: 1px;
-}
+  margin-top: -10px;
 
-.price-original {
-  font-size: 18px;
-  color: $text-dim;
-  text-decoration: line-through;
+  .stock-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #50c878;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  &.low {
+    color: #f1a65c;
+    .stock-dot { background: #f1a65c; }
+  }
 }
 
 // ── Size ──────────────────────────────────────
@@ -241,14 +210,6 @@ html, body {
   text-transform: uppercase;
   color: $text-muted;
   margin-bottom: 14px;
-}
-
-.size-guide {
-  color: $gold;
-  cursor: pointer;
-  font-size: 11px;
-  transition: opacity 0.2s;
-  &:hover { opacity: 0.7; }
 }
 
 .size-grid { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -274,7 +235,6 @@ html, body {
   margin-top: 10px;
   font-size: 11px;
   color: rgba(255, 100, 100, 0.6);
-  letter-spacing: 0.5px;
 }
 
 // ── Action row ────────────────────────────────
@@ -336,7 +296,6 @@ html, body {
   &:disabled             { opacity: 0.4; cursor: not-allowed; }
 }
 
-// ── Extras ────────────────────────────────────
 .extras { display: flex; flex-direction: column; gap: 12px; }
 
 .extra-item {
@@ -369,7 +328,6 @@ html, body {
   cursor: pointer;
   transition: color 0.2s, border-color 0.2s;
   margin-bottom: -1px;
-  letter-spacing: 0.5px;
 
   &:hover  { color: $gold; }
   &.active { color: $gold; border-bottom-color: $gold; }
@@ -401,10 +359,8 @@ html, body {
 .detail-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: $gold; }
 .detail-value { font-size: 14px; color: #ccc; }
 
-// ── Reviews ───────────────────────────────────
 .reviews-list { display: flex; flex-direction: column; gap: 16px; }
-
-.review-card { padding: 24px 28px; }
+.review-card  { padding: 24px 28px; }
 
 .review-header {
   display: flex;
@@ -428,24 +384,75 @@ html, body {
   flex-shrink: 0;
 }
 
-.review-meta   { flex: 1; display: flex; flex-direction: column; gap: 2px; }
-.review-author { font-size: 14px; font-weight: 600; color: #ddd; }
-.review-date   { font-size: 11px; color: $text-dim; }
-.review-stars  { display: flex; gap: 2px; }
+.review-meta    { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.review-author  { font-size: 14px; font-weight: 600; color: #ddd; }
+.review-date    { font-size: 11px; color: $text-dim; }
+.review-stars   { display: flex; gap: 2px; }
 .review-comment { font-size: 14px; line-height: 1.7; color: #999; }
+
+// ── Loading / Error ───────────────────────────
+.loading-state {
+  display: flex;
+  justify-content: center;
+  padding: 100px 0;
+}
+
+.spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgba(212,175,55,0.15);
+  border-top-color: $gold;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.error-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: $text-dim;
+  font-size: 15px;
+}
 
 // ── Responsive ────────────────────────────────
 @media (max-width: 900px) {
-  .product-layout    { grid-template-columns: 1fr; gap: 36px; }
-  .gallery-section   { position: static; }
-  .product-name      { font-size: 28px; }
+  .product-layout {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .gallery-section {
+    position: static;
+    max-width: 420px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .product-name { font-size: 28px; }
 }
 
 @media (max-width: 600px) {
-  .page-wrapper  { padding: 32px 16px 80px; }
-  .product-name  { font-size: 24px; }
+  .page-wrapper  { padding: 90px 16px 80px; }
+  .product-name  { font-size: 22px; }
   .price-current { font-size: 26px; }
   .detail-grid   { grid-template-columns: 1fr; }
   .action-row    { flex-wrap: wrap; }
   .cart-btn      { width: 100%; }
+
+  .gallery-section {
+    max-width: 100%;
+  }
+
+  .main-image-wrapper {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.8); }
 }
