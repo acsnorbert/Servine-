@@ -43,6 +43,11 @@ export class ApiService {
     return this.http.get(`${BASE}/users/orders`);
   }
 
+  // KATEGÓRIÁK (ÚJ)
+  getCategories(): Observable<any> {
+    return this.http.get(`${BASE}/categories`);
+  }
+
   // TERMÉKEK
   getProducts(filters?: { category_id?: number; min_price?: number; max_price?: number; sort?: string }): Observable<any> {
     let params = new HttpParams();

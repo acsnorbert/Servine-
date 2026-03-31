@@ -1,30 +1,30 @@
 <div class="page-wrapper">
 
-  <!-- FEJLÉC -->
   <div class="page-header" @fadeSlide>
     <h1 class="page-title">KOLLEKCIÓ</h1>
     <p class="page-subtitle" *ngIf="!isLoading">{{ filteredProducts.length }} termék</p>
   </div>
 
-  <!-- SZŰRŐ SOR -->
   <div class="filter-bar" @fadeSlide>
-    <div class="category-tabs">
+    
+    <div class="filter-top-row">
+      <div class="category-tabs">
       <button
         class="cat-btn"
         [class.active]="selectedCategory === null"
         (click)="setCategory(null)">
-        Összes
+        ÖSSZES
       </button>
+      
       <button
         class="cat-btn"
         *ngFor="let cat of categories"
-        [class.active]="selectedCategory === cat.category_id"
-        (click)="setCategory(cat.category_id)">
+        [class.active]="selectedCategory === cat.id"
+        (click)="setCategory(cat.id)">
         {{ cat.name }}
       </button>
     </div>
 
-    <div class="filter-right">
       <div class="search-box">
         <span class="search-icon">🔍</span>
         <input
@@ -34,8 +34,40 @@
           placeholder="Keresés..."
           class="search-input" />
       </div>
+    </div>
 
-      <select class="sort-select" [(ngModel)]="sortBy" (ngModelChange)="onSortChange()">
+    <div class="filter-bottom-row">
+      <div class="price-filter">
+        <input 
+          type="number" 
+          [(ngModel)]="minPrice" 
+          (ngModelChange)="onAdvancedFilterChange()" 
+          placeholder="Min ár" 
+          min="0"
+          oninput="validity.valid||(value='');"
+          class="price-input" />
+        <span class="price-separator">-</span>
+        <input 
+          type="number" 
+          [(ngModel)]="maxPrice" 
+          (ngModelChange)="onAdvancedFilterChange()" 
+          placeholder="Max ár" 
+          min="0"
+          oninput="validity.valid||(value='');"
+          class="price-input" />
+        <span class="price-currency">Ft</span>
+      </div>
+
+      <label class="stock-checkbox">
+        <input 
+          type="checkbox" 
+          [(ngModel)]="inStockOnly" 
+          (ngModelChange)="onAdvancedFilterChange()" />
+        <span class="checkmark"></span>
+        Csak raktáron
+      </label>
+
+      <select class="sort-select" [(ngModel)]="sortBy" (ngModelChange)="onAdvancedFilterChange()">
         <option value="default">Sorrend</option>
         <option value="price_asc">Ár: növekvő</option>
         <option value="price_desc">Ár: csökkenő</option>
@@ -43,20 +75,16 @@
     </div>
   </div>
 
-  <!-- BETÖLTÉS -->
   <div class="loading-state" *ngIf="isLoading">
     <div class="spinner"></div>
   </div>
 
-  <!-- HIBA -->
   <div class="error-state" *ngIf="errorMessage && !isLoading" @fadeSlide>
     <div class="error-icon">⚠</div>
     <p>{{ errorMessage }}</p>
   </div>
 
-  <!-- TERMÉKRÁCS -->
-  <div class="products-grid"
-    *ngIf="!isLoading && !errorMessage && filteredProducts.length > 0">
+  <div class="products-grid" *ngIf="!isLoading && !errorMessage && filteredProducts.length > 0">
     <div
       class="product-card"
       *ngFor="let product of filteredProducts"
@@ -65,9 +93,9 @@
 
       <div class="card-image">
         <img *ngIf="product.image; else iconPlaceholder"
-     [src]="'/products/' + product.image"
-     [alt]="product.name"
-     class="card-img" />
+             [src]="'/products/' + product.image"
+             [alt]="product.name"
+             class="card-img" />
         <ng-template #iconPlaceholder>
           <div class="card-image-placeholder">
             <span class="card-icon">✦</span>
@@ -85,13 +113,14 @@
     </div>
   </div>
 
-  <!-- ÜRES ÁLLAPOT -->
   <div class="empty-state"
     *ngIf="!isLoading && !errorMessage && filteredProducts.length === 0"
     @fadeSlide>
     <div class="empty-icon">🔍</div>
     <p class="empty-title">Nem található termék</p>
     <p class="empty-sub">Próbálj más keresési feltételt!</p>
+    
+    <button class="reset-btn" (click)="resetFilters()">Szűrők törlése</button>
   </div>
 
 </div>
