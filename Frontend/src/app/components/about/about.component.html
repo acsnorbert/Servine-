@@ -1,0 +1,93 @@
+<div class="page-wrapper">
+
+  <!-- ══════════════════════════
+       HERO SZEKCIÓ
+       ══════════════════════════ -->
+  <section class="hero-section" @fadeSlide>
+    <div class="hero-label">Rólunk</div>
+    <h1 class="hero-title">
+      A luxus nem kiváltság<br>
+      <span class="gold-text">hanem választás.</span>
+    </h1>
+    <p class="hero-desc">
+      A Servine egy prémium online webáruház, ahol a modern elegancia
+      találkozik a kényelmes vásárlással. Ruhákat, cipőket és illatszereket
+      kínálunk, amelyeket a minőség és az ízlés vezérel.
+    </p>
+    <div class="hero-line"></div>
+  </section>
+
+  <!-- ══════════════════════════
+       SZÁMOK
+       ══════════════════════════ -->
+  <section class="stats-section" @fadeSlide>
+    <div class="stat-card">
+      <div class="stat-number">200<span>+</span></div>
+      <div class="stat-label">Prémium termék</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-card">
+      <div class="stat-number">3</div>
+      <div class="stat-label">Főkategória</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-card">
+      <div class="stat-number">100<span>%</span></div>
+      <div class="stat-label">Elégedett vásárló</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-card">
+      <div class="stat-number">30</div>
+      <div class="stat-label">Napos visszaküldés</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════
+       ÉRTÉKEINK
+       ══════════════════════════ -->
+  <section class="values-section" @fadeSlide>
+    <div class="section-header">
+      <div class="section-tag">Értékeink</div>
+      <h2 class="section-title">Amit képviselünk</h2>
+    </div>
+    <div class="values-grid">
+      <div class="value-card" *ngFor="let v of values">
+        <div class="value-icon">{{ v.icon }}</div>
+        <div class="value-title">{{ v.title }}</div>
+        <div class="value-desc">{{ v.desc }}</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════
+       CSAPAT
+       ══════════════════════════ -->
+  <section class="team-section" @fadeSlide>
+    <div class="section-header">
+      <div class="section-tag">A csapat</div>
+      <h2 class="section-title">Akik megalkották</h2>
+    </div>
+    <div class="team-grid">
+      <div class="team-card" *ngFor="let member of team">
+        <div class="team-avatar">{{ member.initial }}</div>
+        <div class="team-name">{{ member.name }}</div>
+        <div class="team-role">{{ member.role }}</div>
+        <div class="gold-divider"></div>
+        <div class="team-desc">{{ member.desc }}</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════
+       CTA
+       ══════════════════════════ -->
+  <section class="cta-section" @fadeSlide>
+    <div class="cta-card">
+      <div class="cta-tag">Készen állsz?</div>
+      <h2 class="cta-title">Fedezd fel a kollekciókat</h2>
+      <p class="cta-desc">Böngéssz prémium termékek között és találd meg a stílusod.</p>
+      <a routerLink="/products" class="primary-btn">Kollekció megtekintése →</a>
+    </div>
+  </section>
+
+</div>

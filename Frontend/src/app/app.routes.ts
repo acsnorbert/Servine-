@@ -13,6 +13,7 @@ import { UsersComponent } from './components/Admin/users/users.component';
 import { ProductsComponent } from './components/Admin/products/products.component';
 import { CartComponent } from './components/cart/cart.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { AboutComponent } from './components/about/about.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -28,8 +29,7 @@ export const routes: Routes = [
     { path: 'products/:id', component: ProductComponent },
     { path: 'cart', component: CartComponent },
     { path: 'contact', component: ContactComponent },
-
-    
+    { path: 'about', component: AboutComponent },
 
     //ADMIN
     { path: 'category', component: CategoriesComponent }, 

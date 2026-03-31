@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { NgIf } from '@angular/common'; // <-- 1. EZT ADD HOZZÁ
+import { NgIf } from '@angular/common';
 import { CartService } from '../../services/cart.service';
 
 @Component({
