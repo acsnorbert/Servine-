@@ -2,14 +2,26 @@
 @port = 3000
 @url = {{host}}:{{port}}
 
-@adminToken = 
+@adminToken = {{login.response.body.token}}
+
+### Token megszerzése 
+
+# @name login
+POST {{url}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "teszt@example.com",
+  "password": "jelszo123"
+}
+
 
 ### Összes termék lekérése (nyilvános)
 GET {{url}}/api/products
 Content-Type: application/json
 
 ### Egy termék részletei
-GET {{url}}/api/products/1
+GET {{url}}/api/products/207c07f9-8ccc-4d97-8a45-795ab2a4f3c0
 Content-Type: application/json
 
 ### Termék keresés
@@ -27,12 +39,12 @@ Authorization: Bearer {{adminToken}}
   "price": 4990,
   "stock": 50,
   "sku": "POLO-T001",
-  "category_id": 1,
+  "category_id": "37ad2f5c-a0f0-494d-aecc-aaad7cfde21a",
   "image": "https://example.com/polo.jpg"
 }
 
 ### Termék módosítása
-PATCH {{url}}/api/products/5
+PATCH {{url}}/api/products/d6044aa2-21f2-4fea-9e9f-af21feebd9b2
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
@@ -42,5 +54,5 @@ Authorization: Bearer {{adminToken}}
 }
 
 ### Termék törlése
-DELETE {{url}}/api/products/5
+DELETE {{url}}/api/products/d6044aa2-21f2-4fea-9e9f-af21feebd9b2
 Authorization: Bearer {{adminToken}}

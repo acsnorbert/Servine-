@@ -5,16 +5,16 @@ module.exports = (sequelize) => {
     'reviews',
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         primaryKey: true,
-        autoIncrement: true
+        defaultValue: DataTypes.UUIDV4
       },
       product_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false
       },
       user_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false
       },
       rating: {
@@ -33,7 +33,7 @@ module.exports = (sequelize) => {
       }
     },
     {
-      timestamps: false, 
+      timestamps: true, 
       indexes: [
         {
           fields: ['product_id']

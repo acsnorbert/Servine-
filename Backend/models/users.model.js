@@ -7,9 +7,9 @@ module.exports = (sequelize) => {
     'users',
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         primaryKey: true,
-        autoIncrement: true
+        defaultValue: DataTypes.UUIDV4
       },
       name: {
         type: DataTypes.STRING(100),
@@ -21,7 +21,7 @@ module.exports = (sequelize) => {
         unique: true
       },
       password: {
-        type: DataTypes.STRING(40),
+        type: DataTypes.STRING(255),
         allowNull: false
       },
       phone: {
@@ -46,7 +46,7 @@ module.exports = (sequelize) => {
       }
     },
     {
-      timestamps: false, 
+      timestamps: true, 
       hooks: {
         beforeCreate: async (user) => {
           user.password = await bcrypt.hash(user.password, 10);
@@ -54,6 +54,7 @@ module.exports = (sequelize) => {
         beforeUpdate: async (user) => {
           if (user.changed('password')) {
             user.password = await bcrypt.hash(user.password, 10);
+            user.secret = uuidv4();
           }
         }
       },
@@ -67,7 +68,7 @@ module.exports = (sequelize) => {
   );
 
   User.prototype.comparePassword = function (password) {
-    return bcrypt.compare(password, this.password);
+    return bcrypt.compare(password, this.getDataValue('password'));
   };
 
   return User;

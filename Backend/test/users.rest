@@ -3,12 +3,12 @@
 @url = {{host}}:{{port}}
 
 
-@userToken = 
-@adminToken = 
+@userToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI5YzYyOTAxLTgxM2ItNDE2Ni1hY2I2LWZjNmQzYmJiZTQwZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3NTAyODcyMCwiZXhwIjoxNzc1NjMzNTIwfQ.7Yz4dLRQ1X2yOyLtEHBsJeknbEKPw0eo_CL-2ToQILo
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI5YzYyOTAxLTgxM2ItNDE2Ni1hY2I2LWZjNmQzYmJiZTQwZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3NTAyODcyMCwiZXhwIjoxNzc1NjMzNTIwfQ.7Yz4dLRQ1X2yOyLtEHBsJeknbEKPw0eo_CL-2ToQILo
 
 
 ### Saját profil lekérése (auth kell)
-GET {{url}}/api/users/me
+GET {{url}}/api/users/profile
 Authorization: Bearer {{userToken}}
 
 ### Összes felhasználó listázása (csak admin)
@@ -16,18 +16,18 @@ GET {{url}}/api/users
 Authorization: Bearer {{adminToken}}
 
 ### Egy konkrét felhasználó adatainak lekérése (admin vagy saját maga)
-GET {{url}}/api/users/2
+GET {{url}}/api/users/144c8488-9550-4873-bc0a-b30867f27ea8
 Authorization: Bearer {{adminToken}}
 
 ### Saját adatok módosítása (pl. név vagy email váltás)
-PATCH {{url}}/api/users/me
+PATCH {{url}}/api/users/profile
 Content-Type: application/json
 Authorization: Bearer {{userToken}}
 
 {
   "name": "Teszt User Új Név",
-  "email": "ujemail@example.com"
+  "email": "email@example.com"
 }
 ### Felhasználó törlése (csak admin!)
-DELETE {{url}}/api/users/3
+DELETE {{url}}/api/users/b9c62901-813b-4166-acb6-fc6d3bbbe40e
 Authorization: Bearer {{adminToken}}

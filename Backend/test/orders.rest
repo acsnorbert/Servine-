@@ -2,8 +2,21 @@
 @port = 3000
 @url = {{host}}:{{port}}
 
-@userToken = 
-@adminToken = 
+@userToken = {{login.response.body.token}}
+@adminToken = {{login.response.body.token}}
+
+### Token megszerzése 
+
+# @name login
+POST {{url}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "teszt@example.com",
+  "password": "jelszo123"
+}
+
+
 
 ### Új rendelés leadása
 POST {{url}}/api/orders

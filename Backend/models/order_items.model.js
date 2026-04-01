@@ -5,16 +5,16 @@ module.exports = (sequelize) => {
     'order_items',
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         primaryKey: true,
-        autoIncrement: true
+        defaultValue: DataTypes.UUIDV4
       },
       order_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false
       },
       product_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false
       },
       quantity: {
@@ -27,7 +27,7 @@ module.exports = (sequelize) => {
       }
     },
     {
-      timestamps: false,
+      timestamps: true,
       indexes: [
         {
           fields: ['order_id']

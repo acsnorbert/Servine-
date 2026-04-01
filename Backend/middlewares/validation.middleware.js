@@ -58,7 +58,7 @@ const changePasswordValidation = [
 const createProductValidation = [
   body('name').trim().notEmpty().withMessage('A termék neve kötelező.').isLength({ max: 100 }),
   body('price').notEmpty().withMessage('Az ár megadása kötelező.').isDecimal({ decimal_digits: '0,2' }).withMessage('Érvénytelen ár.'),
-  body('category_id').notEmpty().withMessage('A kategória megadása kötelező.').isInt(),
+  body('category_id').notEmpty().withMessage('A kategória megadása kötelező.').isLength({ max: 255 }),
   body('sku').trim().notEmpty().withMessage('A SKU megadása kötelező.').isLength({ max: 50 }),
   body('stock').optional().isInt({ min: 0 }).withMessage('A készlet nem lehet negatív.'),
   body('description').optional().trim()
@@ -67,7 +67,7 @@ const createProductValidation = [
 const updateProductValidation = [
   body('name').optional().trim().isLength({ max: 100 }),
   body('price').optional().isDecimal({ decimal_digits: '0,2' }).withMessage('Érvénytelen ár.'),
-  body('category_id').optional().isInt(),
+  body('category_id').optional().isLength({ max: 255 }),
   body('stock').optional().isInt({ min: 0 }).withMessage('A készlet nem lehet negatív.'),
   body('description').optional().trim()
 ];
@@ -81,14 +81,14 @@ const createReviewValidation = [
 // Order validációk
 const createOrderValidation = [
   body('items').isArray({ min: 1 }).withMessage('Legalább egy termék szükséges a rendeléshez.'),
-  body('items.*.product_id').isInt().withMessage('Érvénytelen termék azonosító.'),
+  body('items.*.product_id').isLength({ max: 255 }).withMessage('Érvénytelen termék azonosító.'),
   body('items.*.quantity').isInt({ min: 1 }).withMessage('A mennyiség legalább 1 kell legyen.')
 ];
 
 // Category validációk
 const createCategoryValidation = [
   body('name').trim().notEmpty().withMessage('A kategória neve kötelező.').isLength({ max: 50 }),
-  body('parent_id').optional({ nullable: true }).isInt().withMessage('Érvénytelen szülő kategória.')
+  body('parent_id').optional({ nullable: true }).isLength({ max: 255 }).withMessage('Érvénytelen szülő kategória.')
 ];
 
 module.exports = {

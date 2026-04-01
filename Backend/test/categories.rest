@@ -2,17 +2,31 @@
 @port = 3000
 @url = {{host}}:{{port}}
 
-@adminToken =
+@adminToken = {{login.response.body.token}}
+
+### Token megszerzése 
+
+# @name login
+POST {{url}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "teszt@example.com",
+  "password": "jelszo123"
+}
+
 
 ### Összes kategória lekérése
 GET {{url}}/api/categories
 Content-Type: application/json
 
 ### Egy kategória részletei
-GET {{url}}/api/categories/1
+GET {{url}}/api/categories/72ffae80-8e7f-4d82-9a52-4a36b763e967
 Content-Type: application/json
 
 ### Új kategória létrehozása
+
+# @name category
 POST {{url}}/api/categories
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
@@ -22,7 +36,7 @@ Authorization: Bearer {{adminToken}}
   "parent_id": null
 }
 
-### Al-kategória létrehozása
+### Al-kategória létrehozása (CRASH LEKEZELÉSE)
 POST {{url}}/api/categories
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
@@ -33,7 +47,7 @@ Authorization: Bearer {{adminToken}}
 }
 
 ### Kategória módosítása
-PATCH {{url}}/api/categories/10
+PATCH {{url}}/api/categories/72ffae80-8e7f-4d82-9a52-4a36b763e967
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 

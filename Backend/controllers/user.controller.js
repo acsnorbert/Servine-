@@ -4,6 +4,7 @@ const { User } = require('../models');
 const getProfile = async (req, res) => {
   try {
     // req.user már benne van az auth middleware miatt
+    console.log(req.user.id)
     const user = await User.findByPk(req.user.id, {
       attributes: ['id', 'name', 'email', 'phone', 'address', 'role', 'created_at']
     });
@@ -21,14 +22,14 @@ const getProfile = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   try {
-    const { name, phone, address } = req.body;
+    const { name,email, phone, address } = req.body;
     const user = await User.findByPk(req.user.id);
 
     if (!user) {
       return res.status(404).json({ message: 'Felhasználó nem található' });
     }
 
-    await user.update({ name, phone, address });
+    await user.update({ name,email ,phone, address });
     res.json({ message: 'Profil sikeresen frissítve', user });
   } catch (err) {
     console.error(err);

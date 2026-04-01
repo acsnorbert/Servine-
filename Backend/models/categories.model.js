@@ -5,12 +5,12 @@ module.exports = (sequelize) => {
     'categories',
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         primaryKey: true,
-        autoIncrement: true
+        defaultValue: DataTypes.UUIDV4
       },
       parent_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: true,
         defaultValue: null
       },
@@ -20,7 +20,7 @@ module.exports = (sequelize) => {
       }
     },
     {
-      timestamps: false,
+      timestamps: true,
       indexes: [
         {
           fields: ['parent_id']

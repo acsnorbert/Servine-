@@ -6,12 +6,12 @@ module.exports = (sequelize) => {
     'orders',
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         primaryKey: true,
-        autoIncrement: true
+        defaultValue: DataTypes.UUIDV4
       },
       user_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false
       },
       order_date: {
@@ -26,7 +26,7 @@ module.exports = (sequelize) => {
       }
     },
     {
-      timestamps: false,
+      timestamps: true,
       indexes: [
         {
           fields: ['user_id']

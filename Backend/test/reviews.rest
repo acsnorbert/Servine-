@@ -2,13 +2,22 @@
 @port = 3000
 @url = {{host}}:{{port}}
 
-@userToken = 
+@userToken = {{login.response.body.token}}
+
+# @name login
+POST {{url}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "teszt@example.com",
+  "password": "jelszo123"
+}
 
 ### Egy termék összes értékelése
-GET {{url}}/api/reviews/product/1
+GET {{url}}/api/reviews/product/207c07f9-8ccc-4d97-8a45-795ab2a4f3c0
 
 ### Új értékelés hozzáadása
-POST {{url}}/api/reviews/product/1
+POST {{url}}/api/reviews/product/207c07f9-8ccc-4d97-8a45-795ab2a4f3c0
 Content-Type: application/json
 Authorization: Bearer {{userToken}}
 
@@ -18,7 +27,7 @@ Authorization: Bearer {{userToken}}
 }
 
 ### Értékelés módosítása (saját)
-PATCH {{url}}/api/reviews/3
+PATCH {{url}}/api/reviews/0e48494c-c3dd-4c97-aba1-161f52ef3988
 Content-Type: application/json
 Authorization: Bearer {{userToken}}
 
@@ -28,5 +37,5 @@ Authorization: Bearer {{userToken}}
 }
 
 ### Értékelés törlése
-DELETE {{url}}/api/reviews/3
+DELETE {{url}}/api/reviews/0e48494c-c3dd-4c97-aba1-161f52ef3988
 Authorization: Bearer {{userToken}}

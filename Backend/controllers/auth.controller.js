@@ -50,7 +50,7 @@ function generateToken(user) {
   }
 }
 
-// Bejeelentkezés
+// Bejelentkezés
 async function login(req, res) {
   try {
     const { email, password } = req.body;
@@ -69,7 +69,12 @@ async function login(req, res) {
     return res.status(200).json({
       message: 'Sikeres bejelentkezés.',
       token,
-      user: { id: user.id, name: user.name, email: user.email, role: user.role }
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
     });
   } catch (err) {
     console.error('login error:', err);

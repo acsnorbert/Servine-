@@ -5,12 +5,12 @@ module.exports = (sequelize) => {
     'products',
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         primaryKey: true,
-        autoIncrement: true
+        defaultValue: DataTypes.UUIDV4
       },
       category_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false
       },
       name: {
@@ -48,7 +48,7 @@ module.exports = (sequelize) => {
       }
     },
     {
-      timestamps: false,
+      timestamps: true,
       indexes: [
         {
           fields: ['category_id']
