@@ -18,7 +18,6 @@ export class CartComponent implements OnInit {
 
   constructor(
     private cartService: CartService,
-    // 2. JAVÍTÁS: Itt injektáljuk be a te meglévő szervizedet
     private orderItemsService: OrderItemsService, 
     private router: Router
   ) {}
@@ -34,6 +33,22 @@ export class CartComponent implements OnInit {
     this.cartService.removeFromCart(index);
   }
 
+  increaseQuantity(index: number): void {
+    const item = this.cartItems[index];
+    if (item.quantity < item.product.stock) {
+      item.quantity++;
+      this.calculateTotal();
+    }
+  }
+
+  decreaseQuantity(index: number): void {
+    const item = this.cartItems[index];
+    if (item.quantity > 1) {
+      item.quantity--;
+      this.calculateTotal();
+    }
+  }
+
   calculateTotal(): void {
     this.totalPrice = this.cartItems.reduce((acc, item) => {
       return acc + (item.product.price * item.quantity);
@@ -43,10 +58,7 @@ export class CartComponent implements OnInit {
   checkout(): void {
     if (this.cartItems.length === 0) return;
     this.isSubmitting = true;
-
-    // Összeállítjuk az adatokat.
     const orderPayload = {
-      // Itt az aktuális user ID-t kell majd átadni (most 1-esként küldjük tesztből)
       user_id: 1, 
       items: this.cartItems.map(item => ({
         product_id: item.product.id,
@@ -56,7 +68,6 @@ export class CartComponent implements OnInit {
       }))
     };
 
-    // 3. JAVÍTÁS: A te szervized 'insertOrderItem' metódusát hívjuk meg
     this.orderItemsService.insertOrderItem(orderPayload).subscribe({
       next: (response: any) => {
         alert('Sikeres rendelés!');
