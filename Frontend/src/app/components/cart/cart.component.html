@@ -10,8 +10,7 @@
     <div class="cart-items">
       <div class="cart-item" *ngFor="let item of cartItems; let i = index">
         <div class="item-image">
-          <!--<img [src]="item.product.imageUrl || 'assets/placeholder.png'" [alt]="item.product.name">-->
-        </div>
+          </div>
         
         <div class="item-details">
           <h3>{{ item.product.name }}</h3>
@@ -19,8 +18,22 @@
           <p class="price">{{ item.product.price | number }} Ft</p>
         </div>
 
-        <div class="item-quantity">
-          <span>{{ item.quantity }} db</span>
+        <div class="item-quantity-control">
+          <button 
+            class="qty-btn" 
+            (click)="decreaseQuantity(i)" 
+            [disabled]="item.quantity <= 1">
+            -
+          </button>
+          
+          <span class="qty-value">{{ item.quantity }} db</span>
+          
+          <button 
+            class="qty-btn" 
+            (click)="increaseQuantity(i)" 
+            [disabled]="item.quantity >= item.product.stock">
+            +
+          </button>
         </div>
 
         <button class="remove-btn" (click)="removeItem(i)">✕</button>
@@ -41,7 +54,9 @@
         <span>Végösszeg</span>
         <span>{{ totalPrice | number }} Ft</span>
       </div>
-      <button class="btn-primary checkout-btn" (click)="checkout()">Tovább a fizetéshez</button>
+      <button class="btn-primary checkout-btn" (click)="checkout()" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Feldolgozás...' : 'Tovább a fizetéshez' }}
+      </button>
     </div>
   </div>
 </div>

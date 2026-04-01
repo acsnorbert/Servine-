@@ -1,17 +1,39 @@
-// Színváltozók a kérésed alapján
+// Színváltozók
 $bg-color: #000000;
 $accent-color: #f1c65c;
-$panel-bg: rgba(255, 255, 255, 0.04);
+$accent-glow: rgba(241, 198, 92, 0.3); // Arany ragyogás
+$panel-bg: rgba(255, 255, 255, 0.03);
+$panel-border: rgba(255, 255, 255, 0.08);
 $text-light: #ffffff;
-$text-muted: #a0a0a0;
+$text-muted: #888888;
+$danger-color: #ff4a4a;
 
+// --- Animációk ---
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 $accent-glow; }
+  70% { box-shadow: 0 0 0 10px rgba(241, 198, 92, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(241, 198, 92, 0); }
+}
+
+// --- Alap beállítások ---
 :host {
   display: block;
   background-color: $bg-color;
   color: $text-light;
   min-height: 100vh;
-  padding: 40px 20px;
-  font-family: 'Inter', sans-serif; // Opcionális, de modern
+  padding: 60px 20px;
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
 .cart-container {
@@ -21,32 +43,55 @@ $text-muted: #a0a0a0;
 
 .page-title {
   font-size: 2.5rem;
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 40px;
   color: $text-light;
+  letter-spacing: -0.5px;
+  
+  // Kis arany vonal a cím alatt
+  &::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: $accent-color;
+    margin-top: 12px;
+    border-radius: 2px;
+  }
 }
 
 .empty-cart {
   text-align: center;
-  padding: 60px;
+  padding: 80px 40px;
   background: $panel-bg;
-  border-radius: 16px;
+  border: 1px solid $panel-border;
+  border-radius: 24px;
+  backdrop-filter: blur(10px);
+  animation: fadeInUp 0.6s ease-out forwards;
   
   p {
     font-size: 1.2rem;
     color: $text-muted;
-    margin-bottom: 24px;
+    margin-bottom: 32px;
   }
 }
 
+// --- Kosár elrendezés ---
 .cart-content {
   display: grid;
-  grid-template-columns: 1fr 380px;
-  gap: 32px;
+  grid-template-columns: 1fr 400px;
+  gap: 40px;
   
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
   }
+}
+
+// --- Kosár elemek (Termékek) ---
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .cart-item {
@@ -54,123 +99,242 @@ $text-muted: #a0a0a0;
   align-items: center;
   background: $panel-bg;
   padding: 20px;
-  border-radius: 16px;
-  margin-bottom: 16px;
-  transition: transform 0.2s ease;
+  border-radius: 20px;
+  border: 1px solid $panel-border;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  opacity: 0; // Kezdetben rejtett az animáció miatt
+  animation: fadeInUp 0.5s ease-out forwards;
+
+  // Ciklus a lépcsőzetes beúszásért (max 10 elemre)
+  @for $i from 1 through 10 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.1}s;
+    }
+  }
 
   &:hover {
-    transform: translateY(-2px);
-    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-4px) scale(1.01);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(241, 198, 92, 0.3); // Rámutatáskor kicsit aranyodik a keret
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   }
 
   .item-image {
-    width: 80px;
-    height: 80px;
-    border-radius: 8px;
+    width: 90px;
+    height: 90px;
+    border-radius: 12px;
     overflow: hidden;
-    background: #111;
+    background: #151515;
     margin-right: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
     
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.5s ease;
     }
+  }
+
+  &:hover .item-image img {
+    transform: scale(1.1); // A kép kicsit belenagyít hoverre
   }
 
   .item-details {
     flex-grow: 1;
 
     h3 {
-      margin: 0 0 8px 0;
-      font-size: 1.2rem;
-      font-weight: 500;
+      margin: 0 0 6px 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: -0.3px;
     }
 
     .size {
       color: $text-muted;
       font-size: 0.9rem;
-      margin: 0 0 8px 0;
-      span { color: $text-light; }
+      margin: 0 0 12px 0;
+      span { 
+        color: $text-light; 
+        font-weight: 500;
+        background: rgba(255,255,255,0.1);
+        padding: 2px 8px;
+        border-radius: 6px;
+        margin-left: 6px;
+      }
     }
 
     .price {
       color: $accent-color;
-      font-weight: 600;
+      font-weight: 700;
+      font-size: 1.1rem;
       margin: 0;
     }
   }
 
-  .item-quantity {
-    padding: 0 24px;
-    font-size: 1.1rem;
-    font-weight: 500;
+  // --- ÚJ: Mennyiség vezérlő stílusai ---
+  .item-quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 6px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    margin: 0 24px;
+
+    .qty-btn {
+      background: transparent;
+      border: none;
+      color: $accent-color;
+      font-size: 1.4rem;
+      font-weight: 500;
+      cursor: pointer;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+      line-height: 1;
+
+      &:hover:not(:disabled) {
+        background: rgba(241, 198, 92, 0.15);
+        transform: scale(1.1);
+      }
+
+      &:active:not(:disabled) {
+        transform: scale(0.95);
+      }
+
+      &:disabled {
+        color: $text-muted;
+        cursor: not-allowed;
+        opacity: 0.3;
+      }
+    }
+
+    .qty-value {
+      font-weight: 600;
+      color: $text-light;
+      font-size: 1.1rem;
+      min-width: 45px;
+      text-align: center;
+    }
   }
 
   .remove-btn {
-    background: transparent;
-    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid transparent;
     color: $text-muted;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    transition: color 0.2s;
+    transition: all 0.2s ease;
 
     &:hover {
-      color: #ff4a4a; // Pici piros, ha ráviszi az egeret a törlésre
+      background: rgba(255, 74, 74, 0.1);
+      color: $danger-color;
+      border-color: rgba(255, 74, 74, 0.3);
+      transform: rotate(90deg); 
     }
   }
 }
 
+// --- Összesítő (Jobb oldali panel) ---
 .cart-summary {
   background: $panel-bg;
-  padding: 32px;
-  border-radius: 16px;
+  padding: 36px;
+  border-radius: 24px;
+  border: 1px solid $panel-border;
   height: fit-content;
+  position: sticky;
+  top: 100px; 
+  backdrop-filter: blur(12px);
+  animation: fadeInUp 0.5s ease-out 0.3s forwards;
+  opacity: 0;
 
   h2 {
-    margin: 0 0 24px 0;
+    margin: 0 0 32px 0;
     font-size: 1.5rem;
+    font-weight: 600;
+    color: $text-light;
   }
 
   .summary-row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     color: $text-muted;
+    font-size: 1.05rem;
+    
+    span:last-child {
+      color: $text-light;
+      font-weight: 500;
+    }
   }
 
   .summary-total {
     display: flex;
     justify-content: space-between;
-    margin-top: 24px;
+    margin-top: 32px;
     padding-top: 24px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: $text-light;
+    border-top: 1px dashed rgba(255, 255, 255, 0.15);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: $accent-color;
   }
 }
 
+// --- Gombok ---
 .btn-primary {
-  display: inline-block;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   background-color: $accent-color;
-  color: $bg-color;
+  color: #000000;
   padding: 16px 32px;
-  border-radius: 8px;
+  border-radius: 12px;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 1.1rem;
   border: none;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   text-align: center;
+  box-shadow: 0 4px 15px rgba(241, 198, 92, 0.2); 
 
-  &:hover {
-    opacity: 0.9;
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(241, 198, 92, 0.4); 
+    background-color: lighten($accent-color, 5%);
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+    animation: none;
   }
 
   &.checkout-btn {
     width: 100%;
-    margin-top: 32px;
-    font-size: 1.1rem;
+    margin-top: 40px;
+    padding: 20px;
+    animation: pulseGlow 2s infinite; 
+    
+    &:hover {
+      animation: none; 
+    }
   }
 }
