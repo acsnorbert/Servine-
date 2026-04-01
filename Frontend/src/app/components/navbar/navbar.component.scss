@@ -1,12 +1,12 @@
-/* navigációs sáv */
 .navbar {
   position: absolute;
   top: 24px;
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center; 
   z-index: 10;
-  animation: fadeDown 0.8s ease 0.2s both;
+  gap: 20px; /* Távolság a menüsáv és a kosár között */
 
   .nav-links {
     display: flex;
@@ -22,40 +22,49 @@
       color: #ddd;
       text-decoration: none;
       font-size: 16px;
-      cursor: pointer;
       transition: color 0.3s;
-      &:hover { color: #d4af37; }
+      &:hover { color: #f1c65c; }
     }
   }
-  .navbar a.cart-icon {
-  display: flex;
-  align-items: center;
-  position: relative;
-  color: #f1c65c; /* Alapból az arany színedet kapja a kék helyett */
-  padding-left: 24px; /* Távolság a Contact us-tól */
-  border-left: 1px solid rgba(255, 255, 255, 0.1); /* Halvány elválasztó vonal */
-  
-  &:hover {
-    transform: translateY(-2px); /* Pici animáció rámutatáskor */
-  }
 
-  svg {
-    width: 22px;
-    height: 22px;
-  }
+  /* --- ÚJ KOSÁR STÍLUS --- */
+  .cart-icon-wrapper {
+    position: relative; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    width: 48px; 
+    height: 48px;
+    background: rgba(255, 255, 255, 0.08); /* Halvány üveg háttér */
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50%; /* Tökéletes kör */
+    text-decoration: none;
+    transition: all 0.2s ease;
 
-  .badge {
-    position: absolute;
-    top: -8px;
-    right: -12px;
-    background-color: #f1c65c;
-    color: #000000;
-    font-size: 0.75rem;
-    font-weight: 700;
-    padding: 2px 6px;
-    border-radius: 20px;
-    min-width: 18px;
-    text-align: center;
+    &:hover {
+      background: rgba(241, 198, 92, 0.15);
+      transform: translateY(-2px);
+    }
+
+
+    /* A szám értesítés  */
+    .badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background-color: #ff4a4a; 
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: bold;
+      min-width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+      border: 2px solid #000000; 
+    }
   }
-}
 }
