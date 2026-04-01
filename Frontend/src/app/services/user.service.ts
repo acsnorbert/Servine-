@@ -51,14 +51,14 @@ export class UserService {
     return this.http.get<UserProfile>(`${this.API}/profile`);
   }
 
-  // ── PUT /api/users/profile ────────────────────
+  // ── PATCH /api/users/profile ────────────────────
   updateProfile(payload: UpdateProfilePayload): Observable<{ message: string; user: UserProfile }> {
-    return this.http.put<{ message: string; user: UserProfile }>(`${this.API}/profile`, payload);
+    return this.http.patch<{ message: string; user: UserProfile }>(`${this.API}/profile`, payload);
   }
 
-  // ── PUT /api/users/change-password ───────────
+  // ── PATCH /api/users/change-password ───────────
   changePassword(payload: ChangePasswordPayload): Observable<{ message: string }> {
-    return this.http.put<{ message: string }>(`${this.API}/change-password`, payload);
+    return this.http.patch<{ message: string }>(`${this.API}/change-password`, payload);
   }
 
   // ── GET /api/users/orders ─────────────────────

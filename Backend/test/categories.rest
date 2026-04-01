@@ -33,7 +33,7 @@ Authorization: Bearer {{adminToken}}
 }
 
 ### Kategória módosítása
-PUT {{url}}/api/categories/10
+PATCH {{url}}/api/categories/10
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 

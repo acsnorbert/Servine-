@@ -31,9 +31,9 @@ export class ReviewService {
     return this.http.post(`${this.API}/product/${productId}`, data, this.tokenHeader());
   }
 
-  // PUT /api/reviews/:id
+  // PATCH /api/reviews/:id
   updateReview(data: object, id: number) {
-    return this.http.put(`${this.API}/${id}`, data, this.tokenHeader());
+    return this.http.patch(`${this.API}/${id}`, data, this.tokenHeader());
   }
 
   // DELETE /api/reviews/:id
