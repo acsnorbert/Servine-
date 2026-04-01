@@ -1,7 +1,7 @@
 <div class="page-wrapper">
 
   <a routerLink="/products" class="back-link">
-    Vissza a termékekhez
+    ← Vissza a termékekhez
   </a>
 
   <!-- BETÖLTÉS -->
@@ -40,8 +40,10 @@
       <!-- JOBB — Infó -->
       <div class="info-section">
 
+        <div class="product-category-label">{{ product.category?.name }}</div>
         <h1 class="product-name">{{ product.name }}</h1>
 
+        <!-- Értékelés -->
         <div class="rating-row" *ngIf="reviews.length > 0">
           <div class="stars">
             <span *ngFor="let type of getStarTypes(avgRating)"
@@ -53,10 +55,12 @@
 
         <div class="gold-divider"></div>
 
+        <!-- Ár -->
         <div class="price-row">
           <span class="price-current">{{ product.price | number:'1.0-0' }} Ft</span>
         </div>
 
+        <!-- Készlet -->
         <div class="stock-info" [class.low]="product.stock < 5">
           <span class="stock-dot"></span>
           {{ product.stock > 0 ? (product.stock < 5 ? 'Csak ' + product.stock + ' db maradt!' : 'Raktáron') : 'Elfogyott' }}
@@ -64,7 +68,8 @@
 
         <div class="gold-divider"></div>
 
-        <div class="size-section">
+        <!-- Méretválasztó — csak ha van méret -->
+        <div class="size-section" *ngIf="hasSizes()">
           <div class="size-label">Méret</div>
           <div class="size-grid">
             <button class="size-btn"
@@ -77,6 +82,7 @@
           <span class="size-hint" *ngIf="!selectedSize">Kérjük válasszon méretet</span>
         </div>
 
+        <!-- Mennyiség + Kosár -->
         <div class="action-row">
           <div class="qty-control">
             <button class="qty-btn" (click)="decreaseQty()">-</button>
@@ -84,15 +90,15 @@
             <button class="qty-btn" (click)="increaseQty()">+</button>
           </div>
           <button class="cart-btn" (click)="addToCart()"
-            [disabled]="!selectedSize || product.stock === 0">
+            [disabled]="(hasSizes() && !selectedSize) || product.stock === 0">
             {{ product.stock === 0 ? 'Elfogyott' : 'Kosárba →' }}
           </button>
         </div>
 
         <div class="extras">
-          <div class="extra-item"><span class="extra-icon"></span><span>Ingyenes szállítás 20 000 Ft felett</span></div>
-          <div class="extra-item"><span class="extra-icon"></span><span>30 napos visszaküldési lehetőség</span></div>
-          <div class="extra-item"><span class="extra-icon"></span><span>Prémium minőség, kézzel válogatva</span></div>
+          <div class="extra-item"><span>Ingyenes szállítás 20 000 Ft felett</span></div>
+          <div class="extra-item"><span>30 napos visszaküldési lehetőség</span></div>
+          <div class="extra-item"><span>Prémium minőség, kézzel válogatva</span></div>
         </div>
       </div>
     </div>
@@ -120,19 +126,22 @@
             <span class="detail-label">Készlet</span>
             <span class="detail-value">{{ product.stock }} db</span>
           </div>
+          <div class="detail-item">
+            <span class="detail-label">Kategória</span>
+            <span class="detail-value">{{ product.category?.name }}</span>
+          </div>
         </div>
       </div>
 
       <!-- Értékelések -->
       <div class="tab-content" *ngIf="activeTab === 'reviews'" @fadeIn>
 
-        <!-- Meglévő értékelések -->
         <div class="reviews-list" *ngIf="reviews.length > 0">
           <div class="review-card glass-card" *ngFor="let review of reviews">
             <div class="review-header">
-              <div class="review-avatar">{{ review.user_id }}</div>
+              <div class="review-avatar">{{ getUserInitial(review) }}</div>
               <div class="review-meta">
-                <span class="review-author">Felhasználó #{{ review.user_id }}</span>
+                <span class="review-author">{{ getUserName(review) }}</span>
                 <span class="review-date">{{ review.created_at | date:'yyyy. MM. dd.' }}</span>
               </div>
               <div class="review-stars">
@@ -148,22 +157,20 @@
           <p>Még nincs értékelés. Légy az első!</p>
         </div>
 
-        <!-- Értékelés írása — csak bejelentkezett felhasználónak -->
+        <!-- Értékelés írása -->
         <div class="review-form glass-card" *ngIf="isLoggedIn(); else loginPrompt" @fadeSlide>
           <div class="section-title">Értékelés írása</div>
 
-          <!-- Sikeres küldés -->
           <div class="review-success" *ngIf="reviewSuccess">
             ✓ Köszönjük az értékelést!
           </div>
 
-          <!-- Hibaüzenet -->
           <div class="review-error" *ngIf="reviewError">
             {{ reviewError }}
           </div>
 
           <div class="star-picker">
-            <span class="star-picker-label">Csillagok</span>
+            <span class="star-picker-label">Értékelés</span>
             <div class="star-picker-stars">
               <span
                 *ngFor="let s of [1,2,3,4,5]"

@@ -10,6 +10,10 @@ import { AuthService } from '../../services/auth.service';
 import { Product } from '../../interfaces/product';
 import { Review } from '../../interfaces/review';
 
+// Méretkészletek kategória szerint
+const CLOTHING_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+const SHOE_SIZES     = ['36', '37', '38', '39', '40', '41', '42', '43', '44', '45'];
+
 @Component({
   selector: 'app-product',
   standalone: true,
@@ -40,7 +44,8 @@ export class ProductComponent implements OnInit {
   isLoading = true;
   errorMessage = '';
 
-  sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  // Dinamikus méretkészlet
+  sizes: string[] = [];
   selectedSize: string | null = null;
   quantity = 1;
   activeTab: 'description' | 'reviews' = 'description';
@@ -64,27 +69,41 @@ export class ProductComponent implements OnInit {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (id) {
       this.loadProduct(id);
-      this.loadReviews(id);
     }
   }
 
   private loadProduct(id: number): void {
     this.productService.getProductById(id).subscribe({
-      next: (res: any) => { this.product = res; this.isLoading = false; },
-      error: ()        => { this.errorMessage = 'A termék nem található.'; this.isLoading = false; }
+      next: (res: any) => {
+        this.product = res;
+        this.reviews  = res.reviews ?? [];
+        this.avgRating = res.avgRating ? Math.round(parseFloat(res.avgRating)) : 0;
+        this.sizes = this.getSizesForProduct(res);
+        this.isLoading = false;
+      },
+      error: () => {
+        this.errorMessage = 'A termék nem található.';
+        this.isLoading = false;
+      }
     });
   }
 
-  private loadReviews(productId: number): void {
-    // GET /api/reviews/product/:productId
-    // Visszaad: { reviews, avgRating, count }
-    this.reviewService.getReviewByProductId(productId).subscribe({
-      next: (res: any) => {
-        this.reviews = res.reviews ?? [];
-        this.avgRating = res.avgRating ? Math.round(parseFloat(res.avgRating)) : 0;
-      },
-      error: () => { this.reviews = []; }
-    });
+  // Méretkészlet meghatározása a kategória parent_id alapján
+  private getSizesForProduct(product: any): string[] {
+    const parentId = product.category?.parent_id;
+    const catId    = product.category?.id;
+
+    if (parentId === 1 || catId === 1) return CLOTHING_SIZES;
+
+    if (parentId === 2 || catId === 2) return SHOE_SIZES;
+
+    // Nincs méretválasztó
+    return [];
+  }
+
+  // Van-e méretválasztó
+  hasSizes(): boolean {
+    return this.sizes.length > 0;
   }
 
   isLoggedIn(): boolean {
@@ -101,18 +120,20 @@ export class ProductComponent implements OnInit {
     this.reviewSubmitting = true;
     this.reviewError = '';
 
-    // POST /api/reviews/product/:productId
-    // A ReviewService-ben nincs ilyen metódus — közvetlenül hívjuk
-    this.reviewService.insertReviewForProduct(this.product.id!, {
+    this.reviewService.insertReviewForProduct((this.product as any).id, {
       rating:  this.newRating,
       comment: this.newComment.trim() || null
     }).subscribe({
-      next: () => {
+      next: (res: any) => {
         this.reviewSubmitting = false;
         this.reviewSuccess    = true;
         this.newRating        = 0;
         this.newComment       = '';
-        this.loadReviews(this.product!.id!);
+        if (res.review) {
+          this.reviews = [res.review, ...this.reviews];
+          const sum = this.reviews.reduce((s, r) => s + r.rating, 0);
+          this.avgRating = Math.round(sum / this.reviews.length);
+        }
         setTimeout(() => { this.reviewSuccess = false; }, 3000);
       },
       error: (err) => {
@@ -126,8 +147,14 @@ export class ProductComponent implements OnInit {
     return [1, 2, 3, 4, 5].map(i => i <= rating ? 'filled' : 'empty');
   }
 
+  // Felhasználó neve a review-ból (backend visszaadja)
   getUserName(review: any): string {
     return review.user?.name ?? `Felhasználó #${review.user_id}`;
+  }
+
+  getUserInitial(review: any): string {
+    const name = review.user?.name;
+    return name ? name[0].toUpperCase() : '#';
   }
 
   selectSize(size: string): void { this.selectedSize = size; }
@@ -137,7 +164,10 @@ export class ProductComponent implements OnInit {
 
   addToCart(): void {
     if (!this.product) return;
-    if (!this.selectedSize) { alert('Kérlek válassz méretet!'); return; }
-    this.cartService.addToCart(this.product, this.selectedSize, this.quantity);
+    if (this.hasSizes() && !this.selectedSize) {
+      alert('Kérlek válassz méretet!');
+      return;
+    }
+    this.cartService.addToCart(this.product, this.selectedSize ?? 'N/A', this.quantity);
   }
 }
