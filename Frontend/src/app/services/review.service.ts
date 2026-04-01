@@ -22,22 +22,22 @@ export class ReviewService {
 
   // GET /api/reviews/product/:productId
   // Visszaad: { reviews, avgRating, count }
-  getReviewByProductId(id: number) {
+  getReviewByProductId(id: string) {
     return this.http.get(`${this.API}/product/${id}`, this.tokenHeader());
   }
 
   // POST /api/reviews/product/:productId
-  insertReviewForProduct(productId: number, data: { rating: number; comment: string | null }) {
+  insertReviewForProduct(productId: string, data: { rating: number; comment: string | null }) {
     return this.http.post(`${this.API}/product/${productId}`, data, this.tokenHeader());
   }
 
   // PATCH /api/reviews/:id
-  updateReview(data: object, id: number) {
+  updateReview(data: object, id: string) {
     return this.http.patch(`${this.API}/${id}`, data, this.tokenHeader());
   }
 
   // DELETE /api/reviews/:id
-  deleteReviewById(id: number) {
+  deleteReviewById(id: string) {
     return this.http.delete(`${this.API}/${id}`, this.tokenHeader());
   }
 }

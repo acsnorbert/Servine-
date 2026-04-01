@@ -47,7 +47,7 @@ export class CategoriesComponent {
     console.log('edit', cat);
   }
 
-  delete(id: number) {
+  delete(id: string) {
     console.log('delete', id);
   }
 }

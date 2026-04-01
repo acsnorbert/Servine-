@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface UserProfile {
-  id: number;
+  id: string;
   name: string;
   email: string;
   phone: string | null;
@@ -25,15 +25,15 @@ export interface ChangePasswordPayload {
 }
 
 export interface OrderItem {
-  id: number;
-  product_id: number;
+  id: string;
+  product_id: string;
   product_name: string;
   quantity: number;
   price: number;
 }
 
 export interface Order {
-  id: number;
+  id: string;
   order_date: string;
   status: string;
   items: OrderItem[];

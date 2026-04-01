@@ -33,7 +33,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   errorMessage = '';
 
   // Szűrő paraméterek
-  selectedCategory: number | null = null;
+  selectedCategory: string | null = null;
   searchQuery = '';
   sortBy = 'default';
   
@@ -142,7 +142,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
     this.filteredProducts = list;
   }
-  setCategory(id: number | null): void {
+  setCategory(id: string | null): void {
     this.selectedCategory = id;
     this.applyLocalFilters();
   }

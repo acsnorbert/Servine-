@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 export interface AuthUser {
-  id: number;
+  id: string;
   name: string;
   email: string;
   role: 'user' | 'admin';

@@ -1,8 +1,8 @@
 
 export interface Review {
-  review_id?:number;
-  product_id:number;
-  user_id:number;
+  review_id?:string;
+  product_id:string;
+  user_id:string;
   rating:number;
   comment?:string;
   created_at:Date;

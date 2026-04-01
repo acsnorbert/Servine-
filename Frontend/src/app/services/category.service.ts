@@ -31,7 +31,7 @@ export class CategoryService {
       return this.http.get(`${this.API}`, this.tokenHeader());
     }
     // ── GET /api/categories/id ────────────────────
-    getCategoriesById(id:number){
+    getCategoriesById(id:string){
       return this.http.get(`${this.API}/${id}`,  this.tokenHeader())
     }
     // ── POST /api/categories ────────────────────
@@ -39,11 +39,11 @@ export class CategoryService {
       return this.http.post(`${this.API}`,data, this.tokenHeader())
     }
     // ── PATCH /api/categories/id ────────────────────
-    updateCategories(data:object, id:number){
+    updateCategories(data:object, id:string){
       return this.http.patch(`${this.API}/${id}`,data, this.tokenHeader())
     }
     // ── DELETE /api/categories/id ────────────────────
-    deleteCategoriesById(id:number){
+    deleteCategoriesById(id:string){
       return this.http.delete(`${this.API}/${id}`,  this.tokenHeader())
     }
     

@@ -1,8 +1,8 @@
 
 export interface Order_item {
-  order_item_id: number;
-  order_id: number;
-  product_id: number;
-  quantity:number;
-  price:number;
+  order_item_id: string;
+  order_id: string;
+  product_id: string;
+  quantity: number;
+  price: number;
 }

@@ -45,7 +45,7 @@ export class OrdersComponent {
     console.log('edit', order);
   }
 
-  delete(id: number) {
+  delete(id: string) {
     console.log('delete', id);
   }
 }

@@ -1,6 +1,6 @@
 export interface Product {
-  id?: number;
-  category_id: number;
+  id?: string;
+  category_id: string;
   name: string;
   description?: string;
   price: number;
@@ -9,8 +9,8 @@ export interface Product {
   image: string;
   created_at: Date;
   category?: {
-    id: number;
-    parent_id: number | null;
+    id: string;
+    parent_id: string | null;
     name: string;
   };
 }

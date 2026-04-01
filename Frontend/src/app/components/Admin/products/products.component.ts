@@ -51,7 +51,7 @@ export class ProductsComponent {
     console.log("edit", product);
   }
 
-  delete(id:number){
+  delete(id:string){
     console.log("delete", id);
   }
 }

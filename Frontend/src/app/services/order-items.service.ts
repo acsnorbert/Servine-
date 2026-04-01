@@ -31,7 +31,7 @@ export class OrderItemsService {
           return this.http.get(`${this.API}`, this.tokenHeader());
         }
         // ── GET /api/order_items/id ────────────────────
-        getOrderItemById(id:number){
+        getOrderItemById(id:string){
           return this.http.get(`${this.API}/${id}`,  this.tokenHeader())
         }
         // ── POST /api/order_items ────────────────────
@@ -39,11 +39,11 @@ export class OrderItemsService {
           return this.http.post(`${this.API}`,data, this.tokenHeader())
         }
         // ── PATCH /api/order_items/id ────────────────────
-        updateOrderItem(data:object, id:number){
+        updateOrderItem(data:object, id:string){
           return this.http.patch(`${this.API}/${id}`,data, this.tokenHeader())
         }
         // ── DELETE /api/order_items/id ────────────────────
-        deleteOrderItemById(id:number){
+        deleteOrderItemById(id:string){
           return this.http.delete(`${this.API}/${id}`,  this.tokenHeader())
         }
 }

@@ -66,13 +66,13 @@ export class ProductComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
+    const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.loadProduct(id);
     }
   }
 
-  private loadProduct(id: number): void {
+  private loadProduct(id: string): void {
     this.productService.getProductById(id).subscribe({
       next: (res: any) => {
         this.product = res;
@@ -88,18 +88,50 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  // Méretkészlet meghatározása a kategória parent_id alapján
   private getSizesForProduct(product: any): string[] {
-    const parentId = product.category?.parent_id;
-    const catId    = product.category?.id;
-
-    if (parentId === 1 || catId === 1) return CLOTHING_SIZES;
-
-    if (parentId === 2 || catId === 2) return SHOE_SIZES;
-
-    // Nincs méretválasztó
+  if (!product?.category) {
+    console.log('Nincs category objektum');
     return [];
   }
+
+  const category = product.category;
+  const parentId = String(category.parent_id || '').trim();
+  const catId    = String(category.id || '').trim();
+  const catName  = (category.name || '').toLowerCase().trim();
+
+  console.log('Kategória ellenőrzés - parentId:', parentId, 'catId:', catId, 'name:', catName);
+
+  // RUHA
+  if (
+    parentId === '1' || 
+    catId === '1' ||
+    catName.includes('ruha') || 
+    catName.includes('ruházat') || 
+    catName.includes('clothing') ||
+    catName.includes('felső') || 
+    catName.includes('nadrág') ||
+    catName.includes('póló')
+  ) {
+    console.log('→ Ruha méretkészlet aktiválva');
+    return CLOTHING_SIZES;
+  }
+
+  // CIPŐ
+  if (
+    parentId === '2' || 
+    catId === '2' ||
+    catName.includes('cipő') || 
+    catName.includes('shoe') || 
+    catName.includes('footwear')
+  ) {
+    console.log('→ Cipő méretkészlet aktiválva');
+    return SHOE_SIZES;
+  }
+
+  // PARFÜM
+  console.log('→ Nincs méretválasztó');
+  return [];
+}
 
   // Van-e méretválasztó
   hasSizes(): boolean {
@@ -147,7 +179,6 @@ export class ProductComponent implements OnInit {
     return [1, 2, 3, 4, 5].map(i => i <= rating ? 'filled' : 'empty');
   }
 
-  // Felhasználó neve a review-ból (backend visszaadja)
   getUserName(review: any): string {
     return review.user?.name ?? `Felhasználó #${review.user_id}`;
   }

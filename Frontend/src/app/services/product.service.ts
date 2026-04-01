@@ -31,7 +31,7 @@ export class ProductService {
         return this.http.get(`${this.API}`, this.tokenHeader());
       }
       // ── GET /api/products/id ────────────────────
-      getProductById(id:number){
+      getProductById(id:string){
         return this.http.get(`${this.API}/${id}`,  this.tokenHeader())
       }
       // ── POST /api/products ────────────────────
@@ -39,11 +39,11 @@ export class ProductService {
         return this.http.post(`${this.API}`,data, this.tokenHeader())
       }
       // ── PATCH /api/products/id ────────────────────
-      updateProduct(data:object, id:number){
+      updateProduct(data:object, id:string){
         return this.http.patch(`${this.API}/${id}`,data, this.tokenHeader())
       }
       // ── DELETE /api/products/id ────────────────────
-      deleteProductById(id:number){
+      deleteProductById(id:string){
         return this.http.delete(`${this.API}/${id}`,  this.tokenHeader())
       }
 }

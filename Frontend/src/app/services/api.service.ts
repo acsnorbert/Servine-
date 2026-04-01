@@ -49,7 +49,7 @@ export class ApiService {
   }
 
   // TERMÉKEK
-  getProducts(filters?: { category_id?: number; min_price?: number; max_price?: number; sort?: string }): Observable<any> {
+  getProducts(filters?: { category_id?: string; min_price?: number; max_price?: number; sort?: string }): Observable<any> {
     let params = new HttpParams();
     if (filters?.category_id) params = params.set('category_id', filters.category_id);
     if (filters?.min_price)   params = params.set('min_price',   filters.min_price);
@@ -58,7 +58,7 @@ export class ApiService {
     return this.http.get(`${BASE}/products`, { params });
   }
 
-  getProductById(id: number): Observable<any> {
+  getProductById(id: string): Observable<any> {
     return this.http.get(`${BASE}/products/${id}`);
   }
 
@@ -68,7 +68,7 @@ export class ApiService {
   }
 
   // RENDELÉSEK
-  getOrderById(id: number): Observable<any> {
+  getOrderById(id: string): Observable<any> {
     return this.http.get(`${BASE}/orders/${id}`);
   }
 
@@ -80,7 +80,7 @@ export class ApiService {
     return this.http.post(`${BASE}/orders`, data);
   }
 
-  updateOrderStatus(id: number, status: string): Observable<any> {
+  updateOrderStatus(id: string, status: string): Observable<any> {
     return this.http.put(`${BASE}/orders/${id}/status`, { status });
   }
 }
