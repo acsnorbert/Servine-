@@ -13,8 +13,8 @@ router.get('/:id', categoryController.getCategoryById);
 // POST /api/categories – Új kategória (admin)
 router.post('/', auth, isAdmin, createCategoryValidation, validate, categoryController.createCategory);
 
-// PUT /api/categories/:id – Frissítés (admin)
-router.put('/:id', auth, isAdmin, createCategoryValidation, validate, categoryController.updateCategory);
+// PATCH /api/categories/:id – Frissítés (admin)
+router.patch('/:id', auth, isAdmin, createCategoryValidation, validate, categoryController.updateCategory);
 
 // DELETE /api/categories/:id – Törlés (admin)
 router.delete('/:id', auth, isAdmin, categoryController.deleteCategory);

@@ -16,7 +16,7 @@ router.get('/:id', auth, orderController.getOrderById);
 // GET /api/orders – Összes rendelés (admin)
 router.get('/', auth, isAdmin, orderController.getAllOrders);
 
-// PUT /api/orders/:id/status – Státusz frissítése (admin)
-router.put('/:id/status', auth, isAdmin, orderController.updateOrderStatus);
+// PATCH /api/orders/:id/status – Státusz frissítése (admin)
+router.patch('/:id/status', auth, isAdmin, orderController.updateOrderStatus);
 
 module.exports = router;

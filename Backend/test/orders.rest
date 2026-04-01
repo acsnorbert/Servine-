@@ -36,7 +36,7 @@ GET {{url}}/api/orders
 Authorization: Bearer {{adminToken}}
 
 ### Rendelés státusz módosítása (admin)
-PUT {{url}}/api/orders/1/status
+PATCH {{url}}/api/orders/1/status
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 

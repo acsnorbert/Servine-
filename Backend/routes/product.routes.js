@@ -16,8 +16,8 @@ router.get('/:id', productController.getProductById);
 // POST /api/products – Új termék létrehozása (admin)
 router.post('/', auth, isAdmin, createProductValidation, validate, productController.createProduct);
 
-// PUT /api/products/:id – Termék frissítése (admin)
-router.put('/:id', auth, isAdmin, updateProductValidation, validate, productController.updateProduct);
+// PATCH /api/products/:id – Termék frissítése (admin)
+router.patch('/:id', auth, isAdmin, updateProductValidation, validate, productController.updateProduct);
 
 // DELETE /api/products/:id – Termék törlése (admin)
 router.delete('/:id', auth, isAdmin, productController.deleteProduct);

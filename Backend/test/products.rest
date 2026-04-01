@@ -32,7 +32,7 @@ Authorization: Bearer {{adminToken}}
 }
 
 ### Termék módosítása
-PUT {{url}}/api/products/5
+PATCH {{url}}/api/products/5
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
