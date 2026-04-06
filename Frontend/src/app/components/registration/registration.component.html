@@ -14,19 +14,19 @@
 
             <div class="mt-4">
               <div class="form-floating mb-3">
-                <input type="email"  class="form-control w-100 mb-3" id="floatingEmail" placeholder="name@example.com" [(ngModel)]="email">
+                <input type="email"  class="form-control w-100 mb-3" id="floatingEmail" placeholder="name@example.com" [(ngModel)]="user.email">
                 <label for="floatingEmail">Email cím</label>
               </div>
               <div class="form-floating mb-3">
-                <input type="name"  class="form-control w-100 mb-3" id="floatingName" placeholder="Felhasználónév" [(ngModel)]="name">
+                <input type="name"  class="form-control w-100 mb-3" id="floatingName" placeholder="Felhasználónév" [(ngModel)]="user.name">
                 <label for="floatingName">Felhasználónév</label>
               </div>
               <div class="form-floating">
-                <input type="password" class="form-control w-100 mb-3" id="floatingPassword" placeholder="Jelszó" [(ngModel)]="password">
+                <input type="password" class="form-control w-100 mb-3" id="floatingPassword" placeholder="Jelszó" [(ngModel)]="user.password">
                 <label for="floatingPassword">Jelszó</label>
               </div>
               <div class="form-floating">
-                <input type="confpass" class="form-control w-100 mb-3" id="floatingConfPass" placeholder="Jelszó megerősítése" [(ngModel)]="confpass">
+                <input type="password" class="form-control w-100 mb-3" id="floatingConfPass" placeholder="Jelszó megerősítése" [(ngModel)]="user.confirm">
                 <label for="floatingConfPass">Jelszó megerősítése</label>
               </div>
 
@@ -42,7 +42,7 @@
 
               </div>
               <div class="d-flex flex-column">
-                <button type="button" class="btn register-btn w-70 mt-4" (click)="registration()">Regisztráció</button>
+                <button type="button" class="btn register-btn w-70 mt-4" (click)="register()">Regisztráció</button>
                 <button type="button" class="btn login-btn w-70 mt-3" [routerLink]="['/login']" >Van már fiókja, jelentkezzen be!</button>
               </div>
              

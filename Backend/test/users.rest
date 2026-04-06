@@ -3,9 +3,17 @@
 @url = {{host}}:{{port}}
 
 
-@userToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI5YzYyOTAxLTgxM2ItNDE2Ni1hY2I2LWZjNmQzYmJiZTQwZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3NTAyODcyMCwiZXhwIjoxNzc1NjMzNTIwfQ.7Yz4dLRQ1X2yOyLtEHBsJeknbEKPw0eo_CL-2ToQILo
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI5YzYyOTAxLTgxM2ItNDE2Ni1hY2I2LWZjNmQzYmJiZTQwZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3NTAyODcyMCwiZXhwIjoxNzc1NjMzNTIwfQ.7Yz4dLRQ1X2yOyLtEHBsJeknbEKPw0eo_CL-2ToQILo
+@adminToken = {{login.response.body.token}}
+@userToken = {{login.response.body.token}}
 
+# @name login
+POST {{url}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "teszt@example.com",
+  "password": "jelszo123"
+}
 
 ### Saját profil lekérése (auth kell)
 GET {{url}}/api/users/profile

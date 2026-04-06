@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 const BASE = 'http://localhost:3000/api';
@@ -8,14 +8,31 @@ const BASE = 'http://localhost:3000/api';
 export class ApiService {
 
   constructor(private http: HttpClient) {}
+  private tokenName ="Servine";
 
-  // AUTH
-  login(email: string, password: string): Observable<any> {
-    return this.http.post(`${BASE}/auth/login`, { email, password });
+  getToken(): String | null {
+   
+    console.log(sessionStorage.getItem(this.tokenName));
+    return sessionStorage.getItem(this.tokenName);
   }
 
-  register(name: string, email: string, password: string): Observable<any> {
-    return this.http.post(`${BASE}/auth/register`, { name, email, password });
+  tokenHeader():{ headers: HttpHeaders }{
+    
+    let token = this.getToken();
+    
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return { headers }
+  }
+  // AUTH
+  login(data:object): Observable<any> {
+    return this.http.post(`${BASE}/auth/login`, data);
+  }
+
+  register(data:object): Observable<any> {
+    return this.http.post(`${BASE}/auth/register`, data);
   }
 
   forgotPassword(email: string): Observable<any> {
@@ -28,7 +45,7 @@ export class ApiService {
 
   // USER / PROFIL
   getProfile(): Observable<any> {
-    return this.http.get(`${BASE}/users/profile`);
+    return this.http.get(`${BASE}/users/profile`, this.tokenHeader());
   }
 
   updateProfile(data: { name: string; email: string; phone?: string; address?: string }): Observable<any> {

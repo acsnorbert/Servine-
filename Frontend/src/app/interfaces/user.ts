@@ -1,11 +1,12 @@
 
 export interface User {
   user_id?:string;
-  name:string;
+  name?:string;
   email:string;
   password:string;
-  phone:string;
+  confirm?: string;
+  phone?:string;
   address?:string;
-  role:"user" | "admin";
-  created_at:Date;
+  role?:"user" | "admin";
+  created_at?:Date;
 }

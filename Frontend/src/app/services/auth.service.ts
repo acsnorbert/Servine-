@@ -2,7 +2,8 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from '../enviroments/environment';
 
 export interface AuthUser {
   id: string;
@@ -22,21 +23,17 @@ export class AuthService {
   private readonly API = 'http://localhost:3000/api/auth';
 
   currentUser = signal<AuthUser | null>(this.loadUser());
+  private tokenName = environment.tokenName;
 
   constructor(private http: HttpClient, private router: Router) {}
-
-  // ── Regisztráció ──────────────────────────────
-  register(name: string, email: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API}/register`, { name, email, password }).pipe(
-      tap(res => this.saveSession(res))
-    );
-  }
+  // Bejelentkezés ellenőrzése
+  private isLoggedIn = new BehaviorSubject<boolean>(this.getToken());
+  isLoggedIn$ = this.isLoggedIn.asObservable();
 
   // ── Bejelentkezés ─────────────────────────────
-  login(email: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API}/login`, { email, password }).pipe(
-      tap(res => this.saveSession(res))
-    );
+  login(token:string){
+    sessionStorage.setItem(this.tokenName, token);
+    this.isLoggedIn.next(true);
   }
 
   // ── Elfelejtett jelszó ────────────────────────
@@ -50,22 +47,46 @@ export class AuthService {
   }
 
   // ── Kijelentkezés ─────────────────────────────
-  logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    this.currentUser.set(null);
-    this.router.navigate(['/login']);
+  logout(){
+    sessionStorage.removeItem(this.tokenName);
+    localStorage.removeItem(this.tokenName);
+    this.isLoggedIn.next(false);
   }
 
   // ── Token lekérése (HttpInterceptor használja) ─
-  getToken(): string | null {
-    return localStorage.getItem('token');
+  getToken(){
+    const sess = sessionStorage.getItem(this.tokenName);
+    if (sess) return true;
+
+    const locs = localStorage.getItem(this.tokenName);
+
+    if (locs) {
+      sessionStorage.setItem(this.tokenName, locs);
+      return true;
+    }
+
+    return false;
+  }
+  loggedUser(){
+    const token = sessionStorage.getItem(this.tokenName);
+    if (token){
+      const payload = token.split('.')[1];
+      const decodedPayload = atob(payload);
+      const decodedUTF8Payload = new TextDecoder('utf-8').decode(
+        new Uint8Array(decodedPayload.split('').map(char => char.charCodeAt(0)))
+      );
+      return JSON.parse(decodedUTF8Payload);
+    }
+    return "no token";
+  }
+  storeUser(token: string){
+    localStorage.setItem(this.tokenName, token);
+  }
+   isLoggedUser():boolean{
+    return this.isLoggedIn.value;
   }
 
-  isLoggedIn(): boolean {
-    return !!this.getToken();
-  }
-
+  
   isAdmin(): boolean {
     return this.currentUser()?.role === 'admin';
   }

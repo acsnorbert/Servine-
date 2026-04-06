@@ -11,7 +11,7 @@ export class ReviewService {
   constructor(private http: HttpClient) {}
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    return localStorage.getItem('Servine');
   }
 
   tokenHeader(): { headers: HttpHeaders } {

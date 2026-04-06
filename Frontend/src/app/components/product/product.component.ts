@@ -139,7 +139,7 @@ export class ProductComponent implements OnInit {
   }
 
   isLoggedIn(): boolean {
-    return this.authService.isLoggedIn();
+    return this.authService.isLoggedUser();
   }
 
   setNewRating(star: number): void {

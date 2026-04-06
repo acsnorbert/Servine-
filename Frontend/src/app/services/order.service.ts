@@ -7,24 +7,23 @@ import { Injectable } from '@angular/core';
 export class OrderService {
 
    private readonly API = 'http://localhost:3000/api/orders';
-    
+    private tokenName ="Servine";
       constructor(private http: HttpClient) {}
   
-      getToken(): string | null {
-        return localStorage.getItem('token');
-      } 
-  
-      tokenHeader():{ headers: HttpHeaders }{
+    getToken(): String | null {
+     return sessionStorage.getItem(this.tokenName);
+    }
+
+    tokenHeader():{ headers: HttpHeaders }{
       
-        let token = this.getToken();
-        
-        const headers = new HttpHeaders({
-          'Authorization': `Bearer ${token}`
-        });
-  
-        return { headers }
-      }
+      let token = this.getToken();
     
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+      return { headers }
+    }
+      
       // ── GET /api/orders ────────────────────
       getOrders() 
       {

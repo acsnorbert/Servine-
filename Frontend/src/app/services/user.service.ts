@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../enviroments/environment';
+
 
 export interface UserProfile {
   id: string;
@@ -42,13 +44,26 @@ export interface Order {
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  private readonly API = 'http://localhost:3000/api/users';
+  private readonly API = `${environment.serverUrl}/api/users`;
+  private tokenName = environment.tokenName;
 
+  
   constructor(private http: HttpClient) {}
+  getToken(): String | null {
+    return sessionStorage.getItem(this.tokenName);
+  }
+
+  tokenHeader(): { headers: HttpHeaders } {
+  let token = this.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+      });
+      return { headers }
+    }
 
   // ── GET /api/users/profile ────────────────────
-  getProfile(): Observable<UserProfile> {
-    return this.http.get<UserProfile>(`${this.API}/profile`);
+  getProfile(){
+    return this.http.get<UserProfile>(`${this.API}/profile`, this.tokenHeader());
   }
 
   // ── PATCH /api/users/profile ────────────────────
@@ -63,6 +78,6 @@ export class UserService {
 
   // ── GET /api/users/orders ─────────────────────
   getMyOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.API}/orders`);
+    return this.http.get<Order[]>(`${this.API}/orders`,this.tokenHeader());
   }
 }
