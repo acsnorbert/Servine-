@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../enviroments/environment';
 
-
 export interface UserProfile {
   id: string;
   name: string;
@@ -47,37 +46,49 @@ export class UserService {
   private readonly API = `${environment.serverUrl}/api/users`;
   private tokenName = environment.tokenName;
 
-  
   constructor(private http: HttpClient) {}
-  getToken(): String | null {
-    return sessionStorage.getItem(this.tokenName);
+
+  getToken(): string | null {
+    return sessionStorage.getItem(this.tokenName)
+      ?? localStorage.getItem(this.tokenName);
   }
 
   tokenHeader(): { headers: HttpHeaders } {
-  let token = this.getToken();
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`
-      });
-      return { headers }
-    }
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return { headers };
+  }
 
   // ── GET /api/users/profile ────────────────────
-  getProfile(){
+  getProfile(): Observable<UserProfile> {
     return this.http.get<UserProfile>(`${this.API}/profile`, this.tokenHeader());
   }
 
-  // ── PATCH /api/users/profile ────────────────────
+  // ── PATCH /api/users/profile ──────────────────
   updateProfile(payload: UpdateProfilePayload): Observable<{ message: string; user: UserProfile }> {
-    return this.http.patch<{ message: string; user: UserProfile }>(`${this.API}/profile`, payload);
+    return this.http.patch<{ message: string; user: UserProfile }>(
+      `${this.API}/profile`,
+      payload,
+      this.tokenHeader()
+    );
   }
 
-  // ── PATCH /api/users/change-password ───────────
+  // ── PATCH /api/users/change-password ──────────
   changePassword(payload: ChangePasswordPayload): Observable<{ message: string }> {
-    return this.http.patch<{ message: string }>(`${this.API}/change-password`, payload);
+    return this.http.patch<{ message: string }>(
+      `${this.API}/change-password`,
+      {
+        oldPassword: payload.currentPassword,
+        newPassword: payload.newPassword
+      },
+      this.tokenHeader()
+    );
   }
 
   // ── GET /api/users/orders ─────────────────────
   getMyOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.API}/orders`,this.tokenHeader());
+    return this.http.get<Order[]>(`${this.API}/orders`, this.tokenHeader());
   }
 }

@@ -1,10 +1,7 @@
-// controllers/user.controller.js
 const { User } = require('../models');
 
 const getProfile = async (req, res) => {
   try {
-    // req.user már benne van az auth middleware miatt
-    console.log(req.user.id)
     const user = await User.findByPk(req.user.id, {
       attributes: ['id', 'name', 'email', 'phone', 'address', 'role', 'created_at']
     });
@@ -22,14 +19,14 @@ const getProfile = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   try {
-    const { name,email, phone, address } = req.body;
+    const { name, email, phone, address } = req.body;
     const user = await User.findByPk(req.user.id);
 
     if (!user) {
       return res.status(404).json({ message: 'Felhasználó nem található' });
     }
 
-    await user.update({ name,email ,phone, address });
+    await user.update({ name, email, phone, address });
     res.json({ message: 'Profil sikeresen frissítve', user });
   } catch (err) {
     console.error(err);
@@ -39,19 +36,21 @@ const updateProfile = async (req, res) => {
 
 const changePassword = async (req, res) => {
   try {
-    const { oldPassword, newPassword } = req.body;
+    const { oldPassword, currentPassword, newPassword } = req.body;
+    const providedOldPassword = oldPassword ?? currentPassword;
+
     const user = await User.scope('withPassword').findByPk(req.user.id);
 
     if (!user) {
       return res.status(404).json({ message: 'Felhasználó nem található' });
     }
 
-    const isMatch = await user.comparePassword(oldPassword);
+    const isMatch = await user.comparePassword(providedOldPassword);
     if (!isMatch) {
       return res.status(400).json({ message: 'Helytelen régi jelszó' });
     }
 
-    user.password = newPassword;           // a hook hasheli
+    user.password = newPassword;
     await user.save();
 
     res.json({ message: 'Jelszó sikeresen megváltoztatva' });
@@ -62,8 +61,7 @@ const changePassword = async (req, res) => {
 };
 
 const getUserOrders = async (req, res) => {
-  // később implementálható, ha van Order modell
-  res.json({ message: 'Saját rendelések (később implementálva)' });
+  res.json([]);
 };
 
 const getAllUsers = async (req, res) => {

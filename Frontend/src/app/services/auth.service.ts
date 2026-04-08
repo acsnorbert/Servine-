@@ -1,7 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs/operators';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../enviroments/environment';
 
@@ -23,17 +22,35 @@ export class AuthService {
   private readonly API = 'http://localhost:3000/api/auth';
 
   currentUser = signal<AuthUser | null>(this.loadUser());
+
   private tokenName = environment.tokenName;
 
-  constructor(private http: HttpClient, private router: Router) {}
-  // Bejelentkezés ellenőrzése
-  private isLoggedIn = new BehaviorSubject<boolean>(this.getToken());
+  private isLoggedIn = new BehaviorSubject<boolean>(!!this.hasToken());
   isLoggedIn$ = this.isLoggedIn.asObservable();
 
+  constructor(private http: HttpClient, private router: Router) {}
+
   // ── Bejelentkezés ─────────────────────────────
-  login(token:string){
+  login(token: string, user?: AuthUser): void {
     sessionStorage.setItem(this.tokenName, token);
     this.isLoggedIn.next(true);
+
+    if (user) {
+      sessionStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(user));
+      this.currentUser.set(user);
+    }
+  }
+
+  // ── Kijelentkezés ─────────────────────────────
+  logout(): void {
+    sessionStorage.removeItem(this.tokenName);
+    sessionStorage.removeItem('user');
+    localStorage.removeItem(this.tokenName);
+    localStorage.removeItem('user');
+    this.currentUser.set(null);
+    this.isLoggedIn.next(false);
+    this.router.navigate(['/login']);
   }
 
   // ── Elfelejtett jelszó ────────────────────────
@@ -46,64 +63,57 @@ export class AuthService {
     return this.http.post<{ message: string }>(`${this.API}/reset-password`, { token, password });
   }
 
-  // ── Kijelentkezés ─────────────────────────────
-  logout(){
-    sessionStorage.removeItem(this.tokenName);
-    localStorage.removeItem(this.tokenName);
-    this.isLoggedIn.next(false);
+  // ── Token lekérése ────────────────────────────
+  getTokenValue(): string | null {
+    return sessionStorage.getItem(this.tokenName)
+      ?? localStorage.getItem(this.tokenName);
   }
 
-  // ── Token lekérése (HttpInterceptor használja) ─
-  getToken(){
-    const sess = sessionStorage.getItem(this.tokenName);
-    if (sess) return true;
-
-    const locs = localStorage.getItem(this.tokenName);
-
-    if (locs) {
-      sessionStorage.setItem(this.tokenName, locs);
-      return true;
-    }
-
-    return false;
-  }
-  loggedUser(){
-    const token = sessionStorage.getItem(this.tokenName);
-    if (token){
-      const payload = token.split('.')[1];
-      const decodedPayload = atob(payload);
-      const decodedUTF8Payload = new TextDecoder('utf-8').decode(
-        new Uint8Array(decodedPayload.split('').map(char => char.charCodeAt(0)))
-      );
-      return JSON.parse(decodedUTF8Payload);
-    }
-    return "no token";
-  }
-  storeUser(token: string){
-    localStorage.setItem(this.tokenName, token);
-  }
-   isLoggedUser():boolean{
+  // ── Be van-e jelentkezve ──────────────────────
+  isLoggedUser(): boolean {
     return this.isLoggedIn.value;
   }
 
-  
+  // ── Admin-e ───────────────────────────────────
   isAdmin(): boolean {
     return this.currentUser()?.role === 'admin';
   }
 
+  // ── JWT payload dekódolás (ha szükséges) ──────
+  loggedUser(): any {
+    const token = sessionStorage.getItem(this.tokenName);
+    if (!token) return null;
+    try {
+      const payload = token.split('.')[1];
+      return JSON.parse(atob(payload));
+    } catch {
+      return null;
+    }
+  }
+
   // ── Privát segédek ────────────────────────────
-  private saveSession(res: AuthResponse): void {
-    localStorage.setItem('token', res.token);
-    localStorage.setItem('user', JSON.stringify(res.user));
-    this.currentUser.set(res.user);
+  private hasToken(): boolean {
+    return !!(sessionStorage.getItem(this.tokenName) ?? localStorage.getItem(this.tokenName));
   }
 
   private loadUser(): AuthUser | null {
     try {
-      const raw = localStorage.getItem('user');
+      // Előbb sessionStorage, aztán localStorage
+      const raw = sessionStorage.getItem('user') ?? localStorage.getItem('user');
       return raw ? JSON.parse(raw) : null;
     } catch {
       return null;
     }
   }
+
+  storeUser(token: string): void {
+  localStorage.setItem(this.tokenName, token);
 }
+
+getToken(): string | null {
+  return sessionStorage.getItem(this.tokenName)
+    ?? localStorage.getItem(this.tokenName);
+}
+
+}
+
