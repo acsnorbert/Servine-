@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../interfaces/user';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,8 @@ export class LoginComponent {
   constructor(
     private api: ApiService,
     private auth: AuthService,
-    private router:Router
+    private router:Router,
+    private messageService: MessageService,
   ){}
   keepLoggedIn: boolean =false;
   user:User={
@@ -39,26 +41,25 @@ export class LoginComponent {
       email: this.user.email,
       password: this.user.password
     }
+    //Hiányzó adatok ellenőrzése
     if(!data.email || !data.password){
-      alert("hiba")
-      //this.messageService.show('warn', 'Warning', 'Hiányzó adatok!');
+      
+      this.messageService.show('warn', 'Warning', 'Please fill in all the forms!');
       return
     }
     this.api.login(data).subscribe({
       next: (res)=>{
-        
         this.auth.login((res as any).token, (res as any).user);
         if (this.keepLoggedIn) {
           this.auth.storeUser((res as any).token);
           
         }
-        alert("sikeres login :)")
-        //this.messageService.show('success', 'Success', 'Sikeres Bejelentkezés');
+        this.messageService.show('success', 'Success', 'Successful Login');
         this.router.navigateByUrl('/home');
       },
       error: (err)=>{
-        alert("hiba")
-        //this.messageService.show('error', 'Error', err.error?.error || 'Sikertelen bejelentkezés');
+        
+        this.messageService.show('error', 'Error', err.error?.message || 'There was an error during login');
       }
     });
   }

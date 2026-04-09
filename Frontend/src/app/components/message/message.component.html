@@ -1,0 +1,14 @@
+<div class="toast-container">
+  <div *ngIf="message" class="toast" [ngClass]="message.severity">
+    
+    <div class="toast__content">
+      <span class="toast__title">{{ message.title }}</span>
+      <span class="toast__message">{{ message.message }}</span>
+    </div>
+
+    <div 
+      class="toast__bar" >
+    </div>
+
+  </div>
+</div>

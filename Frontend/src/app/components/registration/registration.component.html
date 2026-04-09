@@ -10,31 +10,31 @@
           <!-- Bal oldal -->
           <div class="col-md-6 register-card">
 
-            <h1 class="register-title">Regisztráció</h1>
+            <h1 class="register-title">Registration</h1>
 
             <div class="mt-4">
               <div class="form-floating mb-3">
                 <input type="email"  class="form-control w-100 mb-3" id="floatingEmail" placeholder="name@example.com" [(ngModel)]="user.email">
-                <label for="floatingEmail">Email cím</label>
+                <label for="floatingEmail">Email address</label>
               </div>
               <div class="form-floating mb-3">
-                <input type="name"  class="form-control w-100 mb-3" id="floatingName" placeholder="Felhasználónév" [(ngModel)]="user.name">
-                <label for="floatingName">Felhasználónév</label>
+                <input type="name"  class="form-control w-100 mb-3" id="floatingName" placeholder="Username" [(ngModel)]="user.name">
+                <label for="floatingName">Username</label>
               </div>
               <div class="form-floating">
-                <input type="password" class="form-control w-100 mb-3" id="floatingPassword" placeholder="Jelszó" [(ngModel)]="user.password">
-                <label for="floatingPassword">Jelszó</label>
+                <input type="password" class="form-control w-100 mb-3" id="floatingPassword" placeholder="Password" [(ngModel)]="user.password">
+                <label for="floatingPassword">Password</label>
               </div>
               <div class="form-floating">
-                <input type="password" class="form-control w-100 mb-3" id="floatingConfPass" placeholder="Jelszó megerősítése" [(ngModel)]="user.confirm">
-                <label for="floatingConfPass">Jelszó megerősítése</label>
+                <input type="password" class="form-control w-100 mb-3" id="floatingConfPass" placeholder="Password confirmation" [(ngModel)]="user.confirm">
+                <label for="floatingConfPass">Password confirmation</label>
               </div>
 
               <div class="d-flex justify-content-between small-text">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" [(ngModel)]="TermsAccept">
                   <label class="form-check-label" for="flexCheckDefault">
-                    Elfogadom a TOS-t
+                    I accept the TermsOfService
                   </label>
                 </div>
                 
@@ -42,8 +42,8 @@
 
               </div>
               <div class="d-flex flex-column">
-                <button type="button" class="btn register-btn w-70 mt-4" (click)="register()">Regisztráció</button>
-                <button type="button" class="btn login-btn w-70 mt-3" [routerLink]="['/login']" >Van már fiókja, jelentkezzen be!</button>
+                <button type="button" class="btn register-btn w-70 mt-4" (click)="register()">Register</button>
+                <button type="button" class="btn login-btn w-70 mt-3" [routerLink]="['/login']" >If you already have an account, log in!</button>
               </div>
              
             </div>
@@ -54,7 +54,7 @@
           <div class="col-md-6 image-panel">
 
             
-            <img src="ServineLandingpagewoman.png" alt="Perfume Model">
+            <img src="main.png" alt="Perfume Model">
 
           </div>
 

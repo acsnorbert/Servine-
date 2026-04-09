@@ -2,7 +2,9 @@
   <div class="nav-links">
     <a routerLink="/about">About us</a>
     <a routerLink="/products">Products</a>
-    <a routerLink="/profile">Profile</a>
+    <a routerLink="/home"><img src="Servinelogo.png" alt="" style="width: 30px;"></a>
+    <a *ngIf="isloggedin" routerLink="/profile">Profile</a>
+    <a *ngIf="!isloggedin" routerLink="/login">Profile</a>
     <a routerLink="/contact">Contact us</a>
   </div>
 

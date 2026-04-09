@@ -21,7 +21,7 @@ function generateToken(user) {
 
     const existing = await User.findOne({ where: { email } });
     if (existing) {
-      return res.status(409).json({ message: 'Ez az email cím már foglalt.' });
+      return res.status(409).json({ message: 'This email address is already used by somebody else.' });
     }
 
     const user = await User.create({ name, email, password });
@@ -33,20 +33,20 @@ function generateToken(user) {
         path.join(__dirname, '../Emailtemplates/verifyregistration.email.ejs'),
         { username: name, verificationUrl }
       );
-      await sendMail({ to: email, subject: 'SERVINE – Email megerősítés', message: html });
+      await sendMail({ to: email, subject: 'SERVINE – Email verification', message: html });
     } catch (mailErr) {
-      console.error('Email küldési hiba (regisztráció):', mailErr.message);
+      console.error('Email sending error:', mailErr.message);
     }
 
     const token = generateToken(user);
     return res.status(201).json({
-      message: 'Sikeres regisztráció.',
+      message: 'Registered successfully',
       token,
       user: { id: user.id, name: user.name, email: user.email, role: user.role }
     });
   } catch (err) {
     console.error('register error:', err);
-    return res.status(500).json({ message: 'Szerverhiba a regisztráció során.' });
+    return res.status(500).json({ message: 'Server error during registration' });
   }
 }
 
@@ -57,17 +57,17 @@ async function login(req, res) {
 
     const user = await User.scope('withPassword').findOne({ where: { email } });
     if (!user) {
-      return res.status(401).json({ message: 'Hibás email vagy jelszó.' });
+      return res.status(401).json({ message: 'Incorrect email or password' });
     }
 
     const valid = await user.comparePassword(password);
     if (!valid) {
-      return res.status(401).json({ message: 'Hibás email vagy jelszó.' });
+      return res.status(401).json({ message: 'Incorrect email or password' });
     }
 
     const token = generateToken(user);
     return res.status(200).json({
-      message: 'Sikeres bejelentkezés.',
+      message: 'Login successful',
       token,
       user: {
         id: user.id,
@@ -78,7 +78,7 @@ async function login(req, res) {
     });
   } catch (err) {
     console.error('login error:', err);
-    return res.status(500).json({ message: 'Szerverhiba a bejelentkezés során.' });
+    return res.status(500).json({ message: 'Server error during login' });
   }
 }
 
