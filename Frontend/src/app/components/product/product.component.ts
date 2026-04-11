@@ -10,7 +10,6 @@ import { AuthService } from '../../services/auth.service';
 import { Product } from '../../interfaces/product';
 import { Review } from '../../interfaces/review';
 
-// Méretkészletek kategória szerint
 const CLOTHING_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 const SHOE_SIZES     = ['36', '37', '38', '39', '40', '41', '42', '43', '44', '45'];
 
@@ -44,7 +43,6 @@ export class ProductComponent implements OnInit {
   isLoading = true;
   errorMessage = '';
 
-  // Dinamikus méretkészlet
   sizes: string[] = [];
   selectedSize: string | null = null;
   quantity = 1;
@@ -67,73 +65,85 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.loadProduct(id);
-    }
+    if (id) this.loadProduct(id);
   }
 
   private loadProduct(id: string): void {
     this.productService.getProductById(id).subscribe({
       next: (res: any) => {
-        this.product = res;
-        this.reviews  = res.reviews ?? [];
+        this.product   = res;
+        this.reviews   = res.reviews ?? [];
         this.avgRating = res.avgRating ? Math.round(parseFloat(res.avgRating)) : 0;
-        this.sizes = this.getSizesForProduct(res);
+        this.sizes     = this.getSizesForProduct(res);
         this.isLoading = false;
+        // debug: nezd meg mit kap vissza a kategoria
+        console.log('category:', res.category);
+        console.log('sizes:', this.sizes);
       },
       error: () => {
-        this.errorMessage = 'A termék nem található.';
+        this.errorMessage = 'A termek nem talalhato.';
         this.isLoading = false;
       }
     });
   }
 
   private getSizesForProduct(product: any): string[] {
-  if (!product?.category) {
-    console.log('Nincs category objektum');
+    if (!product?.category) return [];
+
+    // normalizalas: kis betu, ékezetek eltavolitasa, trimmelés
+    const normalize = (s: string) =>
+      s.toLowerCase().trim()
+       .replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i')
+       .replace(/ó/g, 'o').replace(/ö/g, 'o').replace(/ő/g, 'o')
+       .replace(/ú/g, 'u').replace(/ü/g, 'u').replace(/ű/g, 'u');
+
+    const catName    = normalize(product.category.name || '');
+    const parentName = normalize(product.category.parent?.name || '');
+
+    const isClothing =
+      catName.includes('ruha') ||
+      catName.includes('ruhazat') ||
+      catName.includes('clothing') ||
+      catName.includes('felso') ||
+      catName.includes('nadrag') ||
+      catName.includes('polo') ||
+      catName.includes('ing') ||
+      catName.includes('kabat') ||
+      parentName.includes('ruha') ||
+      parentName.includes('ruhazat') ||
+      parentName.includes('clothing');
+
+    const isShoe =
+      catName.includes('cipo') ||
+      catName.includes('shoe') ||
+      catName.includes('footwear') ||
+      catName.includes('szandal') ||
+      catName.includes('csizma') ||
+      parentName.includes('cipo') ||
+      parentName.includes('shoe');
+
+    if (isClothing) return CLOTHING_SIZES;
+    if (isShoe)     return SHOE_SIZES;
     return [];
   }
 
-  const category = product.category;
-  const parentId = String(category.parent_id || '').trim();
-  const catId    = String(category.id || '').trim();
-  const catName  = (category.name || '').toLowerCase().trim();
-
-  console.log('Kategória ellenőrzés - parentId:', parentId, 'catId:', catId, 'name:', catName);
-
-  // RUHA
-  if (
-    parentId === '1' || 
-    catId === '1' ||
-    catName.includes('ruha') || 
-    catName.includes('ruházat') || 
-    catName.includes('clothing') ||
-    catName.includes('felső') || 
-    catName.includes('nadrág') ||
-    catName.includes('póló')
-  ) {
-    console.log('→ Ruha méretkészlet aktiválva');
-    return CLOTHING_SIZES;
+  // Kosarban levo mennyiseg ugyanehhez a termekhez+merethez
+  get cartQuantity(): number {
+    if (!this.product) return 0;
+    return this.cartService.getItems()
+      .filter(i =>
+        i.product.id === (this.product as any).id &&
+        i.size === (this.selectedSize ?? 'N/A')
+      )
+      .reduce((s, i) => s + i.quantity, 0);
   }
 
-  // CIPŐ
-  if (
-    parentId === '2' || 
-    catId === '2' ||
-    catName.includes('cipő') || 
-    catName.includes('shoe') || 
-    catName.includes('footwear')
-  ) {
-    console.log('→ Cipő méretkészlet aktiválva');
-    return SHOE_SIZES;
+  // Meg rendelheto max mennyiseg
+  get availableStock(): number {
+    if (!this.product) return 0;
+    return Math.max(0, this.product.stock - this.cartQuantity);
   }
 
-  // PARFÜM
-  console.log('→ Nincs méretválasztó');
-  return [];
-}
-
-  // Van-e méretválasztó
   hasSizes(): boolean {
     return this.sizes.length > 0;
   }
@@ -148,7 +158,6 @@ export class ProductComponent implements OnInit {
 
   submitReview(): void {
     if (!this.product || this.newRating === 0) return;
-
     this.reviewSubmitting = true;
     this.reviewError = '';
 
@@ -170,7 +179,7 @@ export class ProductComponent implements OnInit {
       },
       error: (err) => {
         this.reviewSubmitting = false;
-        this.reviewError = err?.error?.message ?? 'Nem sikerült elküldeni az értékelést.';
+        this.reviewError = err?.error?.message ?? 'Nem sikerult elkuldenai az ertekeleszt.';
       }
     });
   }
@@ -180,7 +189,7 @@ export class ProductComponent implements OnInit {
   }
 
   getUserName(review: any): string {
-    return review.user?.name ?? `Felhasználó #${review.user_id}`;
+    return review.user?.name ?? `Felhasznalo #${review.user_id}`;
   }
 
   getUserInitial(review: any): string {
@@ -188,17 +197,33 @@ export class ProductComponent implements OnInit {
     return name ? name[0].toUpperCase() : '#';
   }
 
-  selectSize(size: string): void { this.selectedSize = size; }
-  increaseQty(): void { if (this.quantity < 10) this.quantity++; }
-  decreaseQty(): void { if (this.quantity > 1) this.quantity--; }
-  toggleFavorite(): void { this.isFavorite = !this.isFavorite; }
+  selectSize(size: string): void {
+    this.selectedSize = size;
+    if (this.quantity > this.availableStock) {
+      this.quantity = Math.max(1, this.availableStock);
+    }
+  }
+
+  increaseQty(): void {
+    if (this.quantity < this.availableStock) this.quantity++;
+  }
+
+  decreaseQty(): void {
+    if (this.quantity > 1) this.quantity--;
+  }
+
+  toggleFavorite(): void {
+    this.isFavorite = !this.isFavorite;
+  }
 
   addToCart(): void {
     if (!this.product) return;
     if (this.hasSizes() && !this.selectedSize) {
-      alert('Kérlek válassz méretet!');
+      alert('Kerlek valassz meretet!');
       return;
     }
+    if (this.availableStock <= 0) return;
     this.cartService.addToCart(this.product, this.selectedSize ?? 'N/A', this.quantity);
+    this.quantity = 1;
   }
 }

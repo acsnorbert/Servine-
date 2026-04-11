@@ -1,0 +1,373 @@
+// ── Változók ────────────────────────────────────────
+$gold:        #C9A84C;
+$gold-light:  #E2C97E;
+$gold-dim:    rgba(201, 168, 76, 0.15);
+$bg:          #0a0a0a;
+$surface:     #111111;
+$surface2:    #1a1a1a;
+$border:      rgba(201, 168, 76, 0.2);
+$text:        #f0f0f0;
+$text-muted:  #888;
+$radius:      12px;
+
+// ── Alap ────────────────────────────────────────────
+.checkout-wrapper {
+  min-height: 100vh;
+  background: $bg;
+  color: $text;
+  padding: 40px 24px 80px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.back-link {
+  display: inline-block;
+  color: $gold;
+  text-decoration: none;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 32px;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+
+  &:hover { opacity: 1; }
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: $text;
+  margin-bottom: 40px;
+
+  span {
+    color: $gold;
+  }
+}
+
+// ── Layout ──────────────────────────────────────────
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 28px;
+  align-items: start;
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// kartya
+.section-card {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius;
+  padding: 28px;
+  margin-bottom: 20px;
+
+  h2 {
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: $gold;
+    margin: 0 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+}
+
+// fizetesi modok
+.method-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.method-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  border: 1px solid $border;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s;
+  background: $surface2;
+
+  input[type="radio"] {
+    accent-color: $gold;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+
+  .method-icon {
+    font-size: 1.3rem;
+  }
+
+  .method-label {
+    font-size: 0.95rem;
+    color: $text-muted;
+    transition: color 0.2s;
+  }
+
+  &.active {
+    border-color: $gold;
+    background: $gold-dim;
+
+    .method-label {
+      color: $text;
+    }
+  }
+
+  &:hover:not(.active) {
+    border-color: rgba(201, 168, 76, 0.4);
+  }
+}
+
+// kartyaadatok
+.simulated-badge {
+  font-size: 0.65rem;
+  background: $gold-dim;
+  color: $gold;
+  border: 1px solid $border;
+  border-radius: 20px;
+  padding: 2px 10px;
+  letter-spacing: 0.1em;
+}
+
+.form-group {
+  margin-bottom: 18px;
+
+  label {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: $text-muted;
+    margin-bottom: 8px;
+  }
+
+  input {
+    width: 100%;
+    background: $surface2;
+    border: 1px solid $border;
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: $text;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+
+    &::placeholder { color: #444; }
+
+    &:focus {
+      border-color: $gold;
+    }
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+// utanvet
+.cod-info {
+  p {
+    color: $text-muted;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin: 0;
+  }
+}
+
+// hiba
+.error-msg {
+  background: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.3);
+  color: #ff6b7a;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 0.85rem;
+  margin-bottom: 20px;
+}
+
+// megrendeles gombja
+.place-order-btn {
+  width: 100%;
+  background: $gold;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s;
+
+  &:hover:not(:disabled) {
+    background: $gold-light;
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+// osszesito oldal
+.order-summary .section-card {
+  position: sticky;
+  top: 24px;
+}
+
+.summary-items {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+
+  .item-name {
+    font-size: 0.9rem;
+    color: $text-muted;
+
+    .item-qty {
+      color: #555;
+      font-size: 0.8rem;
+      margin-left: 4px;
+    }
+  }
+
+  .item-price {
+    font-size: 0.9rem;
+    color: $text;
+    white-space: nowrap;
+  }
+}
+
+.summary-divider {
+  border: none;
+  border-top: 1px solid $border;
+  margin: 16px 0;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: $text-muted;
+  margin-bottom: 10px;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid $border;
+
+  span:first-child {
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: $text-muted;
+  }
+
+  span:last-child {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: $gold;
+  }
+}
+
+// sikeres megrendeles
+.success-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  gap: 16px;
+}
+
+.success-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: $gold-dim;
+  border: 1px solid $gold;
+  color: $gold;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.success-screen h1 {
+  font-size: 1.8rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+}
+
+.success-screen p {
+  color: $text-muted;
+  font-size: 0.95rem;
+}
+
+.order-id {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 0.85rem;
+  color: $text-muted;
+
+  strong {
+    color: $gold;
+    font-family: monospace;
+    font-size: 0.9rem;
+  }
+}
+
+.success-actions {
+  margin-top: 16px;
+
+  a {
+    display: inline-block;
+    background: $gold;
+    color: #000;
+    text-decoration: none;
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: all 0.25s;
+
+    &:hover {
+      background: $gold-light;
+      transform: translateY(-1px);
+    }
+  }
+}

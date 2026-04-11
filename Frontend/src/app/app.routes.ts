@@ -16,6 +16,7 @@ import { ContactComponent } from './components/contact/contact.component';
 import { AboutComponent } from './components/about/about.component';
 import { authGuard } from './guards/auth.guard';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -28,6 +29,7 @@ export const routes: Routes = [
   { path: 'products/:id', component: ProductComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'about', component: AboutComponent },
+  { path: 'checkout', component: CheckoutComponent, canActivate: [authGuard] },
 
   // BEJELENTKEZÉS SZÜKSÉGES
   { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },

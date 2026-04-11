@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../enviroments/environment';
+import { CartService } from './cart.service';
 
 export interface AuthUser {
   id: string;
@@ -28,7 +29,10 @@ export class AuthService {
   private isLoggedIn = new BehaviorSubject<boolean>(!!this.hasToken());
   isLoggedIn$ = this.isLoggedIn.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient, 
+    private router: Router, 
+    private cartService: CartService) {}
 
   // ── Bejelentkezés ─────────────────────────────
   login(token: string, user?: AuthUser): void {
@@ -48,6 +52,7 @@ export class AuthService {
     sessionStorage.removeItem('user');
     localStorage.removeItem(this.tokenName);
     localStorage.removeItem('user');
+     localStorage.removeItem('servine_cart');
     this.currentUser.set(null);
     this.isLoggedIn.next(false);
     this.router.navigate(['/login']);

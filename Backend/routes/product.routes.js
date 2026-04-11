@@ -3,6 +3,7 @@ const router = express.Router();
 const productController = require('../controllers/product.controller');
 const { auth, isAdmin } = require('../middlewares/auth.middleware');
 const { validate, createProductValidation, updateProductValidation } = require('../middlewares/validation.middleware');
+const upload = require('../middlewares/upload.middleware');
 
 // GET /api/products – Összes termék lekérése (nyilvános, opcionális szűrők: ?category_id=1&min_price=100&sort=price_asc)
 router.get('/', productController.getAllProducts);
@@ -21,5 +22,9 @@ router.patch('/:id', auth, isAdmin, updateProductValidation, validate, productCo
 
 // DELETE /api/products/:id – Termék törlése (admin)
 router.delete('/:id', auth, isAdmin, productController.deleteProduct);
+
+// admin fajl feltoltese
+router.post('/', auth, isAdmin, upload.single('image'), productController.createProduct);
+router.patch('/:id', auth, isAdmin, upload.single('image'), productController.updateProduct);
 
 module.exports = router;

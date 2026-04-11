@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgFor, NgIf, DecimalPipe } from '@angular/common';
-import { RouterLink, Router } from '@angular/router'; 
+import { RouterLink, Router } from '@angular/router';
 import { CartService, CartItem } from '../../services/cart.service';
-import { OrderItemsService } from '../../services/order-items.service'; 
 
 @Component({
   selector: 'app-cart',
@@ -18,7 +17,6 @@ export class CartComponent implements OnInit {
 
   constructor(
     private cartService: CartService,
-    private orderItemsService: OrderItemsService, 
     private router: Router
   ) {}
 
@@ -57,29 +55,6 @@ export class CartComponent implements OnInit {
 
   checkout(): void {
     if (this.cartItems.length === 0) return;
-    this.isSubmitting = true;
-    const orderPayload = {
-      user_id: 1, 
-      items: this.cartItems.map(item => ({
-        product_id: item.product.id,
-        quantity: item.quantity,
-        price: item.product.price,
-        size: item.size 
-      }))
-    };
-
-    this.orderItemsService.insertOrderItem(orderPayload).subscribe({
-      next: (response: any) => {
-        alert('Sikeres rendelés!');
-        this.cartService.clearCart(); 
-        this.isSubmitting = false;
-        this.router.navigate(['/products']); 
-      },
-      error: (err: any) => {
-        console.error('Hiba történt a rendelés során:', err);
-        alert('Sajnos hiba történt a rendelés leadásakor.');
-        this.isSubmitting = false;
-      }
-    });
+    this.router.navigate(['/checkout']);
   }
 }

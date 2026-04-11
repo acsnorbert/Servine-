@@ -4,7 +4,7 @@ const router = express.Router();
 // Helyes importok – ugyanabból a middleware fájlból jön mindkettő
 const { auth, isAdmin } = require('../middlewares/auth.middleware');
 
-// Validation middleware-ek (feltételezem, hogy léteznek)
+// Validation middleware-ek
 const {
   validate,
   updateProfileValidation,

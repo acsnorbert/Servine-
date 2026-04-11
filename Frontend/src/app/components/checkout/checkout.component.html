@@ -1,0 +1,121 @@
+<!-- checkout.component.html -->
+<div class="checkout-wrapper">
+
+  <!-- FIZETÉSI OLDAL -->
+  <ng-container *ngIf="step === 'payment'">
+    <a routerLink="/cart" class="back-link">← Vissza a kosárhoz</a>
+    <h1 class="page-title">Fizetés</h1>
+
+    <div class="checkout-layout">
+
+      <!-- BAL: Fizetési mód -->
+      <div class="payment-section">
+
+        <div class="section-card">
+          <h2>Fizetési mód</h2>
+
+          <div class="method-options">
+            <label class="method-option" [class.active]="paymentMethod === 'card'">
+              <input type="radio" name="payment" value="card"
+                [(ngModel)]="paymentMethod" />
+              <span class="method-icon">💳</span>
+              <span class="method-label">Bankkártyás fizetés</span>
+            </label>
+
+            <label class="method-option" [class.active]="paymentMethod === 'cod'">
+              <input type="radio" name="payment" value="cod"
+                [(ngModel)]="paymentMethod" />
+              <span class="method-icon">📦</span>
+              <span class="method-label">Utánvét</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Kártya mezők -->
+        <div class="section-card card-fields" *ngIf="paymentMethod === 'card'">
+          <h2>Kártyaadatok <span class="simulated-badge">Szimuláció</span></h2>
+
+          <div class="form-group">
+            <label>Kártyaszám</label>
+            <input type="text" [(ngModel)]="cardNumber"
+              (input)="formatCardNumber($event)"
+              placeholder="1234 5678 9012 3456"
+              maxlength="19" />
+          </div>
+
+          <div class="form-group">
+            <label>Kártyabirtokos neve</label>
+            <input type="text" [(ngModel)]="cardName"
+              placeholder="Kovács János" />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Lejárat</label>
+              <input type="text" [(ngModel)]="cardExpiry"
+                placeholder="MM/ÉÉ" maxlength="5" />
+            </div>
+            <div class="form-group">
+              <label>CVC</label>
+              <input type="text" [(ngModel)]="cardCvc"
+                placeholder="123" maxlength="3" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Utánvét info -->
+        <div class="section-card cod-info" *ngIf="paymentMethod === 'cod'">
+          <p>📦 A csomag érkezésekor fizetsz a futárnak készpénzben vagy bankkártyával.</p>
+        </div>
+
+        <div class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+        <button class="btn-primary place-order-btn"
+          (click)="placeOrder()"
+          [disabled]="isSubmitting">
+          {{ isSubmitting ? 'Feldolgozás...' : 'Megrendelés leadása →' }}
+        </button>
+      </div>
+
+      <!-- JOBB: Összesítő -->
+      <div class="order-summary">
+        <div class="section-card">
+          <h2>Rendelés összesítő</h2>
+
+          <div class="summary-items">
+            <div class="summary-item" *ngFor="let item of cartItems">
+              <span class="item-name">{{ item.product.name }}
+                <span class="item-qty">× {{ item.quantity }}</span>
+              </span>
+              <span class="item-price">{{ item.product.price * item.quantity | number }} Ft</span>
+            </div>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-row">
+            <span>Szállítás</span>
+            <span>Ingyenes</span>
+          </div>
+          <div class="summary-total">
+            <span>Végösszeg</span>
+            <span>{{ totalPrice | number }} Ft</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </ng-container>
+
+  <!-- SIKERES RENDELÉS -->
+  <div class="success-screen" *ngIf="step === 'success'">
+    <div class="success-icon">✓</div>
+    <h1>Köszönjük a rendelést!</h1>
+    <p>Megerősítő emailt küldtünk a megadott email-címre.</p>
+    <p class="order-id" *ngIf="orderId">Rendelés azonosító: <strong>{{ orderId }}</strong></p>
+    <div class="success-actions">
+      <a routerLink="/products" class="btn-primary">Vásárlás folytatása</a>
+    </div>
+  </div>
+
+</div>
