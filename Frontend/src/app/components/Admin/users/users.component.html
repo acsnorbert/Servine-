@@ -1,1 +1,75 @@
-<p>users works!</p>
+<div class="users">
+
+  <!-- HEADER -->
+  <div class="users__header">
+
+    <div class="users__title">
+      <span class="section-label">Admin</span>
+      <h1>Users</h1>
+    </div>
+
+    <div class="users__actions">
+      <input pInputText type="text" placeholder="Search user..." [(ngModel)]="search"
+      />
+     
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="users__table">
+
+    <p-table
+      [value]="users"
+      responsiveLayout="scroll"
+      [paginator]="true"
+      [rows]="10"
+      styleClass="lux-table"
+    >
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-user>
+        <tr>
+
+          <td class="id">{{ user.id }}</td>
+
+          <td class="name">{{ user.name }}</td>
+
+          <td>{{ user.email }}</td>
+
+          <td>
+            <span
+              class="badge"
+              
+              [ngClass]="{
+                'badge--root': user.role === 'admin',
+                'badge--child': user.role === 'user'
+              }"
+              
+              (click)="rolechange(user.id, user.role)">
+              {{ user.role }}
+            </span>
+          </td>
+
+          <td class="actions text-end">
+           
+            <button class="btn-danger" [disabled]="user.id === loggeduserId" (click)="delete(user.id, user.name)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <p-confirmDialog></p-confirmDialog>
+  </div>
+
+</div>

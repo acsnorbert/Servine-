@@ -91,4 +91,20 @@ export class UserService {
   getMyOrders(): Observable<Order[]> {
     return this.http.get<Order[]>(`${this.API}/orders`, this.tokenHeader());
   }
+
+  // ------ ADMIN -----------
+
+  // ── GET /api/users ─────────────────────
+  GetUsers(){
+    return this.http.get(`${this.API}`,this.tokenHeader())
+  }
+  // ── GET /api/users ─────────────────────
+  DeleteUser(id:string){
+    return this.http.delete(`${this.API}/${id}`,this.tokenHeader())
+  }
+  // ── GET /api/users ─────────────────────
+  ChangeUserRole(id:string, data:object){
+    return this.http.patch(`${this.API}/${id}/role`,data,this.tokenHeader())
+  }
+
 }

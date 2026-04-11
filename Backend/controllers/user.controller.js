@@ -66,14 +66,14 @@ const getUserOrders = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
   const users = await User.findAll({
-    attributes: ['id', 'name', 'email', 'role', 'created_at']
+    attributes: ['id', 'name', 'email', 'role', 'createdAt', 'updatedAt']
   });
   res.json(users);
 };
 
 const getUserById = async (req, res) => {
   const user = await User.findByPk(req.params.id, {
-    attributes: ['id', 'name', 'email', 'role', 'created_at']
+    attributes: ['id', 'name', 'email', 'role', 'createdAt', 'updatedAt']
   });
   if (!user) return res.status(404).json({ message: 'Nem található' });
   res.json(user);

@@ -1,112 +1,165 @@
-.dashboard-container{
-    background: url('/gold_marble.png') center center / cover no-repeat;
-    font-family: 'Poppins', sans-serif;
-    
-    overflow: hidden;
-    position: relative;
-    padding:30px;
-    color:white;
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@200;300;400;500&display=swap');
+
+$gold:  #c9a84c;
+$bg:    #080808;
+$line:  rgba(255,255,255,.08);
+$muted: rgba(255,255,255,.38);
+
+.dashboard {
+  font-family: 'Outfit', sans-serif;
+  background: $bg;
+  color: #fff;
+  min-height: 100vh;
+  padding: 80px 64px;
+}
+
+/* HEADER */
+.section-label{
+  color: rgba($gold,1);
+}
+.dashboard__header {
+  margin-bottom: 56px;
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 400;
   }
-  
-  /* STAT CARDS */
-  
-  .stat-card{
-    background:#111;
-    border-radius:14px;
-    padding:20px;
-    display:flex;
-    align-items:center;
-    gap:18px;
-    border:1px solid #222;
-    transition:0.3s;
+}
+
+/* STATS */
+
+.dashboard__stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  margin-bottom: 56px;
+}
+
+.stat {
+  padding: 24px;
+  border: 1px solid $line;
+  background: rgba(#fff, .01);
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  transition: all .3s;
+
+  &:hover {
+    background: rgba($gold,.03);
+    border-color: rgba($gold,.3);
   }
-  
-  .stat-card:hover{
-    border-color:#d4a84f;
-    transform:translateY(-2px);
+
+  &__icon {
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba($gold,.3);
+    display: grid;
+    place-items: center;
+    color: $gold;
   }
-  
-  .stat-icon{
-    width:50px;
-    height:50px;
-    border-radius:10px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:linear-gradient(135deg,#d4a84f,#f5d49a);
-    color:#000;
-    font-size:22px;
+
+  &__label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: rgba(#fff,.4);
   }
-  
-  .stat-title{
-    font-size:14px;
-    color:#aaa;
+
+  &__value {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    margin-top: 4px;
   }
-  
-  .stat-value{
-    font-size:24px;
-    font-weight:600;
-    color:#f1d190;
+}
+
+/* GRID */
+
+.dashboard__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2px;
+  margin-bottom: 56px;
+}
+
+/* CARD */
+
+.card {
+  border: 1px solid $line;
+  padding: 24px;
+  background: rgba(#fff,.01);
+}
+
+.card__header {
+  font-size: 11px;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: $gold;
+  margin-bottom: 20px;
+}
+
+/* ACTIVITY */
+
+.activity {
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid $line;
+    color: rgba(#fff,.6);
+
+    span {
+      width: 4px;
+      height: 4px;
+      background: $gold;
+      border-radius: 50%;
+    }
   }
-  
-  /* MAIN CARDS */
-  
-  .dashboard-card{
-    background:#111;
-    border-radius:16px;
-    padding:25px;
-    border:1px solid #222;
-  }
-  
-  .card-header{
-    font-size:18px;
-    margin-bottom:20px;
-    color:#e6c17c;
-  }
-  
-  /* ACTIVITY */
-  
-  .activity-list{
-    list-style:none;
-    padding:0;
-    margin:0;
-  }
-  
-  .activity-list li{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:10px 0;
-    border-bottom:1px solid #1e1e1e;
-    color:#ccc;
-  }
-  
-  .activity-dot{
-    width:8px;
-    height:8px;
-    background:#d4a84f;
-    border-radius:50%;
-  }
-  
-  /* TABLE */
-  
-  :host ::ng-deep .p-datatable{
-    background:#111;
-    border-radius:12px;
-    overflow:hidden;
-  }
-  
-  :host ::ng-deep .p-datatable-thead > tr > th{
-    background:#151515;
-    color:#d4a84f;
-    border:none;
-  }
-  
-  :host ::ng-deep .p-datatable-tbody > tr{
-    background:#111;
-    color:#ccc;
-  }
-  
-  :host ::ng-deep .p-datatable-tbody > tr:hover{
-    background:#1a1a1a;
-  }
+}
+
+/* TABLE */
+
+.muted {
+  color: $muted;
+}
+
+.badge {
+  font-size: 9px;
+  letter-spacing: .2em;
+  padding: 6px 10px;
+  border: 1px solid $line;
+  text-transform: uppercase;
+}
+
+.badge--success {
+  border-color: rgba($gold,.4);
+  color: $gold;
+}
+
+/* PRIME TABLE */
+
+:host ::ng-deep .lux-table {
+  border: none;
+}
+
+:host ::ng-deep .p-datatable-thead > tr > th {
+  background: transparent;
+  border-bottom: 1px solid $line;
+  color: rgba(#fff,.4);
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+
+:host ::ng-deep .p-datatable-tbody > tr {
+  border-bottom: 1px solid $line;
+}
+
+:host ::ng-deep .p-datatable-tbody > tr:hover {
+  background: rgba($gold,.03);
+}
