@@ -7,7 +7,7 @@ export interface Product {
   stock: number;
   sku: string;
   image: string;
-  created_at: Date;
+  created_at?: Date;
   category?: {
     id: string;
     parent_id: string | null;

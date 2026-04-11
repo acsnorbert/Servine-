@@ -1,116 +1,339 @@
-.categories-page {
-  background: url('/gold_marble.png') center center / cover no-repeat;
-  font-family: 'Poppins', sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@200;300;400;500&display=swap');
+
+$gold:  #c9a84c;
+$bg:    #080808;
+$line:  rgba(255,255,255,.08);
+$muted: rgba(255,255,255,.38);
+
+.categories {
+  font-family: 'Outfit', sans-serif;
+  background: $bg;
+  color: #fff;
+  min-height: 100vh;
+  padding: 80px 64px;
 }
 
 /* HEADER */
 
-.categories-header {
+.categories__header {
   display: flex;
   justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 56px;
+}
+
+.categories__title h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px;
+  font-weight: 400;
+}
+
+.section-label {
+  font-size: 9px;
+  letter-spacing: .35em;
+  text-transform: uppercase;
+  color: $gold;
+  margin-bottom: 14px;
+  display: flex;
   align-items: center;
-  margin-bottom: 30px;
-}
+  gap: 14px;
 
-.categories-header h1 {
-  font-size: 36px;
-  color: #e6c17c;
-  margin: 0;
-}
-
-.subtitle {
-  color: #aaa;
-  font-size: 14px;
+  &::before {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: $gold;
+  }
 }
 
 .actions {
   display: flex;
-  gap: 15px;
+  gap: 14px;
+
+  input {
+    background: transparent;
+    border: 1px solid $line;
+    color: #fff;
+    padding: 10px 14px;
+    font-size: 12px;
+
+    &:focus {
+      border-color: $gold;
+      outline: none;
+    }
+  }
+}
+
+/* TABLE WRAPPER */
+
+.categories__table {
+  border-top: 1px solid $line;
 }
 
 /* TABLE */
-
-.categories-table {
-  background: #0f0f0f;
-  border-radius: 14px;
-  padding: 20px;
-  border: 1px solid #222;
+.p-paginator-page.p-paginator-page-selected {
+    background: var($gold) !important;
+    color: rgb(255 255 255 / 87%);
+}
+:host ::ng-deep .lux-table {
+  border: none;
 }
 
-/* NAME */
+:host ::ng-deep .p-datatable-thead > tr > th {
+  background: transparent;
+  border-bottom: 1px solid $line;
+  color: rgba(#fff,.5);
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  padding: 18px 12px;
+}
+
+:host ::ng-deep .p-datatable-tbody > tr {
+  border-bottom: 1px solid $line;
+  transition: background .3s;
+}
+
+:host ::ng-deep .p-datatable-tbody > tr:hover {
+  background: rgba($gold,.03);
+}
+
+/* CELLS */
+
+.id {
+  font-size: 12px;
+  color: rgba(#fff,.4);
+}
 
 .name {
-  font-weight: 500;
-  color: #fff;
+  font-size: 13px;
+  letter-spacing: .08em;
 }
-
-/* PARENT */
 
 .parent {
-  color: #aaa;
-  font-size: 13px;
+  font-size: 12px;
+  color: $muted;
 }
+
 
 /* BADGE */
 
 .badge {
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 12px;
+  font-size: 9px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border: 1px solid transparent;
 }
 
-.root {
-  background: #1f3d2a;
-  color: #7dffb2;
+.badge--root {
+  border-color: rgba($gold,.4);
+  color: $gold;
 }
 
-.child {
-  background: #2b2b2b;
-  color: #f1d190;
+.badge--child {
+  border-color: $line;
+  color: rgba(#fff,.5);
 }
 
 /* BUTTONS */
 
-.edit-btn {
-  background: #2a2a2a;
+.btn-primary {
+  background: transparent;
+  border: 1px solid rgba($gold,.4);
+  color: $gold;
+  padding: 10px 20px;
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: .3s;
+
+  &:hover {
+    background: $gold;
+    color: #000;
+  }
+}
+
+.btn-ghost {
+  background: transparent;
   border: none;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 8px;
-  margin-right: 8px;
-  transition: 0.2s;
+  color: rgba(#fff,.4);
+  font-size: 11px;
+  margin-right: 10px;
+  cursor: pointer;
+
+  &:hover {
+    color: $gold;
+  }
 }
 
-.edit-btn:hover {
-  background: #d4a84f;
-  color: black;
-}
-
-.delete-btn {
-  background: #b23b2e;
+.btn-danger {
+  background: transparent;
   border: none;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 8px;
+  color: rgba(#ff6b6b,.6);
+  font-size: 11px;
+  cursor: pointer;
+
+  &:hover {
+    color: #ff3b3b;
+  }
+}
+/* DIALOG BOX */
+
+:host ::ng-deep .lux-dialog .p-dialog {
+  background: $bg;
+  border: 1px solid $line;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
 }
 
-.delete-btn:hover {
-  background: #e64b3a;
+/* HEADER */
+
+:host ::ng-deep .lux-dialog .p-dialog-header {
+  background: transparent;
+  border-bottom: 1px solid $line;
+  padding: 20px 24px;
+
+  .p-dialog-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: #fff;
+  }
 }
 
-/* PRIME */
+/* CLOSE ICON */
 
-:host ::ng-deep .p-datatable-thead > tr > th {
-  background: #141414;
+:host ::ng-deep .lux-dialog .p-dialog-header-icon {
+  color: rgba(255,255,255,.4);
+  transition: .3s;
+
+  &:hover {
+    color: $gold;
+  }
+}
+
+/* CONTENT */
+
+.dialog-content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* FIELD */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-size: 10px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.4);
+  }
+
+  input {
+    background: transparent;
+    border: 1px solid $line;
+    padding: 10px 12px;
+    color: #fff;
+    font-size: 13px;
+    transition: .3s;
+
+    &:focus {
+      outline: none;
+      border-color: $gold;
+      box-shadow: 0 0 0 1px rgba($gold,.3);
+    }
+  }
+}
+/* SELECT */
+.lux-select {
+  width: 100%;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.08);
+  color: #fff;
+  padding: 10px 12px;
+  font-size: 13px;
+  appearance: none;
+  cursor: pointer;
+  transition: .3s;
+
+  /* custom arrow */
+  background-image: linear-gradient(45deg, transparent 50%, #c9a84c 50%),
+                    linear-gradient(135deg, #c9a84c 50%, transparent 50%);
+  background-position:
+    calc(100% - 16px) calc(50% - 3px),
+    calc(100% - 10px) calc(50% - 3px);
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+}
+
+/* hover */
+.lux-select:hover {
+  border-color: rgba(201,168,76,.4);
+}
+
+/* focus */
+.lux-select:focus {
+  outline: none;
+  border-color: #c9a84c;
+  box-shadow: 0 0 0 1px rgba(201,168,76,.3);
+}
+
+/* option (limitáltan stylolható) */
+.lux-select option {
+  background: #080808;
+  color: #fff;
+}
+/* FOOTER */
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid $line;
+}
+
+/* BUTTONS */
+
+.btn-primary {
+  background: transparent;
+  border: 1px solid rgba($gold,.4);
+  color: $gold;
+  padding: 10px 20px;
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: .3s;
+
+  &:hover {
+    background: $gold;
+    color: #000;
+  }
+}
+
+.btn-ghost {
+  background: transparent;
   border: none;
-  color: #d4a84f;
+  color: rgba(255,255,255,.4);
+  font-size: 11px;
+  cursor: pointer;
+
+  &:hover {
+    color: $gold;
+  }
 }
 
-:host ::ng-deep .p-datatable-tbody > tr {
-  background: #0f0f0f;
-  border-bottom: 1px solid #1e1e1e;
-}
+/* OVERLAY */
 
-:host ::ng-deep .p-datatable-tbody > tr:hover {
-  background: #181818;
+:host ::ng-deep .p-dialog-mask {
+  backdrop-filter: blur(6px);
+  background: rgba(0,0,0,.6);
 }

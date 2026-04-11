@@ -4,7 +4,13 @@ const { Category } = require('../models/index');
 async function getAllCategories(req, res) {
   try {
     const categories = await Category.findAll({
-      include: [{ model: Category, as: 'subcategories', include: [{ model: Category, as: 'subcategories' }] }]
+    include: [
+        { model: Category, as: 'parent', attributes: ['id', 'name'] },
+        { model: Category, as: 'subcategories', include: [
+            { model: Category, as: 'subcategories' }
+          ]
+        }
+      ]
     });
     return res.status(200).json(categories);
   } catch (err) {

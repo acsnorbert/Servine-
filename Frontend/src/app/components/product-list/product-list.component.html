@@ -20,7 +20,7 @@
         class="cat-btn"
         *ngFor="let cat of categories"
         [class.active]="selectedCategory === cat.id"
-        (click)="setCategory(cat.id)">
+        (click)="setCategory(cat.id!)">
         {{ cat.name }}
       </button>
     </div>
