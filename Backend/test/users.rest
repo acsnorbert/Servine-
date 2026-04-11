@@ -37,5 +37,14 @@ Authorization: Bearer {{userToken}}
   "email": "email@example.com"
 }
 ### Felhasználó törlése (csak admin!)
-DELETE {{url}}/api/users/b9c62901-813b-4166-acb6-fc6d3bbbe40e
+DELETE {{url}}/api/users/ed10324a-91c9-4a78-97d9-d18d5f352ea2
 Authorization: Bearer {{adminToken}}
+
+### Role módosítása
+PATCH {{url}}/api/users/6f4f564a-69d2-4a8f-bc0a-e8881863519b/role
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "role": "admin"
+}

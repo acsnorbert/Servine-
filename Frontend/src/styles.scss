@@ -1,5 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
+//Paginator css változtatások
+:root {
+  --gold: #c9a84c !important;
+
+  --p-highlight-background: color-mix(in srgb, #c9a84c, transparent 85%) !important;
+  --p-highlight-focus-background: color-mix(in srgb, #c9a84c, transparent 70%) !important;
+
+  --p-button-primary-hover-background:color-mix(in srgb, #f0deac, transparent 10%) !important;
+  --p-button-primary-hover-border-color:color-mix(in srgb, #f0deac, transparent 10%) !important;
+  --p-primary-color: #c9a84c !important;
+  --p-primary-contrast-color: #000 !important;
+}
+
 // vars
 $gold:  #c9a84c;
 $bg:    #080808;
