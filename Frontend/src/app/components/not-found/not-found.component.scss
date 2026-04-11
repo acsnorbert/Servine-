@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@200;300;400;500&display=swap');
+
+$gold:  #c9a84c;
+$bg:    #080808;
+$muted: rgba(255,255,255,.38);
+
+.nf {
+  font-family: 'Outfit', sans-serif;
+  background: $bg;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+
+  // Nagy háttér 404 szöveg
+  &__bg-text {
+    position: absolute;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(220px, 30vw, 420px);
+    font-weight: 700;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba($gold, .07);
+    letter-spacing: .1em;
+    user-select: none;
+    pointer-events: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    animation: pulse 6s ease-in-out infinite;
+  }
+
+  // Tartalom középen
+  &__content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    animation: fadeUp .9s cubic-bezier(.16,1,.3,1) .1s both;
+  }
+
+  &__label {
+    font-size: 11px;
+    letter-spacing: .4em;
+    text-transform: uppercase;
+    color: $gold;
+    font-weight: 400;
+  }
+
+  &__code {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(80px, 14vw, 160px);
+    font-weight: 700;
+    line-height: 1;
+    color: transparent;
+    background: linear-gradient(135deg, #fff 30%, $gold 70%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    letter-spacing: .06em;
+  }
+
+  &__sub {
+    font-size: 15px;
+    font-weight: 200;
+    color: $muted;
+    line-height: 1.8;
+    max-width: 340px;
+  }
+
+  // CTA gomb
+  &__btn {
+    margin-top: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: .35em;
+    text-transform: uppercase;
+    color: #fff;
+    text-decoration: none;
+    padding: 14px 0;
+    transition: color .3s;
+
+    &:hover {
+      color: $gold;
+
+      .nf__btn-line {
+        width: 40px;
+        background: $gold;
+      }
+    }
+  }
+
+  &__btn-line {
+    display: block;
+    height: 1px;
+    width: 24px;
+    background: rgba(255,255,255,.35);
+    transition: width .35s ease, background .3s;
+  }
+
+  // Dekoratív körök
+  &__deco {
+    position: absolute;
+    width: 480px;
+    height: 480px;
+    border-radius: 50%;
+    border: 1px solid rgba($gold, .06);
+    pointer-events: none;
+
+    &--left {
+      left: -180px;
+      bottom: -100px;
+      animation: rotateSlow 30s linear infinite;
+    }
+
+    &--right {
+      right: -160px;
+      top: -120px;
+      width: 360px;
+      height: 360px;
+      border-color: rgba($gold, .04);
+      animation: rotateSlow 22s linear infinite reverse;
+    }
+  }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: .5; }
+  50%       { opacity: 1; }
+}
+
+@keyframes rotateSlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}

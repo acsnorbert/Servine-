@@ -15,6 +15,7 @@ import { CartComponent } from './components/cart/cart.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { AboutComponent } from './components/about/about.component';
 import { authGuard } from './guards/auth.guard';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -40,5 +41,6 @@ export const routes: Routes = [
   { path: 'product_list', component: ProductsComponent},
   { path: 'users', component: UsersComponent},
 
-  { path: '**', redirectTo: '' },
+  // 404
+  { path: '**', component: NotFoundComponent },
 ];
