@@ -14,31 +14,31 @@ import { ProductsComponent } from './components/Admin/products/products.componen
 import { CartComponent } from './components/cart/cart.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { AboutComponent } from './components/about/about.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-    { path: '', component: HomeComponent },
-    { path: 'home', component: HomeComponent },
-    //SHOP
-    { path: 'product', component: ProductComponent }, 
+  { path: '', component: HomeComponent },
+  { path: 'home', component: HomeComponent },
 
-    //USER
-    { path: 'profile', component: ProfileComponent }, 
-    { path: 'login', component: LoginComponent },
-    { path: 'registration', component: RegistrationComponent },
-    { path: 'product', component: ProductComponent },
-    { path: 'products', component: ProductListComponent },
-    { path: 'products/:id', component: ProductComponent },
-    { path: 'cart', component: CartComponent },
-    { path: 'contact', component: ContactComponent },
-    { path: 'about', component: AboutComponent },
+  // PUBLIC
+  { path: 'login', component: LoginComponent },
+  { path: 'registration', component: RegistrationComponent },
+  { path: 'products', component: ProductListComponent },
+  { path: 'products/:id', component: ProductComponent },
+  { path: 'contact', component: ContactComponent },
+  { path: 'about', component: AboutComponent },
 
-    //ADMIN
-    { path: 'category', component: CategoriesComponent }, 
-    { path: 'dashboard', component: DashboardComponent }, 
-    { path: 'order_items', component: OrderItemsComponent }, 
-    { path: 'orders', component:OrdersComponent }, 
-    { path: 'product_list', component: ProductsComponent}, 
-    { path: 'users', component: UsersComponent }, 
-    
-    
+  // BEJELENTKEZÉS SZÜKSÉGES
+  { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+  { path: 'cart', component: CartComponent, canActivate: [authGuard] },
+
+  // ADMIN ONLY
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'category', component: CategoriesComponent },
+  { path: 'order_items', component: OrderItemsComponent},
+  { path: 'orders', component: OrdersComponent},
+  { path: 'product_list', component: ProductsComponent},
+  { path: 'users', component: UsersComponent},
+
+  { path: '**', redirectTo: '' },
 ];
