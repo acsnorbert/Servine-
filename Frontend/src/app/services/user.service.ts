@@ -10,7 +10,7 @@ export interface UserProfile {
   phone: string | null;
   address: string | null;
   role: 'user' | 'admin';
-  created_at: string;
+  createdAt: string;
 }
 
 export interface UpdateProfilePayload {

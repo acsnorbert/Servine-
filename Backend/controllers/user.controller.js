@@ -3,7 +3,7 @@ const { User } = require('../models');
 const getProfile = async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id, {
-      attributes: ['id', 'name', 'email', 'phone', 'address', 'role', 'created_at']
+      attributes: ['id', 'name', 'email', 'phone', 'address', 'role', 'createdAt']
     });
 
     if (!user) {

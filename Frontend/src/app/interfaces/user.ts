@@ -8,5 +8,5 @@ export interface User {
   phone?:string;
   address?:string;
   role?:"user" | "admin";
-  created_at?:Date;
+  createdAt?:Date;
 }

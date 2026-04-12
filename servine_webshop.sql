@@ -76,7 +76,7 @@ CREATE TABLE `products` (
   `stock` int(11) DEFAULT 0,
   `sku` varchar(50) NOT NULL,
   `image` varchar(255) DEFAULT NULL,
-  `created_at` datetime DEFAULT current_timestamp()
+  `createdAt` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
@@ -91,7 +91,7 @@ CREATE TABLE `reviews` (
   `user_id` int(11) NOT NULL,
   `rating` int(11) NOT NULL CHECK (`rating` between 1 and 5),
   `comment` text DEFAULT NULL,
-  `created_at` datetime DEFAULT current_timestamp()
+  `createdAt` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
@@ -108,7 +108,7 @@ CREATE TABLE `users` (
   `phone` varchar(20) DEFAULT NULL,
   `address` text DEFAULT NULL,
   `role` enum('user','admin') DEFAULT 'user',
-  `created_at` datetime DEFAULT current_timestamp()
+  `createdAt` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --

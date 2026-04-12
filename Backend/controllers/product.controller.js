@@ -10,7 +10,7 @@ async function getAllProducts(req, res) {
     if (min_price) where.price = { [Op.gte]: parseFloat(min_price) };
     if (max_price) where.price = { [Op.lte]: parseFloat(max_price) };
 
-    const order = sort === 'price_asc' ? [['price', 'ASC']] : sort === 'price_desc' ? [['price', 'DESC']] : [['created_at', 'DESC']];
+    const order = sort === 'price_asc' ? [['price', 'ASC']] : sort === 'price_desc' ? [['price', 'DESC']] : [['createdAt', 'DESC']];
 
     const products = await Product.findAll({
       where,

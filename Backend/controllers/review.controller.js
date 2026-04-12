@@ -12,7 +12,7 @@ async function getProductReviews(req, res) {
     const reviews = await Review.findAll({
       where: { product_id: productId },
       include: [{ model: User, as: 'user', attributes: ['id', 'name'] }],
-      order: [['created_at', 'DESC']]
+      order: [['createdAt', 'DESC']]
     });
 
     // Átlagos értékelés kiszámítása

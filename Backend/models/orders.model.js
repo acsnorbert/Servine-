@@ -23,6 +23,15 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING(50),
         allowNull: true,
         defaultValue: 'Feldolgozás alatt'
+      },
+      createdAt: {
+          type: DataTypes.DATE,
+          allowNull: false,
+          defaultValue: DataTypes.NOW
+      },
+      updatedAt: {
+          type: DataTypes.DATE,
+          allowNull: true,
       }
     },
     {
