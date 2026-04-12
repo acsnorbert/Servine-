@@ -35,6 +35,7 @@
         <tr>
           <th>ID</th>
           <th>User ID</th>
+          <th>Items</th>
           <th>Order Date</th>
           <th>Status</th>
           <th style="width:150px">Actions</th>
@@ -47,8 +48,14 @@
 
           <td>{{ order.id }}</td>
 
-          <td>{{ order.user_id }}</td>
-
+          <td>{{ order.user.email }}</td>
+          
+          <td>
+            <span class="items-link" (click)="openItemsDialog(order)">
+              View items ({{ order.items?.length || 0 }})
+            </span>
+          </td>
+                    
           <td>
             {{ order.order_date ? (order.order_date | date:'yyyy-MM-dd HH:mm') : '—' }}
           </td>
@@ -82,7 +89,28 @@
       </ng-template>
 
     </p-table>
+    <p-confirmDialog></p-confirmDialog>
+  </div>
+  <p-dialog
+  [(visible)]="itemsDialog"
+  [modal]="true"
+  [closable]="true"
+  [style]="{ width: '400px' }"
+  styleClass="lux-dialog"
+  header="Order Items"
+>
+
+  <div class="dialog-content">
+
+    <div 
+      class="item-row"
+      *ngFor="let item of selectedItems"
+      (click)="selectItem(item)"
+    >
+      {{ item.product_id }}
+    </div>
 
   </div>
 
+</p-dialog>
 </div>

@@ -19,12 +19,14 @@ const productRoutes = require('../routes/product.routes');
 const categoryRoutes = require('../routes/category.routes');
 const orderRoutes = require('../routes/order.routes');
 const reviewRoutes = require('../routes/review.routes');
+const order_itemRoutes  = require('../routes/order_items.routes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/order-items', order_itemRoutes);
 app.use('/api/reviews', reviewRoutes);
 
 app.get('/', (_req, res) => {

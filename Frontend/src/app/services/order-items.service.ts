@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class OrderItemsService {
 
-  private readonly API = 'http://localhost:3000/api/order_items';
+  private readonly API = 'http://localhost:3000/api/order-items';
       
         constructor(private http: HttpClient) {}
     
@@ -31,8 +31,8 @@ export class OrderItemsService {
           return this.http.get(`${this.API}`, this.tokenHeader());
         }
         // ── GET /api/order_items/id ────────────────────
-        getOrderItemById(id:string){
-          return this.http.get(`${this.API}/${id}`,  this.tokenHeader())
+        getOrderItemByOrderId(order_id:string){
+          return this.http.get(`${this.API}/order/${order_id}`,  this.tokenHeader())
         }
         // ── POST /api/order_items ────────────────────
         insertOrderItem(data:object){

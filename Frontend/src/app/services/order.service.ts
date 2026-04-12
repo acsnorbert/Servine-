@@ -24,4 +24,7 @@ export class OrderService {
   getOrderById(id: string) {
     return this.http.get(`${this.API}/${id}`, this.tokenHeader());
   }
+  getOrders(){
+    return this.http.get(`${this.API}`, this.tokenHeader());
+  }
 }
