@@ -89,8 +89,8 @@ export class UserService {
 
   // ── GET /api/users/orders ─────────────────────
   getMyOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.API}/orders`, this.tokenHeader());
-  }
+  return this.http.get<Order[]>(`${environment.serverUrl}/api/orders/my`, this.tokenHeader());
+}
 
   // ------ ADMIN -----------
 
