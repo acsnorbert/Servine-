@@ -5,6 +5,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { UserService, UserProfile, Order } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { RouterLink } from '@angular/router';
+import { MessageService } from '../../services/message.service';
 
 // =====================
 // CUSTOM VALIDATOR
@@ -49,11 +50,7 @@ export class ProfileComponent implements OnInit {
   orders: Order[] = [];
   isLoading = true;
 
-  // ── Toast ─────────────────────────────────────
-  toastVisible  = false;
-  toastMessage  = '';
-  toastIsError  = false;
-  private toastTimer: any;
+
 
   // ── Forms ─────────────────────────────────────
   profileForm!:  FormGroup;
@@ -63,7 +60,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private authService: AuthService
+    private authService: AuthService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -108,7 +106,7 @@ export class ProfileComponent implements OnInit {
       },
       error: () => {
         this.isLoading = false;
-        this.showToast('Nem sikerült betölteni a profilt.', true);
+        this.messageService.show('error', 'Error', 'Nem sikerült betölteni a profilt.');
       }
     });
   }
@@ -170,9 +168,9 @@ export class ProfileComponent implements OnInit {
     this.userService.updateProfile(this.profileForm.value).subscribe({
       next: (res) => {
         this.profile = res.user;
-        this.showToast('Személyes adatok mentve!');
+        this.messageService.show('success', 'Success', 'Sikeres személyes adatok mentés');
       },
-      error: () => this.showToast('Mentés sikertelen.', true)
+      error: () => this.messageService.show('error', 'Error', 'Mentés sikertelen.')
     });
   }
 
@@ -183,8 +181,8 @@ export class ProfileComponent implements OnInit {
       email:   this.profileForm.get('email')?.value,
       address: this.addressForm.get('address')?.value,
     }).subscribe({
-      next: () => this.showToast('Szállítási cím mentve!'),
-      error: () => this.showToast('Mentés sikertelen.', true)
+      next: () => this.messageService.show('success', 'Success', 'Sikeres cím mentés'),
+      error: () => this.messageService.show('error', 'Error', 'Mentés sikertelen.')
     });
   }
 
@@ -197,12 +195,11 @@ export class ProfileComponent implements OnInit {
     const { currentPassword, newPassword } = this.passwordForm.value;
     this.userService.changePassword({ currentPassword, newPassword }).subscribe({
       next: () => {
-        this.showToast('Jelszó sikeresen megváltoztatva!');
+        this.messageService.show('success', 'Success', 'Sikeres jelszócsere');
         this.passwordForm.reset();
       },
       error: (err) => {
-        const msg = err?.error?.message ?? 'Jelszócsere sikertelen.';
-        this.showToast(msg, true);
+        this.messageService.show('error', 'Error', "Sikertelen!");
       }
     });
   }
@@ -220,12 +217,5 @@ export class ProfileComponent implements OnInit {
     this.authService.logout();
   }
 
-  // ── Toast ─────────────────────────────────────
-  private showToast(message: string, isError = false): void {
-    this.toastMessage = message;
-    this.toastIsError = isError;
-    this.toastVisible = true;
-    clearTimeout(this.toastTimer);
-    this.toastTimer = setTimeout(() => { this.toastVisible = false; }, 3000);
-  }
+  
 }

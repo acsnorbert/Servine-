@@ -49,11 +49,11 @@ export class ApiService {
   }
 
   updateProfile(data: { name: string; email: string; phone?: string; address?: string }): Observable<any> {
-    return this.http.put(`${BASE}/users/profile`, data);
+    return this.http.patch(`${BASE}/users/profile`, data);
   }
 
   changePassword(currentPassword: string, newPassword: string): Observable<any> {
-    return this.http.put(`${BASE}/users/change-password`, { currentPassword, newPassword });
+    return this.http.patch(`${BASE}/users/change-password`, { currentPassword, newPassword });
   }
 
   getMyOrders(): Observable<any> {
@@ -98,6 +98,6 @@ export class ApiService {
   }
 
   updateOrderStatus(id: string, status: string): Observable<any> {
-    return this.http.put(`${BASE}/orders/${id}/status`, { status });
+    return this.http.patch(`${BASE}/orders/${id}/status`, { status });
   }
 }
