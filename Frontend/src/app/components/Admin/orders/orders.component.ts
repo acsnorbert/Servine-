@@ -32,6 +32,9 @@ import { OrderItemsService } from '../../../services/order-items.service';
   providers: [ConfirmationService]
 })
 export class OrdersComponent implements OnInit {
+saveItems() {
+throw new Error('Method not implemented.');
+}
 
 
 
@@ -51,11 +54,25 @@ export class OrdersComponent implements OnInit {
 
   itemsDialog = false;
 
-  openItemsDialog(order: any) {
-    this.selectedItems = order.items || [];
+  openItemsDialog(id:string, length:any) {
+    if(length <= 0){
+      this.messageService.show('info', 'INFO', 'Ennek a rendelésnek nincsenek tárgyai!');
+    }
+    else{
+      this.orderItemApi.getOrderItemByOrderId(id).subscribe({
+      next:(res)=>{
+        this.selectedItems = res as Order_item[];
+        console.log(res)
+      },
+      error:(err)=>{
+        this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a rendelések lehívásakor');
+      }
+    })
     this.itemsDialog = true;
+    }
+    
   }
-  selectItem(item: Order_item) {
+  deleteItem(item: Order_item) {
     this.confirmationService.confirm({
       message: `Are you sure you want to delete this category?|: ${item.product?.name}`,
       header: 'Confirmation',
@@ -78,6 +95,16 @@ export class OrdersComponent implements OnInit {
   }
 
   getOrders(){
+    this.api.getOrders().subscribe({
+      next:(res)=>{
+        this.orders = res as Order[];
+      },
+      error:(err)=>{
+        this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a rendelések lehívásakor');
+      }
+    })
+  }
+  getOrderItems(){
     this.api.getOrders().subscribe({
       next:(res)=>{
         this.orders = res as Order[];
