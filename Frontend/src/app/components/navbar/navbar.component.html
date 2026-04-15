@@ -1,16 +1,60 @@
-<nav class="navbar">
+<nav class="navbar" [class.scrolled]="isScrolled">
+
+  <!-- MOBIL: Logo bal oldalon -->
+  <a routerLink="/home" class="mobile-navbar-logo">
+    <img src="Servinelogo.png" alt="Servine" />
+  </a>
+
+  <!-- DESKTOP: Teljes nav links (középen logo-val) -->
   <div class="nav-links">
-    <a routerLink="/about">About us</a>
-    <a routerLink="/products">Products</a>
-    <a routerLink="/home"><img src="Servinelogo.png" alt="" style="width: 30px;"></a>
-    <a *ngIf="isloggedin" routerLink="/profile">Profile</a>
-    <a *ngIf="!isloggedin" routerLink="/login">Profile</a>
-    <a routerLink="/contact">Contact us</a>
+    <a routerLink="/about"    routerLinkActive="active">About us</a>
+    <a routerLink="/products" routerLinkActive="active">Products</a>
+    <a routerLink="/home" class="logo-link">
+      <img src="Servinelogo.png" alt="Servine" />
+    </a>
+    <a *ngIf="isloggedin"  routerLink="/profile" routerLinkActive="active">Profile</a>
+    <a *ngIf="!isloggedin" routerLink="/login"   routerLinkActive="active">Profile</a>
+    <a routerLink="/contact" routerLinkActive="active">Contact us</a>
   </div>
 
-  <a *ngIf="cartItemCount > 0" routerLink="/cart" class="cart-icon-wrapper">
-    <img src="cart.png" alt="" style="width: 100%;">
-    
+  <!-- KOSÁR – csak mobilon jelenik meg -->
+  <a *ngIf="cartItemCount > 0" routerLink="/cart" class="cart-icon-wrapper mobile-cart">
+    <img src="cart.png" alt="Kosár" />
     <span class="badge">{{ cartItemCount }}</span>
   </a>
+
+  <!-- HAMBURGER – csak mobilon -->
+  <button
+    class="hamburger"
+    [class.open]="menuOpen"
+    (click)="toggleMenu()"
+    aria-label="Menü"
+    [attr.aria-expanded]="menuOpen">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
 </nav>
+
+<!-- MOBIL MENÜ -->
+<div class="mobile-menu" [class.open]="menuOpen" (click)="closeMenu()">
+  <div class="mobile-menu-inner" (click)="$event.stopPropagation()">
+    <div class="mobile-logo">
+      <img src="Servinelogo.png" alt="Servine" />
+      <span>SERVINE</span>
+    </div>
+
+    <nav class="mobile-nav">
+      <a routerLink="/home"     routerLinkActive="active" (click)="closeMenu()">Home</a>
+      <a routerLink="/about"    routerLinkActive="active" (click)="closeMenu()">About us</a>
+      <a routerLink="/products" routerLinkActive="active" (click)="closeMenu()">Products</a>
+      <a *ngIf="isloggedin"  routerLink="/profile" routerLinkActive="active" (click)="closeMenu()">Profile</a>
+      <a *ngIf="!isloggedin" routerLink="/login"   routerLinkActive="active" (click)="closeMenu()">Bejelentkezés</a>
+      <a routerLink="/contact"  routerLinkActive="active" (click)="closeMenu()">Contact us</a>
+      <a *ngIf="cartItemCount > 0" routerLink="/cart" class="cart-link" (click)="closeMenu()">
+        Kosár <span class="cart-badge">{{ cartItemCount }}</span>
+      </a>
+    </nav>
+  </div>
+</div>
