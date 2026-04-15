@@ -28,17 +28,21 @@ export interface ChangePasswordPayload {
 export interface OrderItem {
   id: string;
   product_id: string;
-  product_name: string;
   quantity: number;
   price: number;
+  product?: {
+    name: string;
+    image_url?: string;
+  };
 }
 
 export interface Order {
   id: string;
+  user_id: string;
   order_date: string;
   status: string;
-  items: OrderItem[];
-  total: number;
+  total?: number;
+  items?: OrderItem[];
 }
 
 @Injectable({ providedIn: 'root' })
@@ -101,6 +105,10 @@ deleteAccount(): Observable<{ message: string }> {
   return this.http.get<Order[]>(`${environment.serverUrl}/api/orders/my`, this.tokenHeader());
 }
 
+
+getOrderById(id: string): Observable<Order> {
+  return this.http.get<Order>(`${environment.serverUrl}/api/orders/${id}`, this.tokenHeader());
+}
   // ------ ADMIN -----------
 
   // ── GET /api/users ─────────────────────

@@ -1,212 +1,251 @@
 <div class="page-wrapper">
 
-    <!-- PAGE HEADER -->
-    <div class="page-header">
-      <h1>SERVINE</h1>
-      <p>Fiók kezelése</p>
-    </div>
-  
-    <!-- LOADING -->
-    <div class="loading-state" *ngIf="isLoading">
-      <div class="spinner"></div>
-    </div>
-  
-    <div class="profile-grid" *ngIf="!isLoading">
-  
-      <!-- ═══════════════════════════════
-           BAL OLDAL — Avatar kártya
-           ═══════════════════════════════ -->
-      <div class="glass-card avatar-card">
-  
-        <div class="avatar-wrapper">
-          <div class="avatar-ring"></div>
-          <div class="avatar-inner">{{ getInitials() }}</div>
-          <button class="avatar-edit-btn" title="Profilkép szerkesztése">✏</button>
-        </div>
-  
-        <div class="avatar-info">
-          <div class="avatar-name">{{ profile?.name }}</div>
-          <div class="avatar-email">{{ profile?.email }}</div>
-          <div class="member-badge">
-            <span class="dot"></span>
-            Gold tag
-          </div>
-        </div>
-  
-        <div class="gold-divider"></div>
-  
-        <div class="stat-row">
-          <div class="stat-item">
-            <div class="val">{{ orders.length }}</div>
-            <div class="lbl">Rendelés</div>
-          </div>
-          <div class="stat-item">
-            <div class="val">{{ getActiveShipments() }}</div>
-            <div class="lbl">Kiszállítás alatt</div>
-          </div>
-        </div>
-  
-        <div class="gold-divider"></div>
-  
-        <nav class="profile-nav">
-          <button
-            class="profile-nav-item"
-            [class.active]="activeTab === 'personal'"
-            (click)="setTab('personal')">Személyes adatok
-          </button>
-          <button
-            class="profile-nav-item"
-            [class.active]="activeTab === 'orders'"
-            (click)="setTab('orders')">Rendeléseim
-          </button>
-          <button
-            class="profile-nav-item"
-            [class.active]="activeTab === 'security'"
-            (click)="setTab('security')">Biztonság
-          </button>
-          <button class="profile-nav-item danger" (click)="logout()">Kijelentkezés</button>
-        </nav>
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <h1>SERVINE</h1>
+    <p>Fiók kezelése</p>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+  </div>
+
+  <div class="profile-grid" *ngIf="!isLoading">
+
+    <!-- ═══════════════════════════════
+         BAL OLDAL — Avatar kártya
+         ═══════════════════════════════ -->
+    <div class="glass-card avatar-card">
+
+      <div class="avatar-wrapper">
+        <div class="avatar-ring"></div>
+        <div class="avatar-inner">{{ getInitials() }}</div>
+        <button class="avatar-edit-btn" title="Profilkép szerkesztése">✏</button>
       </div>
-  
-      <!-- ═══════════════════════════════
-           JOBB OLDAL — Tartalom
-           ═══════════════════════════════ -->
-      <div class="content-area">
-  
-        <!-- ── TAB: Személyes adatok ── -->
-        <ng-container *ngIf="activeTab === 'personal'">
-  
-          <div class="glass-card" @fadeSlide>
-            <div class="section-title">Személyes adatok</div>
-            <form [formGroup]="profileForm" (ngSubmit)="savePersonal()">
-              <div class="form-row">
-                <div class="form-group full">
-                  <label>Teljes név</label>
-                  <input type="text" formControlName="name" placeholder="Teljes név" />
-                  <span class="field-error"
-                    *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched">
-                    Kötelező mező
-                  </span>
-                </div>
-                <div class="form-group full">
-                  <label>E-mail cím</label>
-                  <input type="email" formControlName="email" placeholder="email@example.com" />
-                  <span class="field-error"
-                    *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
-                    Érvényes e-mail szükséges
-                  </span>
-                </div>
-                <div class="form-group full">
-                  <label>Telefonszám</label>
-                  <input type="tel" formControlName="phone" placeholder="+36 30 123 4567" />
-                </div>
+
+      <div class="avatar-info">
+        <div class="avatar-name">{{ profile?.name }}</div>
+        <div class="avatar-email">{{ profile?.email }}</div>
+      </div>
+
+      <div class="gold-divider"></div>
+
+      <nav class="profile-nav">
+        <button
+          class="profile-nav-item"
+          [class.active]="activeTab === 'personal'"
+          (click)="setTab('personal')">Személyes adatok
+        </button>
+        <button
+          class="profile-nav-item"
+          [class.active]="activeTab === 'orders'"
+          (click)="setTab('orders')">Rendeléseim
+        </button>
+        <button
+          class="profile-nav-item"
+          [class.active]="activeTab === 'security'"
+          (click)="setTab('security')">Biztonság
+        </button>
+        <button class="profile-nav-item danger" (click)="logout()">Kijelentkezés</button>
+      </nav>
+    </div>
+
+    <!-- ═══════════════════════════════
+         JOBB OLDAL — Tartalom
+         ═══════════════════════════════ -->
+    <div class="content-area">
+
+      <!-- ── TAB: Személyes adatok ── -->
+      <ng-container *ngIf="activeTab === 'personal'">
+
+        <div class="glass-card" @fadeSlide>
+          <div class="section-title">Személyes adatok</div>
+          <form [formGroup]="profileForm" (ngSubmit)="savePersonal()">
+            <div class="form-row">
+              <div class="form-group full">
+                <label>Teljes név</label>
+                <input type="text" formControlName="name" placeholder="Teljes név" />
+                <span class="field-error"
+                  *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched">
+                  Kötelező mező
+                </span>
               </div>
-              <div class="gold-divider"></div>
-              <button type="submit" class="primary-btn" [disabled]="profileForm.invalid">
-                Adatok mentése →
-              </button>
-            </form>
-          </div>
-  
-          <div class="glass-card" @fadeSlide>
-            <div class="section-title">Szállítási cím</div>
-            <form [formGroup]="addressForm" (ngSubmit)="saveAddress()">
-              <div class="form-row">
-                <div class="form-group full">
-                  <label>Teljes cím</label>
-                  <input type="text" formControlName="address" placeholder="pl. 1234 Budapest, Váci út 12." />
-                </div>
+              <div class="form-group full">
+                <label>E-mail cím</label>
+                <input type="email" formControlName="email" placeholder="email@example.com" />
+                <span class="field-error"
+                  *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
+                  Érvényes e-mail szükséges
+                </span>
               </div>
-              <div class="gold-divider"></div>
-              <button type="submit" class="primary-btn">Cím mentése →</button>
-            </form>
-          </div>
-  
-        </ng-container>
-  
-        <!-- ── TAB: Rendelések ── -->
-        <ng-container *ngIf="activeTab === 'orders'">
-          <div class="glass-card" @fadeSlide>
-            <div class="section-title">Rendeléseim</div>
-  
-            <div class="order-list" *ngIf="orders.length > 0; else emptyOrders">
-              <div class="order-item" *ngFor="let order of orders">
-                <div class="order-info">
-                  <div class="order-id">#ORD-{{ order.id }}</div>
-                  <div class="order-date">{{ formatDate(order.order_date) }}</div>
-                </div>
-                <div class="order-right">
-                  <div class="order-price">{{ getOrderTotal(order) | number:'1.0-0' }} Ft</div>
-                  <span class="order-status" [class]="getStatusClass(order.status)">
-                    {{ order.status }}
-                  </span>
-                </div>
+              <div class="form-group full">
+                <label>Telefonszám</label>
+                <input type="tel" formControlName="phone" placeholder="+36 30 123 4567" />
               </div>
             </div>
-  
-            <ng-template #emptyOrders>
-              <div class="empty-state">
-                <p>Még nincs rendelésed.</p>
+            <div class="gold-divider"></div>
+            <button type="submit" class="primary-btn" [disabled]="profileForm.invalid">
+              Adatok mentése →
+            </button>
+          </form>
+        </div>
+
+        <div class="glass-card" @fadeSlide>
+          <div class="section-title">Szállítási cím</div>
+          <form [formGroup]="addressForm" (ngSubmit)="saveAddress()">
+            <div class="form-row">
+              <div class="form-group full">
+                <label>Teljes cím</label>
+                <input type="text" formControlName="address" placeholder="pl. 1234 Budapest, Váci út 12." />
               </div>
-            </ng-template>
-          </div>
-        </ng-container>
-  
-        <!-- ── TAB: Biztonság ── -->
-        <ng-container *ngIf="activeTab === 'security'">
-  
-          <div class="glass-card" @fadeSlide>
-            <div class="section-title">Jelszó módosítása</div>
-            <form [formGroup]="passwordForm" (ngSubmit)="savePassword()">
-              <div class="form-row">
-                <div class="form-group full">
-                  <label>Jelenlegi jelszó</label>
-                  <input type="password" formControlName="currentPassword" placeholder="••••••••" />
-                  <span class="field-error"
-                    *ngIf="passwordForm.get('currentPassword')?.invalid && passwordForm.get('currentPassword')?.touched">
-                    Kötelező mező
-                  </span>
-                </div>
-                <div class="form-group">
-                  <label>Új jelszó</label>
-                  <input type="password" formControlName="newPassword" placeholder="••••••••" />
-                  <span class="field-error"
-                    *ngIf="passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched">
-                    Minimum 8 karakter
-                  </span>
-                </div>
-                <div class="form-group">
-                  <label>Jelszó megerősítése</label>
-                  <input type="password" formControlName="confirmPassword" placeholder="••••••••" />
-                  <span class="field-error"
-                    *ngIf="passwordForm.hasError('mismatch') && passwordForm.get('confirmPassword')?.touched">
-                    A jelszavak nem egyeznek
-                  </span>
-                </div>
+            </div>
+            <div class="gold-divider"></div>
+            <button type="submit" class="primary-btn">Cím mentése →</button>
+          </form>
+        </div>
+
+      </ng-container>
+
+      <!-- ── TAB: Rendelések ── -->
+      <ng-container *ngIf="activeTab === 'orders'">
+        <div class="glass-card" @fadeSlide>
+          <div class="section-title">Rendeléseim</div>
+
+          <div class="order-list" *ngIf="orders.length > 0; else emptyOrders">
+            <div class="order-item" *ngFor="let order of orders" (click)="openOrderModal(order)">
+              <div class="order-info">
+                <div class="order-id">#ORD-{{ order.id }}</div>
+                <div class="order-date">{{ formatDate(order.order_date) }}</div>
               </div>
-              <div class="gold-divider"></div>
-              <div class="btn-row">
-                <button type="submit" class="primary-btn" [disabled]="passwordForm.invalid">
-                  Jelszó mentése →
-                </button>
-                <button type="button" class="ghost-btn" (click)="passwordForm.reset()">
-                  Mégsem
-                </button>
+              <div class="order-right">
+                <div class="order-price">{{ getOrderTotal(order) | number:'1.0-0' }} Ft</div>
+                <span class="order-status" [class]="getStatusClass(order.status)">
+                  {{ order.status }}
+                </span>
               </div>
-            </form>
+            </div>
           </div>
-  
-          <div class="glass-card danger-zone" @fadeSlide>
-            <div class="danger-title">⚠ Veszélyes zóna</div>
-            <p>A fiók törlése visszavonhatatlan. Az összes rendelési előzmény, személyes adat és beállítás véglegesen törlődik.</p>
-            <button class="danger-btn" (click)="deleteAccount()">Fiók törlése</button>
-          </div>
-  
-        </ng-container>
-  
-      </div>
+
+          <ng-template #emptyOrders>
+            <div class="empty-state">
+              <p>Még nincs rendelésed.</p>
+            </div>
+          </ng-template>
+        </div>
+      </ng-container>
+
+      <!-- ── TAB: Biztonság ── -->
+      <ng-container *ngIf="activeTab === 'security'">
+
+        <div class="glass-card" @fadeSlide>
+          <div class="section-title">Jelszó módosítása</div>
+          <form [formGroup]="passwordForm" (ngSubmit)="savePassword()">
+            <div class="form-row">
+              <div class="form-group full">
+                <label>Jelenlegi jelszó</label>
+                <input type="password" formControlName="currentPassword" placeholder="••••••••" />
+                <span class="field-error"
+                  *ngIf="passwordForm.get('currentPassword')?.invalid && passwordForm.get('currentPassword')?.touched">
+                  Kötelező mező
+                </span>
+              </div>
+              <div class="form-group">
+                <label>Új jelszó</label>
+                <input type="password" formControlName="newPassword" placeholder="••••••••" />
+                <span class="field-error"
+                  *ngIf="passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched">
+                  Minimum 8 karakter
+                </span>
+              </div>
+              <div class="form-group">
+                <label>Jelszó megerősítése</label>
+                <input type="password" formControlName="confirmPassword" placeholder="••••••••" />
+                <span class="field-error"
+                  *ngIf="passwordForm.hasError('mismatch') && passwordForm.get('confirmPassword')?.touched">
+                  A jelszavak nem egyeznek
+                </span>
+              </div>
+            </div>
+            <div class="gold-divider"></div>
+            <div class="btn-row">
+              <button type="submit" class="primary-btn" [disabled]="passwordForm.invalid">
+                Jelszó mentése →
+              </button>
+              <button type="button" class="ghost-btn" (click)="passwordForm.reset()">
+                Mégsem
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="glass-card danger-zone" @fadeSlide>
+          <div class="danger-title">⚠ Veszélyes zóna</div>
+          <p>A fiók törlése visszavonhatatlan. Az összes rendelési előzmény, személyes adat és beállítás véglegesen törlődik.</p>
+          <button class="danger-btn" (click)="deleteAccount()">Fiók törlése</button>
+        </div>
+
+      </ng-container>
+
     </div>
-
-
-  
   </div>
+
+  <!-- ═══════════════════════════════
+       ORDER DETAIL MODAL
+       ═══════════════════════════════ -->
+  <div class="modal-overlay" *ngIf="isModalOpen" (click)="closeModal()">
+    <div class="modal-box" @fadeSlide (click)="$event.stopPropagation()">
+
+      <button class="modal-close" (click)="closeModal()">✕</button>
+
+      <!-- Modal loading -->
+      <div class="modal-loading" *ngIf="isModalLoading">
+        <div class="spinner"></div>
+      </div>
+
+      <!-- Modal tartalom -->
+      <ng-container *ngIf="!isModalLoading && selectedOrder">
+
+        <div class="modal-header">
+          <div class="modal-order-id">#ORD-{{ selectedOrder.id }}</div>
+        </div>
+
+        <div class="modal-meta">
+          <span>{{ formatDate(selectedOrder.order_date) }}</span>
+        </div>
+
+        <div class="gold-divider"></div>
+
+        <!-- Tételek listája -->
+        <div class="modal-items">
+          <div class="modal-section-label">Tételek</div>
+
+          <div class="modal-item-row" *ngFor="let item of selectedOrder.items">
+            
+            <div class="modal-item-info">
+              <div class="modal-item-name">
+                {{ item.product?.name ?? 'Termék #' + item.product_id.slice(0, 8) }}
+              </div>
+              <div class="modal-item-qty">
+                {{ item.quantity }} db × {{ item.price | number:'1.0-0' }} Ft
+              </div>
+            </div>
+            <div class="modal-item-total">
+              {{ item.quantity * item.price | number:'1.0-0' }} Ft
+            </div>
+          </div>
+        </div>
+
+        <div class="gold-divider"></div>
+
+        <!-- Végösszeg -->
+        <div class="modal-total-row">
+          <span>Összesen</span>
+          <span class="modal-total-val">{{ getOrderTotal(selectedOrder) | number:'1.0-0' }} Ft</span>
+        </div>
+
+      </ng-container>
+    </div>
+  </div>
+
+</div>
