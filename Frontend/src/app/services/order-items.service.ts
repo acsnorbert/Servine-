@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,10 @@ export class OrderItemsService {
         // ── GET /api/order_items/id ────────────────────
         getOrderItemByOrderId(order_id:string){
           return this.http.get(`${this.API}/order/${order_id}`,  this.tokenHeader())
+        }
+         // ── GET /api/order_items/id ────────────────────
+        getOrderItemQuantityById(id:string){
+          return this.http.get(`${this.API}/${id}/quantity`,  this.tokenHeader())
         }
         // ── POST /api/order_items ────────────────────
         insertOrderItem(data:object){

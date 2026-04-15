@@ -17,5 +17,7 @@ router.patch('/:id', auth, orderItemController.updateOrderItem);
 // DELETE /api/order-items/:id – törlés
 router.delete('/:id', auth, isAdmin, orderItemController.deleteOrderItem);
 
+// GET total quantity of items in an order
+router.get('/:id/quantity',auth, isAdmin,orderItemController.getQuantityById);
 
 module.exports = router;

@@ -132,7 +132,7 @@
                 type="number"
                 pInputText
                 [(ngModel)]="selectedItems[i].quantity"
-                min="1"
+                min="0"
               />
           </td>
 
@@ -140,6 +140,9 @@
             {{ item.price * item.quantity | number:'1.2-2' }}
           </td>
           <td>
+            <button class="btn-primary" (click)="saveItems(item)">
+              Save
+            </button>
             <button class="delete-btn" (click)="deleteItem(item)">
               Delete
             </button>
@@ -159,9 +162,7 @@
    FOOTER -->
   <ng-template pTemplate="footer">
     <div class="dialog-footer">
-      <button class="btn-primary" (click)="saveItems()">
-        Save
-      </button>
+      
     </div>
   </ng-template>
 

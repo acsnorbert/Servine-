@@ -20,6 +20,10 @@ Content-Type: application/json
 GET {{url}}/api/order-items
 Authorization: Bearer {{adminToken}}
 
+### egy order item darabszámának lekérése (admin)
+GET {{url}}/api/order-items/oi-0002/quantity
+Authorization: Bearer {{adminToken}}
+
 ### Order itemek lekérése order_id alapján
 GET {{url}}/api/order-items/order/22222222-2222-2222-2222-222222222222
 Authorization: Bearer {{userToken}}

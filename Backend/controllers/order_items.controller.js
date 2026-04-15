@@ -110,10 +110,37 @@ async function deleteOrderItem(req, res) {
   }
 }
 
+// Order item darabjainak megszerzése orderId alapján
+async function getQuantityById(req, res) {
+  try {
+    const { id } = req.params;
+
+    const item = await OrderItem.findByPk(id);
+
+    if (!item) {
+      return res.status(404).json({
+        message: 'Order item nem található.'
+      });
+    }
+
+    return res.status(200).json({
+      id: item.id,
+      order_id: item.order_id,
+      product_id: item.product_id,
+      quantity: item.quantity
+    });
+
+  } catch (err) {
+    console.error('getQuantityById error:', err);
+    return res.status(500).json({ message: 'Szerverhiba.' });
+  }
+}
+
 module.exports = {
   getAllOrderItems,
   getOrderItemsByOrderId,
   insertOrderItem,
   updateOrderItem,
-  deleteOrderItem
+  deleteOrderItem,
+  getQuantityById
 };
