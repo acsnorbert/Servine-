@@ -206,11 +206,14 @@ export class ProfileComponent implements OnInit {
 
   // ── Fiók törlése ──────────────────────────────
   deleteAccount(): void {
-    const confirmed = window.confirm('Biztosan törölni szeretnéd a fiókodat? Ez a művelet visszavonhatatlan.');
-    if (confirmed) {
-      console.log('Fiók törlése...');
-    }
+  const confirmed = window.confirm('Biztosan törölni szeretnéd a fiókodat? Ez a művelet visszavonhatatlan.');
+  if (confirmed) {
+    this.userService.deleteAccount().subscribe({
+      next: () => this.authService.logout(),
+      error: () => this.messageService.show('error', 'Error', 'Törlés sikertelen.')
+    });
   }
+}
 
   // ── Kijelentkezés ─────────────────────────────
   logout(): void {

@@ -97,6 +97,13 @@ const deleteUser = async (req, res) => {
   res.json({ message: 'Felhasználó törölve' });
 };
 
+const deleteOwnAccount = async (req, res) => {
+  const user = await User.findByPk(req.user.id);
+  if (!user) return res.status(404).json({ message: 'Nem található' });
+  await user.destroy();
+  res.json({ message: 'Fiók törölve' });
+};
+
 module.exports = {
   getProfile,
   updateProfile,
@@ -105,5 +112,6 @@ module.exports = {
   getAllUsers,
   getUserById,
   updateUserRole,
-  deleteUser
+  deleteUser,
+  deleteOwnAccount
 };

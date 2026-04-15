@@ -18,6 +18,7 @@ router.get('/profile', auth, userController.getProfile);
 router.patch('/profile', auth, updateProfileValidation, validate, userController.updateProfile);
 router.patch('/change-password', auth, changePasswordValidation, validate, userController.changePassword);
 router.get('/orders', auth, userController.getUserOrders);
+router.delete('/profile', auth, userController.deleteOwnAccount);
 
 // Admin routes
 router.get('/', auth, isAdmin, userController.getAllUsers);

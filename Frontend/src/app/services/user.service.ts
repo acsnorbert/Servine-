@@ -77,15 +77,24 @@ export class UserService {
 
   // ── PATCH /api/users/change-password ──────────
   changePassword(payload: ChangePasswordPayload): Observable<{ message: string }> {
-    return this.http.patch<{ message: string }>(
-      `${this.API}/change-password`,
-      {
-        oldPassword: payload.currentPassword,
-        newPassword: payload.newPassword
-      },
-      this.tokenHeader()
-    );
-  }
+  return this.http.patch<{ message: string }>(
+    `${this.API}/change-password`,
+    {
+      oldPassword: payload.currentPassword,
+      currentPassword: payload.currentPassword,
+      newPassword: payload.newPassword
+    },
+    this.tokenHeader()
+  );
+}
+
+// ── DELETE /api/users/profile ─────────────────
+deleteAccount(): Observable<{ message: string }> {
+  return this.http.delete<{ message: string }>(
+    `${this.API}/profile`,
+    this.tokenHeader()
+  );
+}
 
   // ── GET /api/users/orders ─────────────────────
   getMyOrders(): Observable<Order[]> {
