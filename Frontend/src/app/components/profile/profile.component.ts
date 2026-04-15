@@ -132,11 +132,6 @@ export class ProfileComponent implements OnInit {
     return (parts[0]?.[0] ?? '?').toUpperCase();
   }
 
-  // ── Aktív kiszállítások száma ─────────────────
-  getActiveShipments(): number {
-    return this.orders.filter(o => o.status === 'Szállítás alatt').length;
-  }
-
   // ── Rendelés státusz CSS osztály ──────────────
   getStatusClass(status: string): string {
     const map: Record<string, string> = {
@@ -220,5 +215,34 @@ export class ProfileComponent implements OnInit {
     this.authService.logout();
   }
 
+  // ── Modal ─────────────────────────────────────
+selectedOrder: Order | null = null;
+isModalOpen = false;
+isModalLoading = false;
+
+openOrderModal(order: Order): void {
+  this.selectedOrder = order;
+  this.isModalOpen = true;
+
+  // Ha az items már be van töltve, nem kell újra lekérni
+  if (order.items && order.items.length > 0) return;
+
+  this.isModalLoading = true;
+  this.userService.getOrderById(order.id).subscribe({
+    next: (fullOrder) => {
+      this.selectedOrder = fullOrder;
+      this.isModalLoading = false;
+    },
+    error: () => {
+      this.isModalLoading = false;
+      this.messageService.show('error', 'Error', 'Nem sikerült betölteni a rendelés részleteit.');
+    }
+  });
+}
+
+closeModal(): void {
+  this.isModalOpen = false;
+  this.selectedOrder = null;
+}
   
 }

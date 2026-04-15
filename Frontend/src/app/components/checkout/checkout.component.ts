@@ -75,6 +75,9 @@ export class CheckoutComponent implements OnInit {
         this.cartService.clearCart();
         this.step = 'success';
         this.isSubmitting = false;
+        this.router.navigate(['/order-success'], {
+          state: { order: { id: res.order.id, total: this.totalPrice } }
+        });
       },
       error: (err) => {
         this.errorMessage = err?.error?.message ?? 'Hiba történt a rendelés leadásakor.';

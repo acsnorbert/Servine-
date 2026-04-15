@@ -17,6 +17,7 @@ import { AboutComponent } from './components/about/about.component';
 import { authGuard } from './guards/auth.guard';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
+import { OrderSuccessComponent } from './components/order-success/order-success.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -34,6 +35,7 @@ export const routes: Routes = [
   // BEJELENTKEZÉS SZÜKSÉGES
   { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
   { path: 'cart', component: CartComponent, canActivate: [authGuard] },
+  { path: 'order-success', component: OrderSuccessComponent, canActivate: [authGuard] },
 
   // ADMIN ONLY
   { path: 'dashboard', component: DashboardComponent },

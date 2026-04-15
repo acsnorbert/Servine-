@@ -33,7 +33,7 @@ function generateToken(user) {
         path.join(__dirname, '../Emailtemplates/verifyregistration.email.ejs'),
         { username: name, verificationUrl }
       );
-      await sendMail({ to: email, subject: 'SERVINE – Email verification', message: html });
+      await sendMail({ to: email, subject: 'SERVINE - Email verification', message: html });
     } catch (mailErr) {
       console.error('Email sending error:', mailErr.message);
     }

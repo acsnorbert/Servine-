@@ -1,16 +1,88 @@
-<nav class="navbar">
-  <div class="nav-links">
-    <a routerLink="/about">About us</a>
-    <a routerLink="/products">Products</a>
-    <a routerLink="/home"><img src="Servinelogo.png" alt="" style="width: 30px;"></a>
-    <a *ngIf="isloggedin" routerLink="/profile">Profile</a>
-    <a *ngIf="!isloggedin" routerLink="/login">Profile</a>
-    <a routerLink="/contact">Contact us</a>
-  </div>
+<nav class="navbar" [class.scrolled]="isScrolled">
+ 
+  <!-- mobil logo bal oldalt -->
+  <a routerLink="/home" class="mobile-navbar-logo">
+    <img src="Servinelogo.png" alt="Servine" />
+  </a>
 
-  <a *ngIf="cartItemCount > 0" routerLink="/cart" class="cart-icon-wrapper">
-    <img src="cart.png" alt="" style="width: 100%;">
-    
+  <!-- asztali navigacios linkek -->
+  <div class="nav-links">
+    <a routerLink="/about"    routerLinkActive="active">Rólunk</a>
+    <a routerLink="/products" routerLinkActive="active">Termékek</a>
+    <a routerLink="/home" class="logo-link">
+      <img src="Servinelogo.png" alt="Servine" />
+    </a>
+    <a *ngIf="isloggedin"  routerLink="/profile" routerLinkActive="active">Profil</a>
+    <a *ngIf="!isloggedin" routerLink="/login"   routerLinkActive="active">Profil</a>
+    <a routerLink="/contact" routerLinkActive="active">Kapcsolat</a>
+
+    <!-- admin dropdown -->
+    <div *ngIf="isAdmin" class="admin-dropdown">
+      <a class="admin-link">Admin ▼</a>
+      <div class="admin-dropdown-menu">
+        <a routerLink="/dashboard"    routerLinkActive="active">Dashboard</a>
+        <a routerLink="/category"     routerLinkActive="active">Kategóriák</a>
+        <a routerLink="/orders"       routerLinkActive="active">Rendelések</a>
+        <a routerLink="/order_items"  routerLinkActive="active">Rendelés tételek</a>
+        <a routerLink="/product_list" routerLinkActive="active">Termékek listája</a>
+        <a routerLink="/users"        routerLinkActive="active">Felhasználók</a>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- kosar csak mobilon -->
+  <a *ngIf="cartItemCount > 0" routerLink="/cart" class="cart-icon-wrapper mobile-cart">
+    <img src="cart.png" alt="Kosár" />
     <span class="badge">{{ cartItemCount }}</span>
   </a>
+ 
+  <!-- hamburger -->
+  <button
+    class="hamburger"
+    [class.open]="menuOpen"
+    (click)="toggleMenu()"
+    aria-label="Menü"
+    [attr.aria-expanded]="menuOpen">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+ 
 </nav>
+ 
+<!-- mobil menu -->
+<div class="mobile-menu" [class.open]="menuOpen" (click)="closeMenu()">
+  <div class="mobile-menu-inner" (click)="$event.stopPropagation()">
+ 
+    <div class="mobile-logo">
+      <img src="Servinelogo.png" alt="Servine" />
+      <span>SERVINE</span>
+    </div>
+ 
+    <nav class="mobile-nav">
+      <a routerLink="/home"     routerLinkActive="active" (click)="closeMenu()">Főoldal</a>
+      <a routerLink="/about"    routerLinkActive="active" (click)="closeMenu()">Rólunk</a>
+      <a routerLink="/products" routerLinkActive="active" (click)="closeMenu()">Termékek</a>
+      <a *ngIf="isloggedin"  routerLink="/profile" routerLinkActive="active" (click)="closeMenu()">Profil</a>
+      <a *ngIf="!isloggedin" routerLink="/login"   routerLinkActive="active" (click)="closeMenu()">Bejelentkezés</a>
+      <a routerLink="/contact"  routerLinkActive="active" (click)="closeMenu()">Kapcsolat</a>
+
+      <!-- admin linkek mobil nezetben -->
+      <div *ngIf="isAdmin" class="mobile-admin-section">
+        <span class="admin-section-title">Admin</span>
+        <a routerLink="/dashboard"    routerLinkActive="active" (click)="closeMenu()">Dashboard</a>
+        <a routerLink="/category"     routerLinkActive="active" (click)="closeMenu()">Kategóriák</a>
+        <a routerLink="/orders"       routerLinkActive="active" (click)="closeMenu()">Rendelések</a>
+        <a routerLink="/order_items"  routerLinkActive="active" (click)="closeMenu()">Rendelés tételek</a>
+        <a routerLink="/product_list" routerLinkActive="active" (click)="closeMenu()">Termékek listája</a>
+        <a routerLink="/users"        routerLinkActive="active" (click)="closeMenu()">Felhasználók</a>
+      </div>
+ 
+      <!-- kosar a mobilnezet menuben -->
+      <a *ngIf="cartItemCount > 0" routerLink="/cart" class="cart-link" (click)="closeMenu()">
+        Kosár <span class="cart-badge">{{ cartItemCount }}</span>
+      </a>
+    </nav>
+ 
+  </div>
+</div>
