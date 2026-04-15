@@ -1,0 +1,91 @@
+<div class="page-wrapper">
+
+  <!-- Particle canvas -->
+  <canvas class="particles" #particleCanvas></canvas>
+
+  <!-- Radial glow -->
+  <div class="glow-orb glow-1"></div>
+  <div class="glow-orb glow-2"></div>
+
+  <div class="content" [@fadeUp]>
+
+    <!-- Animated checkmark -->
+    <div class="check-ring-outer">
+      <div class="check-ring-inner">
+        <svg class="check-icon" viewBox="0 0 52 52">
+          <circle class="check-circle" cx="26" cy="26" r="24"/>
+          <path class="check-tick" d="M14 27l8 8 16-16"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <div class="eyebrow">Rendelés visszaigazolva</div>
+    <h1 class="title">Köszönjük<br/><span class="gold">vásárlásod</span></h1>
+    <p class="subtitle">
+      Rendelésedet sikeresen rögzítettük. Hamarosan e-mailt küldünk a részletekkel.
+    </p>
+
+    <!-- Order info card -->
+    <div class="order-card" *ngIf="orderData">
+      <div class="order-card-header">
+        <span class="order-label">Rendelésszám</span>
+        <span class="order-number">#ORD-{{ orderData.id }}</span>
+      </div>
+      <div class="divider"></div>
+      <div class="order-meta">
+        <div class="meta-item">
+          <span class="meta-label">Dátum</span>
+          <span class="meta-val">{{ today }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Státusz</span>
+          <span class="meta-val status-pill">
+            <span class="dot"></span> Feldolgozás alatt
+          </span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Összeg</span>
+          <span class="meta-val gold">{{ orderData.total | number:'1.0-0' }} Ft</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Steps -->
+    <div class="steps">
+      <div class="step" [class.done]="true">
+        <div class="step-icon">✓</div>
+        <div class="step-text">
+          <div class="step-title">Rendelés leadva</div>
+          <div class="step-sub">Rendszereinkben rögzítve</div>
+        </div>
+      </div>
+      <div class="step-line"></div>
+      <div class="step active">
+        <div class="step-icon pulse">◎</div>
+        <div class="step-text">
+          <div class="step-title">Feldolgozás</div>
+          <div class="step-sub">Folyamatban...</div>
+        </div>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step-icon dim">⬦</div>
+        <div class="step-text">
+          <div class="step-title">Kiszállítás</div>
+          <div class="step-sub">Hamarosan</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <a routerLink="/profile" class="btn-primary">
+        Rendeléseim megtekintése →
+      </a>
+      <a routerLink="/" class="btn-ghost">
+        Vissza a főoldalra
+      </a>
+    </div>
+  </div>
+</div>

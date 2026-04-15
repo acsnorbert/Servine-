@@ -20,7 +20,7 @@ async function sendMail({to, subject, message}){
         from,
         to,
         subject,
-        text: message
+        html: message
     });
 }
 
