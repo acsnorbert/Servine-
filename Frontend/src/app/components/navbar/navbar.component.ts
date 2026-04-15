@@ -1,31 +1,71 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Component, OnInit, HostListener, inject, effect, DestroyRef } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../../services/cart.service';
 import { AuthService } from '../../services/auth.service';
-
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+ 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink, CommonModule], 
+  imports: [RouterLink, RouterLinkActive, CommonModule],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+ 
   cartItemCount = 0;
-
-  constructor(
-    private cartService: CartService,
-    private authService: AuthService
-  ) {}
-  isloggedin:boolean =false;
-  ngOnInit(): void {
-    this.authService.isLoggedIn$.subscribe(status => {
-    this.isloggedin = status;
-  });
-    this.cartService.cart$.subscribe(items => {
-      this.cartItemCount = items.reduce((total, item) => total + item.quantity, 0);
+  isloggedin    = false;
+  isAdmin       = false;
+  menuOpen      = false;
+  isScrolled    = false;
+ 
+  private authService = inject(AuthService);
+  private cartService = inject(CartService);
+  private destroyRef = inject(DestroyRef);
+ 
+  constructor() {
+    effect(() => {
+      const user = this.authService.currentUser();
+      this.isloggedin = !!user;
+      this.isAdmin = user?.role === 'admin';
     });
   }
-  
+ 
+  ngOnInit(): void {
+    this.cartService.cart$.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(items => {
+      this.cartItemCount = items.reduce((total, item) => total + item.quantity, 0);
+    });
+ 
+    this.authService.isLoggedIn$.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(isLogged => {
+      this.isloggedin = isLogged;
+      if (!isLogged) {
+        this.isAdmin = false;
+      }
+    });
+  }
+ 
+  toggleMenu(): void {
+    this.menuOpen = !this.menuOpen;
+    document.body.style.overflow = this.menuOpen ? 'hidden' : '';
+  }
+ 
+  closeMenu(): void {
+    this.menuOpen = false;
+    document.body.style.overflow = '';
+  }
+ 
+  @HostListener('window:scroll')
+  onScroll(): void {
+    this.isScrolled = window.scrollY > 40;
+  }
+ 
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (this.menuOpen) this.closeMenu();
+  }
 }
