@@ -126,7 +126,7 @@ $glass-border:rgba(255, 255, 255, 0.12);
   cursor: pointer;
   flex-shrink: 0;
   transition: background 0.2s, border-color 0.2s;
-  margin-left: auto;                    /* jobb oldalra tolás */
+  margin-left: auto;
 
   span {
     display: block;
@@ -213,7 +213,7 @@ $glass-border:rgba(255, 255, 255, 0.12);
   height: 100%;
   background: #0e0e0e;
   border-left: 1px solid rgba(212, 175, 55, 0.15);
-  padding: 80px 28px 40px;           /* több hely felül, mert nincs külön close gomb */
+  padding: 80px 28px 40px;
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
@@ -298,7 +298,7 @@ $glass-border:rgba(255, 255, 255, 0.12);
   .navbar {
     top: 16px;
     width: calc(100% - 32px);
-    justify-content: flex-start;     /* balról indul */
+    justify-content: flex-start;
     gap: 12px;
   }
 
@@ -307,11 +307,11 @@ $glass-border:rgba(255, 255, 255, 0.12);
   }
 
   .mobile-navbar-logo {
-    display: flex;                   /* logo bal oldalon */
+    display: flex;
   }
 
   .mobile-cart {
-    display: flex;                   /* kosár csak mobilon */
+    display: flex;
     margin-left: auto;
     margin-right: 8px;
   }
