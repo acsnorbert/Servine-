@@ -73,7 +73,7 @@ isEditMode: any;
         this.products = res as Product[];
       },
       error: (err)=>{
-        this.messageService.show('error', 'ERROR', err.message?.error || 'An error occurred while finding the categories');
+        this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a termékek lehívása közben');
       }
 
     })
@@ -84,7 +84,7 @@ isEditMode: any;
         this.categories = res as Category[];
       },
       error: (err)=>{
-        this.messageService.show('error', 'ERROR', err.message?.error || 'An error occurred while finding the categories');
+        this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a kategóriák lehívása közben');
       }
     });
   }
@@ -110,21 +110,21 @@ isEditMode: any;
       console.log('UPDATE', this.newProduct);
       this.api.updateProduct(this.newProduct, this.newProduct.id!).subscribe({
       next: () => {
-        this.messageService.show('success', 'SUCCESS', 'Product was successfully updated');
+        this.messageService.show('success', 'SIKER', 'A termék sikeresen frissült');
          this.getProducts();
       },
       error: (err)=>{
-        this.messageService.show('error', 'ERROR', err.message?.error || 'An error occurred while finding the categories');
+        this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a termék frissítése közben');
       }
     });
     } else {
       this.api.insertProduct(this.newProduct).subscribe({
       next: () => {
-        this.messageService.show('success', 'SUCCESS', 'Product was successfully created');
+        this.messageService.show('success', 'SIKER', 'A termék sikeresen létre lett hozva');
          this.getProducts();
       },
       error: (err)=>{
-        this.messageService.show('error', 'ERROR', err.message?.error || 'An error occurred while finding the categories');
+        this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a termék létrehozása közben');
       }
     });
     }
@@ -134,19 +134,19 @@ isEditMode: any;
 
   delete(id:string, name:string){
     this.confirmationService.confirm({
-      message: `Are you sure you want to delete this product?|: ${name}`,
-      header: 'Confirmation',
+      message: `Biztosan ki szeretnéd törölni ezt a terméket?|: ${name}`,
+      header: 'Megerősítés',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         
         this.api.deleteProductById(id).subscribe({
           next: () => {
-            this.messageService.show('success', 'SUCCESS', 'The product was successfully deleted');
+            this.messageService.show('success', 'SIKER', 'A termék sikeresen törölve lett');
            
             this.getProducts();
           },
           error: (err: any) => {
-            this.messageService.show('error', 'ERROR', err.message?.error || 'An error occurred while deleting the product');
+            this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a termék törlése közben');
           
           }
         });

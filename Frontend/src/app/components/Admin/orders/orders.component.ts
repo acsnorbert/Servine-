@@ -214,32 +214,32 @@ export class OrdersComponent implements OnInit {
     }
     this.api.UpdateOrderStatus(id, this.data).subscribe({
           next: () => {
-            this.messageService.show('success', 'SUCCESS', 'A rendelés státusza sikeresen frissült');
+            this.messageService.show('success', 'SIKER', 'A rendelés státusza sikeresen frissült');
            
             this.getOrders();
           },
           error: (err: any) => {
-            this.messageService.show('error', 'ERROR', err.message?.error || 'Hiba történt a rendelés státuszának megváltoztatásakor');
+            this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a rendelés státuszának megváltoztatásakor');
           
     } }); 
    }
   
 
-  delete(id: string) {
+  delete(order:Order) {
     this.confirmationService.confirm({
-      message: `Are you sure you want to delete this order?|: ${name}`,
-      header: 'Confirmation',
+      message: `Biztosan ki akarod törölni ezt a rendelést?|: ${order.id}`,
+      header: 'Megerősítés',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         
-        this.api.DeleteOrder(id).subscribe({
+        this.api.DeleteOrder(order.id!).subscribe({
           next: () => {
-            this.messageService.show('success', 'SUCCESS', 'The order was successfully deleted');
+            this.messageService.show('success', 'SIKER', 'A rendelés sikeresen törölve');
            
             this.getOrders();
           },
           error: (err: any) => {
-            this.messageService.show('error', 'ERROR', err.message?.error || 'An error occurred while deleting the order');
+            this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a rendelés törlése közben');
           
           }
         });
