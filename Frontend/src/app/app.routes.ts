@@ -17,6 +17,7 @@ import { authGuard } from './guards/auth.guard';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { OrderSuccessComponent } from './components/order-success/order-success.component';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -37,11 +38,11 @@ export const routes: Routes = [
   { path: 'order-success', component: OrderSuccessComponent, canActivate: [authGuard] },
 
   // ADMIN ONLY
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'category', component: CategoriesComponent },
-  { path: 'orders', component: OrdersComponent},
-  { path: 'product_list', component: ProductsComponent},
-  { path: 'users', component: UsersComponent},
+  { path: 'dashboard', component: DashboardComponent, canActivate: [adminGuard] },
+  { path: 'category', component: CategoriesComponent,canActivate: [adminGuard] },
+  { path: 'orders', component: OrdersComponent,canActivate: [adminGuard]},
+  { path: 'product_list', component: ProductsComponent,canActivate: [adminGuard]},
+  { path: 'users', component: UsersComponent,canActivate: [adminGuard]},
 
   // 404
   { path: '**', component: NotFoundComponent },
