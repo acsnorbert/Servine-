@@ -10,31 +10,31 @@
           <!-- Bal oldal -->
           <div class="col-md-6 register-card">
 
-            <h1 class="register-title">Registration</h1>
+            <h1 class="register-title">Regisztráció</h1>
 
             <div class="mt-4">
               <div class="form-floating mb-3">
                 <input type="email"  class="form-control w-100 mb-3" id="floatingEmail" placeholder="name@example.com" [(ngModel)]="user.email">
-                <label for="floatingEmail">Email address</label>
+                <label for="floatingEmail">Email cím</label>
               </div>
               <div class="form-floating mb-3">
                 <input type="name"  class="form-control w-100 mb-3" id="floatingName" placeholder="Username" [(ngModel)]="user.name">
-                <label for="floatingName">Username</label>
+                <label for="floatingName">Felhasználónév</label>
               </div>
               <div class="form-floating">
                 <input type="password" class="form-control w-100 mb-3" id="floatingPassword" placeholder="Password" [(ngModel)]="user.password">
-                <label for="floatingPassword">Password</label>
+                <label for="floatingPassword">Jelszó</label>
               </div>
               <div class="form-floating">
                 <input type="password" class="form-control w-100 mb-3" id="floatingConfPass" placeholder="Password confirmation" [(ngModel)]="user.confirm">
-                <label for="floatingConfPass">Password confirmation</label>
+                <label for="floatingConfPass">Jelszó megerősítése</label>
               </div>
 
               <div class="d-flex justify-content-between small-text">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" [(ngModel)]="TermsAccept">
-                  <label class="form-check-label" for="flexCheckDefault">
-                    I accept the TermsOfService
+                  <label class="form-check-label" for="flexCheckDefault"> 
+                    Elfogadom a <a href="#" (click)="openTerms($event)"> Szolgáltatási Feltételeket </a> 
                   </label>
                 </div>
                 
@@ -42,8 +42,8 @@
 
               </div>
               <div class="d-flex flex-column">
-                <button type="button" class="btn register-btn w-70 mt-4" (click)="register()">Register</button>
-                <button type="button" class="btn login-btn w-70 mt-3" [routerLink]="['/login']" >If you already have an account, log in!</button>
+                <button type="button" class="btn register-btn w-70 mt-4" (click)="register()">Regisztráció</button>
+                <button type="button" class="btn login-btn w-70 mt-3" [routerLink]="['/login']" >Ha már van fiókod, jelentkezz be!</button>
               </div>
              
             </div>
@@ -65,4 +65,55 @@
     </div>
   </div>
 
+</div>
+<!-- MODAL -->
+<div class="terms-modal" *ngIf="showTerms">
+  <div class="terms-content">
+
+    <div class="terms-header">
+      <h2>Servine Webshop - Szolgáltatási Feltételek</h2>
+      <button class="close-btn" (click)="closeTerms()">✕</button>
+    </div>
+
+    <div class="terms-body">
+
+      <h4>1. Általános információk</h4>
+      <p>
+        A Servine webshop célja, hogy minőségi termékeket biztosítson vásárlói számára.
+        A szolgáltatás használatával Ön elfogadja a jelen feltételeket.
+      </p>
+
+      <h4>2. Regisztráció</h4>
+      <p>
+        A felhasználó köteles valós adatokat megadni. A fiók biztonságáért a felhasználó felel.
+      </p>
+
+      <h4>3. Rendelések</h4>
+      <p>
+        A leadott rendelés fizetési kötelezettséggel jár. A webshop fenntartja a jogot a rendelés visszautasítására.
+      </p>
+
+      <h4>4. Fizetés és szállítás</h4>
+      <p>
+        A fizetés a rendelés során kiválasztott módon történik. A szállítási idő tájékoztató jellegű.
+      </p>
+
+      <h4>5. Adatvédelem</h4>
+      <p>
+        A személyes adatokat bizalmasan kezeljük, harmadik félnek nem adjuk át.
+      </p>
+
+      <h4>6. Felelősség</h4>
+      <p>
+        A Servine nem vállal felelősséget a szolgáltatás ideiglenes kieséséért.
+      </p>
+
+      <h4>7. Kapcsolat</h4>
+      <p>
+        Kérdés esetén lépjen kapcsolatba ügyfélszolgálatunkkal.
+      </p>
+
+    </div>
+
+  </div>
 </div>

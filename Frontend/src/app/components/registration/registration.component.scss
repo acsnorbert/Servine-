@@ -1,107 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@200;300;400;500&display=swap');
 
+$gold:  #c9a84c;
+$bg:    #080808;
+$line:  rgba(255,255,255,.08);
+$muted: rgba(255,255,255,.38);
+
+/* PAGE */
 .register-page {
-  height: 100vh;
   
-  background: radial-gradient(circle at top, #1c1c1c, #000);
-  font-family: 'Poppins', sans-serif;
-  height: 100vh;
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-.form-check-input:checked {
-    background-color: #d4a84f;
-    border-color: #f5d49a;
-}
-.form-check-input:focus {
-    border-color: #d4a84f;
-    outline: 0;
-    box-shadow: 0 0 0 0.1rem rgba(245, 212, 154, 0.75);
+  font-family: 'Outfit', sans-serif;
+  background: $bg;
+  color: #fff;
+  min-height: 100vh;
 }
 
-.form-control:focus {
-    color: var(--bs-body-color);
-    background-color: var(--bs-body-bg);
-    border-color: #d4a84f;
-    outline: 0;
-    box-shadow: 0 0 0 0.1rem rgba(245, 212, 154, 0.75);
-}
+/* WRAPPER */
 .register-wrapper {
-  background: #111;
-  border-radius: 16px;
-  overflow: hidden;
+  margin-top: 10rem;
+  border: 1px solid $line;
+  background: rgba(#fff, .01);
 }
 
-#forgotpass{
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-#forgotpass:hover{
-  color: #d4a84f;
-}
-
+/* LEFT CARD */
 .register-card {
+  padding: 56px;
 
-  padding: 60px;
-  color: white;
-
-  background-image:
-    radial-gradient(circle at 20% 20%, rgba(212,175,55,0.2), transparent 40%),
-    radial-gradient(circle at 80% 70%, rgba(212,175,55,0.2), transparent 40%);
-
+  .register-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px;
+    font-weight: 400;
+    margin-bottom: 32px;
+  }
 }
 
-.register-title {
-  font-size: 60px;
-  font-weight: 300;
-  color: #e6c17c;
+/* INPUTS */
+.form-floating {
+
+  input {
+    background: transparent;
+    border: 1px solid $line;
+    color: #fff;
+
+    &:focus {
+      border-color: rgba($gold,.5);
+      box-shadow: none;
+    }
+  }
+
+  label {
+    color: $muted;
+  }
 }
 
+/* CHECKBOX + TEXT */
 .small-text {
-  color: #ccc;
-  align-items: center;
-  gap: 10px;
+  font-size: 12px;
+  color: $muted;
+
+  a {
+    color: $gold;
+    text-decoration: none;
+
+    &:hover {
+      opacity: .7;
+    }
+  }
 }
 
-.small-text a {
-  color: #ddd;
-  text-decoration: none;
-}
-
-.login-btn {
-  background: linear-gradient(90deg, #d4a84f, #f5d49a);
-  background-size: 200% 100%; 
-  border: none;
-  border-radius: 30px;
-  transition: 0.3s ease;
-}
-
-.login-btn:hover {
-  background-position: 100% 0;
+/* BUTTONS */
+.btn {
+  border-radius: 0;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  font-size: 11px;
+  padding: 12px;
 }
 
 .register-btn {
-  background: linear-gradient(90deg, #e3c083, #f7e2b3);
-  background-size: 200% 100%; 
-  border: none;
-  border-radius: 30px;
-  transition: 0.3s ease;
+  border: 1px solid $gold;
+  color: $gold;
+  background: transparent;
+  transition: .3s;
+
+  &:hover {
+    background: rgba($gold,.08);
+  }
 }
 
-.register-btn:hover {
-  background-position: 100% 0;
+.login-btn {
+  border: 1px solid $line;
+  color: #fff;
+  background: transparent;
+
+  &:hover {
+    border-color: rgba($gold,.4);
+    color: $gold;
+  }
 }
 
-
+/* RIGHT IMAGE PANEL */
 .image-panel {
-  background: #444;
+  border-left: 1px solid $line;
   display: flex;
-  align-items: end;
+  align-items: center;
   justify-content: center;
+  background: #000;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: .9;
+  }
 }
 
-.image-panel img {
-  max-height: 450px;
+/* MODAL */
+.terms-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.terms-content {
+  width: 700px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: $bg;
+  border: 1px solid $line;
+  padding: 32px;
+}
+
+.terms-header {
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+    font-size: 22px;
+  }
+
+  .close-btn {
+    background: none;
+    border: 1px solid $line;
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+
+    &:hover {
+      border-color: $gold;
+      color: $gold;
+    }
+  }
+}
+
+.terms-body {
+  h4 {
+    font-size: 13px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: $gold;
+    margin-top: 20px;
+  }
+
+  p {
+    color: rgba(#fff,.6);
+    font-size: 14px;
+    line-height: 1.6;
+  }
 }

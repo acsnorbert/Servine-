@@ -15,28 +15,28 @@
             <div class="mt-4">
               <div class="form-floating mb-3">
                 <input type="email"  class="form-control w-100 mb-3" id="floatingInput" placeholder="name@example.com" [(ngModel)]="user.email">
-                <label for="floatingInput">Email address</label>
+                <label for="floatingInput">Email cím</label>
               </div>
               <div class="form-floating">
                 <input type="password" class="form-control w-100 mb-3" id="floatingPassword" placeholder="Password" [(ngModel)]="user.password">
-                <label for="floatingPassword">Password</label>
+                <label for="floatingPassword">Jelszó</label>
               </div>
 
               <div class="d-flex justify-content-between small-text">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" [(ngModel)]="keepLoggedIn">
                   <label class="form-check-label" for="flexCheckDefault">
-                    Remember me
+                    Emlékezz rám
                   </label>
                 </div>
                 
 
-                <a id="forgotpass">Forgot password</a>
+                <a id="forgotpass">Elfelejtette a jelszavát?</a>
 
               </div>
               <div class="d-flex flex-column">
-                <button type="button" class="btn login-btn w-70 mt-4" (click)="login()">Login</button>
-                <button type="button" class="btn register-btn w-70 mt-3" [routerLink]="['/registration']"  >Don't have an account yet? Register!</button>
+                <button type="button" class="btn login-btn w-70 mt-4" (click)="login()">Bejelentkezés</button>
+                <button type="button" class="btn register-btn w-70 mt-3" [routerLink]="['/registration']"  >Még nincs fiókod? Regisztrálj!</button>
               </div>
              
             </div>

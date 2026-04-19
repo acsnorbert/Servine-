@@ -44,7 +44,7 @@ export class LoginComponent {
     //Hiányzó adatok ellenőrzése
     if(!data.email || !data.password){
       
-      this.messageService.show('warn', 'Warning', 'Please fill in all the forms!');
+      this.messageService.show('warn', 'FIGYELEM', 'Kérjük, töltse ki az összes űrlapot!');
       return
     }
     this.api.login(data).subscribe({
@@ -54,12 +54,12 @@ export class LoginComponent {
           this.auth.storeUser((res as any).token);
           
         }
-        this.messageService.show('success', 'Success', 'Successful Login');
+        this.messageService.show('success', 'SIKER', 'Sikeres bejelentkezés');
         this.router.navigateByUrl('/home');
       },
       error: (err)=>{
         
-        this.messageService.show('error', 'Error', err.error?.message || 'There was an error during login');
+        this.messageService.show('error', 'HIBA', err.error?.message || 'Hiba történt bejelentkezés közben');
       }
     });
   }
