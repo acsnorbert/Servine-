@@ -47,6 +47,14 @@ export class UsersComponent implements OnInit {
     
   }
   search = '';
+  get filteredUsers(): User[] {
+        const term = this.search.toLowerCase();
+    
+        return this.users.filter(x =>
+          x.email.toLowerCase().includes(term)
+        );
+      }
+    
   rolechange(id: string,role: string) {
     
     if(this.loggeduserId == id){

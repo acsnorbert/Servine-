@@ -117,6 +117,7 @@ td {
   text-transform: uppercase;
   padding: 6px 10px;
   border: 1px solid transparent;
+  cursor: pointer;
 }
 
 .processing {
@@ -161,6 +162,18 @@ td {
   }
 }
 
+.btn-ghost {
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,.4);
+  font-size: 11px;
+  margin-right: 10px;
+  cursor: pointer;
+
+  &:hover {
+    color: $gold;
+  }
+}
 /* DIALOG */
 
 :host ::ng-deep .lux-dialog .p-dialog {

@@ -3,42 +3,35 @@
   <div class="orders-header">
 
     <div>
-      <h1>All Orders</h1>
-      <span class="subtitle">Manage customer orders</span>
+      <span class="subtitle">Admin</span>
+      <h1>Összes rendelés</h1>
     </div>
 
     <div class="actions">
-
       <input
         pInputText
         type="text"
-        placeholder="Search order..."
+        placeholder="Rendelések keresése(email)..."
         [(ngModel)]="search"
       />
-
-      <button pButton label="New Order" icon="pi pi-plus"></button>
-
     </div>
-
   </div>
 
-
   <div class="orders-table">
-
     <p-table
-      [value]="orders"
+      [value]="filteredOrders"
       responsiveLayout="scroll"
-      styleClass="order-table"
-    >
+      styleClass="order-table">
 
       <ng-template pTemplate="header">
         <tr>
           <th>ID</th>
-          <th>User ID</th>
-          <th>Items</th>
-          <th>Order Date</th>
-          <th>Status</th>
-          <th style="width:150px">Actions</th>
+          <th>Felhasználó email</th>
+          <th>Tételek</th>
+          <th>Rendelési időpont</th>
+          <th>Rendelés ára</th>
+          <th>Státusz</th>
+          <th style="width:150px">Művelet</th>
         </tr>
       </ng-template>
 
@@ -52,14 +45,16 @@
           
           <td>
             <span class="items-link" (click)="openItemsDialog(order.id, order.items?.length)">
-              View items ({{ order.items?.length || 0 }})
+              Tételek megnézése ({{ order.items?.length || 0 }})
             </span>
           </td>
                     
           <td>
             {{ order.order_date ? (order.order_date | date:'yyyy-MM-dd HH:mm') : '—' }}
           </td>
-
+          <td>
+            {{order.total_price}}
+          </td>
           <td>
             <span
               class="status"
@@ -68,19 +63,15 @@
                 'completed': order.status === 'Kész',
                 'canceled': order.status === 'Törölve'
               }"
+              (click)="statusChange( order.id,order.status)"
             >
               {{ order.status || '—' }}
             </span>
           </td>
 
           <td>
-
-            <button class="edit-btn" (click)="edit(order)">
-              Edit
-            </button>
-
             <button class="delete-btn" (click)="delete(order.id)">
-              Delete
+              Törlés
             </button>
 
           </td>
@@ -96,7 +87,7 @@
   [(visible)]="itemsDialog"
   [modal]="true"
   [closable]="true"
-  [style]="{ width: '600px' }"
+  [style]="{ width: '800px' }"
   styleClass="lux-dialog"
   header="Order Items"
 >
@@ -112,9 +103,9 @@
       <!-- HEADER -->
       <ng-template pTemplate="header">
         <tr>
-          <th>Product</th>
-          <th>Quantity</th>
-          <th>Teljes Ár</th>
+          <th>Termék</th>
+          <th>Mennyiség</th>
+          <th>Ár</th>
           <th>Műveletek</th>
         </tr>
       </ng-template>
@@ -137,14 +128,14 @@
           </td>
 
           <td>
-            {{ item.price * item.quantity | number:'1.2-2' }}
+            ${{ item.price * item.quantity | number:'1.2-2' }}
           </td>
           <td>
-            <button class="btn-primary" (click)="saveItems(item)">
-              Save
+            <button class="btn-ghost" (click)="saveItems(item)">
+              Mentés
             </button>
             <button class="delete-btn" (click)="deleteItem(item)">
-              Delete
+              Törlés
             </button>
           </td>
 
@@ -155,11 +146,7 @@
 
   </div>
 
-  <!-- Product refound is kell a stockba await eredeti db - a ngm db ha 4 és 4 maradt 0 refound stock
-   save button az oszlophoz hogy könnyebb legyen a save 
-   meg az EGÉSZ order edit-delete cucc
-
-   FOOTER -->
+  <!--  FOOTER -->
   <ng-template pTemplate="footer">
     <div class="dialog-footer">
       

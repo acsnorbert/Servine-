@@ -19,4 +19,10 @@ router.get('/', auth, isAdmin, orderController.getAllOrders);
 // PATCH /api/orders/:id/status – Státusz frissítése (admin)
 router.patch('/:id/status', auth, isAdmin, orderController.updateOrderStatus);
 
+// PATCH /api/orders/:id/total - Teljes ár frissítése
+router.patch('/:id/total', auth, isAdmin, orderController.updateOrderTotal);
+
+// DELETE /api/orders/:id
+router.delete('/:id', auth, isAdmin, orderController.deleteOrder);
+
 module.exports = router;

@@ -15,6 +15,7 @@ import { Order_item } from '../../../interfaces/order_items';
 import { OrderItemsService } from '../../../services/order-items.service';
 import { ProductService } from '../../../services/product.service';
 import { Product } from '../../../interfaces/product';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-orders',
@@ -36,6 +37,7 @@ import { Product } from '../../../interfaces/product';
 export class OrdersComponent implements OnInit {
 
 
+
   search = '';
   constructor(
     private api: OrderService,
@@ -47,6 +49,9 @@ export class OrdersComponent implements OnInit {
   ngOnInit(): void {
     this.getOrders();
   }
+  totalPrice: number = 0;
+ 
+
 
   orders:Order[] = [];
   selectedItems: Order_item[] = [];
@@ -58,28 +63,34 @@ export class OrdersComponent implements OnInit {
     sku: '',
     image: ''
   };
+  data:any;
   itemsDialog = false;
 
   ogquantity:any
-
-  async getQuantity(id: string) {
-    this.orderItemApi.getOrderItemQuantityById(id).subscribe({
-      next: (res: any) => {
-        this.ogquantity = res.quantity;
-        console.log(`${res.quantity}, ${this.ogquantity}` )
-      },
-      error: (err) => {
-        this.ogquantity = 0;
-
-        this.messageService.show(
-          'error',
-          'HIBA',
-          err.message?.error || 'Hiba történt a rendelések lehívásakor'
-        );
-      }
-    });
+  //Lista szűrése felhasználói email alapján
+  get filteredOrders(): Order[] {
+      const term = this.search.toLowerCase();
+  
+      return this.orders.filter(cat =>
+        cat.user?.email.toLowerCase().includes(term)
+      );
+    }
+  
+  //Rendelési tételek darabszámának lehívása
+  async getQuantity(id: string): Promise<number> {
+  try {
+    const res: any = await firstValueFrom(
+      this.orderItemApi.getOrderItemQuantityById(id)
+    );
+    this.ogquantity = res.quantity;
+    return res.quantity;
+  } catch (err: any) {
+    this.ogquantity = 0;
+    this.messageService.show('error','HIBA', err.message?.error || 'Hiba történt');
+    return 0;
   }
-
+}
+  //Rendelési tárgyak Dialogjának megnyitása
   openItemsDialog(id:string, length:any) {
     if(length <= 0){
       this.messageService.show('info', 'INFO', 'Ennek a rendelésnek nincsenek tárgyai!');
@@ -101,34 +112,30 @@ export class OrdersComponent implements OnInit {
   }
 
   //Order állításnál visszaadja a stockba a tárgyat vagy elvesz ha van elég
-  async productRefund(id:string, quantity:number, action:boolean){
-    await this.productApi.getProductById(id).subscribe({
-      next:(res)=>{
-        this.product = res as Product;
-        //MAJD KÉRD LE AZ ORDER ITEMS QUANTITYT MER A FORM NEM KONSZISZTENS
-        if(action){
-          this.product.stock -= quantity;
-        }
-        else{
-          this.product.stock += quantity;
-        }
-        if(this.product.stock <=0){
-          this.messageService.show('error', 'HIBA', 'Nincs elég tárgy');
-          return;
-        }
-        this.productApi.updateProduct(this.product, id).subscribe({
-          next:(res)=>{
-          
-          },
-          error:(err)=>{
-            this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a tárgy frissítésekor');
-          }
-        })
-      },
-      error:(err)=>{
-        this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a tárgy lehívásakor');
+  async productRefund(id: string, quantity: number, action: boolean) {
+  try {
+    const res = await firstValueFrom(this.productApi.getProductById(id));
+    this.product = res as Product;
+
+    if (action) {
+      // levonás
+      if (this.product.stock < quantity) {
+        this.messageService.show('error', 'HIBA', 'Nincs elég készlet');
+        return false;
       }
-    })
+      this.product.stock -= quantity;
+    } else {
+      // visszaadás
+      this.product.stock += quantity;
+    }
+
+    await firstValueFrom(this.productApi.updateProduct(this.product, id));
+    return true;
+
+    } catch (err: any) {
+      this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt');
+      return false;
+    }
   }
 
   //Rendelési tárgy törlése
@@ -146,7 +153,11 @@ export class OrdersComponent implements OnInit {
             
             this.messageService.show('success', 'SIKER', 'A rendelési tárgy sikeresen törölve!');
             this.itemsDialog = false;
+            this.api.UpdateTotalPrice(item.order_id!).subscribe();
             this.getOrders();
+            this.getOrderItems();
+            this.itemsDialog = true;
+            
           },
           error: (err: any) => {
             this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a rendelési tárgy törlése közben!');
@@ -155,6 +166,8 @@ export class OrdersComponent implements OnInit {
         });
       }
     });
+    
+    
   }
 
   getOrders(){
@@ -181,50 +194,97 @@ export class OrdersComponent implements OnInit {
   edit(order: any) {
     console.log('edit', order);
   }
-
-  delete(id: string) {
-    console.log('delete', id);
-  }
-  //Rendelési tárgyak frissítése
-  async saveItems(item:Order_item) {
-    //Ha 0-t rak
-
-    if(item.quantity <=0){
-      this.confirmationService.confirm({
-      message: `Biztosan ki szeretnéd törölni ezt a rendelési tárgyat?|: ${item.product?.name}`,
-      header: 'Megerősítés',
-      icon: 'pi pi-exclamation-triangle',
-      accept: async() => {
-        await this.productRefund(item.product?.id!,item.quantity, false);
-        this.orderItemApi.deleteOrderItemById(item.id!).subscribe({
+  statusChange(id: string,status: string) {
+    switch(status){
+      case "Feldolgozás alatt":
+        status ="Kész"
+        break;
+      case "Kész":
+        status = "Törölve";
+        break;
+      case "Törölve":
+        status = "Feldolgozás alatt"
+        break;
+      default:
+        status = "Feldolgozás alatt"
+        break;
+    }
+    this.data={
+      status
+    }
+    this.api.UpdateOrderStatus(id, this.data).subscribe({
           next: () => {
-            this.messageService.show('success', 'SIKER', 'A rendelési tárgy sikeresen törölve!');
-            this.itemsDialog = false;
+            this.messageService.show('success', 'SUCCESS', 'A rendelés státusza sikeresen frissült');
+           
             this.getOrders();
           },
           error: (err: any) => {
-            this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a rendelési tárgy törlése közben!');
-            this.itemsDialog = false;
+            this.messageService.show('error', 'ERROR', err.message?.error || 'Hiba történt a rendelés státuszának megváltoztatásakor');
+          
+    } }); 
+   }
+  
+
+  delete(id: string) {
+    this.confirmationService.confirm({
+      message: `Are you sure you want to delete this order?|: ${name}`,
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        
+        this.api.DeleteOrder(id).subscribe({
+          next: () => {
+            this.messageService.show('success', 'SUCCESS', 'The order was successfully deleted');
+           
+            this.getOrders();
+          },
+          error: (err: any) => {
+            this.messageService.show('error', 'ERROR', err.message?.error || 'An error occurred while deleting the order');
+          
           }
         });
       }
     });
-    }
-    else{
-      //Frissítés
-      this.orderItemApi.updateOrderItem(item, item.id!).subscribe({
-      next:(res)=>{
-        this.messageService.show('success', 'SIKER', 'A rendelési tárgy sikeresen frissítve!');
-        this.getOrderItems()
-        
-      },
-      error:(err)=>{
-        this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a rendelések lehívásakor');
-       
-      }
-    })
+  }
+  //Rendelési tárgyak frissítése
+  async saveItems(item: Order_item) {
+    const quantity = await this.getQuantity(item.id!);
+
+    if (item.quantity <= 0) {
+      this.confirmationService.confirm({
+        message: `Biztosan törlöd?: ${item.product?.name}`,
+        header: 'Megerősítés',
+        icon: 'pi pi-exclamation-triangle',
+        accept: async () => {
+
+          const ok = await this.productRefund(item.product?.id!, quantity, false);
+          if (!ok) return;
+
+          await firstValueFrom(this.orderItemApi.deleteOrderItemById(item.id!));
+
+          this.messageService.show('success', 'SIKER', 'Törölve!');
+          this.itemsDialog = false;
+          this.api.UpdateTotalPrice(item.order_id!).subscribe();
+          this.getOrders();
+          this.getOrderItems();
+          
+        }
+      });
+    } else {
+      const ok = await this.productRefund(item.product?.id!, item.quantity-quantity, true);
+      if (!ok) return;
+
+      await firstValueFrom(this.orderItemApi.updateOrderItem(item, item.id!));
+
+      this.messageService.show('success', 'SIKER', 'Frissítve!');
+      this.api.UpdateTotalPrice(item.order_id!).subscribe();
+      this.getOrders();
+      this.getOrderItems();
+      
     }
     
+
+  
   }
 
 

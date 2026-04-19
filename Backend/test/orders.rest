@@ -56,3 +56,12 @@ Authorization: Bearer {{adminToken}}
 {
   "status": "Kiszállítva"
 }
+
+### Rendelés teljes árának frissítése
+PATCH {{url}}/api/orders/ord-001-uuid-000000000001/total
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  
+}

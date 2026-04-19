@@ -5,13 +5,17 @@ async function createOrder(req, res) {
   try {
     const { items } = req.body;
     const order = await Order.create({ user_id: req.user.id }, { transaction: t });
-
+    let totalPrice = 0;
     for (const item of items) {
       const product = await Product.findByPk(item.product_id, { transaction: t });
       if (!product || product.stock < item.quantity) {
         await t.rollback();
         return res.status(400).json({ message: `Nincs elegendő készlet: ${product?.name ?? 'ismeretlen termék'}` });
       }
+
+      const itemTotal = product.price * item.quantity;
+      totalPrice += itemTotal;
+
       await OrderItem.create({
         order_id: order.id,
         product_id: item.product_id,
@@ -95,4 +99,75 @@ async function updateOrderStatus(req, res) {
   }
 }
 
-module.exports = { createOrder, getMyOrders, getOrderById, getAllOrders, updateOrderStatus };
+async function updateOrderTotal(req, res) {
+  try {
+    const order = await Order.findByPk(req.params.id, {
+      include: [{ model: OrderItem, as: 'items' }]
+    });
+
+    if (!order) {
+      return res.status(404).json({ message: 'Rendelés nem található.' });
+    }
+
+    const total = order.items.reduce((sum, item) => {
+      return sum + (item.quantity * item.price);
+    }, 0);
+
+    order.total_price = total;
+    await order.save();
+
+    return res.status(200).json({
+      message: 'Total price frissítve.',
+      total_price: total,
+      order
+    });
+
+  } catch (err) {
+    console.error('updateOrderTotal error:', err);
+    return res.status(500).json({ message: 'Szerverhiba.' });
+  }
+}
+//DELETE order
+async function deleteOrder(req, res) {
+  const t = await sequelize.transaction();
+
+  try {
+    const order = await Order.findByPk(req.params.id, {
+      include: [{ model: OrderItem, as: 'items' }],
+      transaction: t
+    });
+
+    if (!order) {
+      await t.rollback();
+      return res.status(404).json({ message: 'Rendelés nem található.' });
+    }
+
+    // jogosultság check
+    if (req.user.role !== 'admin' && order.user_id !== req.user.id) {
+      await t.rollback();
+      return res.status(403).json({ message: 'Hozzáférés megtagadva.' });
+    }
+    
+    // Order törlése
+    await order.destroy({ transaction: t });
+
+    await t.commit();
+
+    return res.status(200).json({ message: 'Rendelés törölve.' });
+
+  } catch (err) {
+    if (!t.finished) await t.rollback();
+    console.error('deleteOrder error:', err);
+    return res.status(500).json({ message: 'Szerverhiba.' });
+  }
+}
+module.exports = {
+   createOrder, 
+   getMyOrders, 
+   getOrderById, 
+   getAllOrders, 
+   updateOrderStatus,
+   updateOrderTotal,
+   deleteOrder
+
+  };

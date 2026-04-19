@@ -7,7 +7,6 @@ import { RegistrationComponent } from './components/registration/registration.co
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { CategoriesComponent } from './components/Admin/categories/categories.component';
 import { DashboardComponent } from './components/Admin/dashboard/dashboard.component';
-import { OrderItemsComponent } from './components/Admin/order-items/order-items.component';
 import { OrdersComponent } from './components/Admin/orders/orders.component';
 import { UsersComponent } from './components/Admin/users/users.component';
 import { ProductsComponent } from './components/Admin/products/products.component';
@@ -40,7 +39,6 @@ export const routes: Routes = [
   // ADMIN ONLY
   { path: 'dashboard', component: DashboardComponent },
   { path: 'category', component: CategoriesComponent },
-  { path: 'order_items', component: OrderItemsComponent},
   { path: 'orders', component: OrdersComponent},
   { path: 'product_list', component: ProductsComponent},
   { path: 'users', component: UsersComponent},

@@ -71,21 +71,21 @@ export class CategoriesComponent implements OnInit {
       console.log('UPDATE', this.NewCategory);
       this.api.updateCategories(this.NewCategory, this.NewCategory.id!).subscribe({
       next: () => {
-        this.messageService.show('success', 'SUCCESS', 'Category was successfully updated');
+        this.messageService.show('success', 'SIKER', 'A kategória sikeresen frissült');
          this.getCategories();
       },
       error: (err)=>{
-        this.messageService.show('error', 'ERROR', err.message?.error || 'An error occurred while finding the categories');
+        this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a kategória frissítése közben');
       }
     });
     } else {
       this.api.insertCategories(this.NewCategory).subscribe({
       next: () => {
-        this.messageService.show('success', 'SUCCESS', 'Category was successfully created');
+        this.messageService.show('success', 'SIKER', 'A kategória sikeresen létre lett hozva');
          this.getCategories();
       },
       error: (err)=>{
-        this.messageService.show('error', 'ERROR', err.message?.error || 'An error occurred while finding the categories');
+        this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a kategória létrehozása közben');
       }
     });
     }
@@ -108,19 +108,19 @@ export class CategoriesComponent implements OnInit {
   delete(id: string, name:string) {
 
     this.confirmationService.confirm({
-      message: `Are you sure you want to delete this category?|: ${name}`,
-      header: 'Confirmation',
+      message: `Biztosan szeretnéd törölni ezt a kategóriát?|: ${name}`,
+      header: 'Megerősítés',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         
         this.api.deleteCategoriesById(id).subscribe({
           next: () => {
-            this.messageService.show('success', 'SUCCESS', 'The category was successfully deleted');
+            this.messageService.show('success', 'SIKER', 'The category was successfully deleted');
            
             this.getCategories();
           },
           error: (err: any) => {
-            this.messageService.show('error', 'ERROR', err.message?.error || 'An error occurred while deleting the category');
+            this.messageService.show('error', 'HIBA', err.message?.error || 'An error occurred while deleting the category');
           
           }
         });
@@ -134,7 +134,7 @@ export class CategoriesComponent implements OnInit {
         this.categories = res as Category[];
       },
       error: (err)=>{
-        this.messageService.show('error', 'ERROR', err.message?.error || 'An error occurred while finding the categories');
+        this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a kategóriák lehívása közben');
       }
     });
   }

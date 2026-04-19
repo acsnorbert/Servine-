@@ -5,13 +5,13 @@
 <div class="products-header">
   <div class="products-title">
     <span class="section-label">Admin</span>
-    <h1>Products</h1>
+    <h1>Termékek</h1>
   </div>
 
   <div class="actions">
-    <input pInputText type="text" placeholder="Search product..."  [(ngModel)]="search" />
+    <input pInputText type="text" placeholder="Termékek keresése..."  [(ngModel)]="search" />
     <button class="btn-primary" (click)="add()">
-      Add Product
+      Termék hozzáadása
     </button>
   </div>
 </div>
@@ -28,13 +28,13 @@
     <!-- HEADER -->
     <ng-template pTemplate="header">
       <tr>
-        <th>Image</th>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Stock</th>
+        <th>Kép</th>
+        <th>Név</th>
+        <th>Ár</th>
+        <th>Mennyiség</th>
         <th>SKU</th>
-        <th>Category</th>
-        <th >Actions</th>
+        <th>Kategória</th>
+        <th >Műveletek</th>
       </tr>
     </ng-template>
 
@@ -86,23 +86,23 @@
   [closable]="true"
   [style]="{ width: '420px' }"
   styleClass="lux-dialog"
-  [header]="isEditMode ? 'Edit Product' : 'Add Product'">
+  [header]="isEditMode ? 'Termék szerkesztése' : 'Termék hozzáadása'">
 
 
     <div class="dialog-content">
       <!-- NAME -->
       <div class="field">
-        <label>Name</label>
+        <label>Név</label>
         <input type="text" pInputText [(ngModel)]="newProduct.name" />
       </div>
       <!-- Price -->
       <div class="field">
-        <label>Price</label>
+        <label>Ár</label>
         <input type="number" pInputText [(ngModel)]="newProduct.price" />
       </div>
       <!-- NAME -->
       <div class="field">
-        <label>Stock</label>
+        <label>Mennyiség</label>
         <input type="number" pInputText [(ngModel)]="newProduct.stock" />
       </div>
 
@@ -112,11 +112,11 @@
       </div>
 
       <div class="field">
-        <label>Category</label>
+        <label>Kategória</label>
 
         <select class="lux-select" [(ngModel)]="newProduct.category_id" required>
           <option [ngValue]="null" disabled selected>
-            Select category
+            Válasszon kategóriát
           </option>
 
           <option *ngFor="let cat of categories" [ngValue]="cat.id">
@@ -127,15 +127,15 @@
     </div>
 
     <div class="field">
-      <label>Image URL</label>
+      <label>Kép URL</label>
       <input type="text" pInputText [(ngModel)]="newProduct.image" />
     </div>
 
     <!-- FOOTER -->
     <ng-template pTemplate="footer">
       <div class="dialog-footer">
-        <button class="btn-ghost" (click)="displayDialog = false"> Cancel</button>
-        <button class="btn-primary" (click)="save()"> Save</button>
+        <button class="btn-ghost" (click)="displayDialog = false"> Mégse</button>
+        <button class="btn-primary" (click)="save()"> Mentés</button>
       </div>
     </ng-template>
   </p-dialog>

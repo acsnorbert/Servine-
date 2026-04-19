@@ -5,11 +5,11 @@
 
     <div class="users__title">
       <span class="section-label">Admin</span>
-      <h1>Users</h1>
+      <h1>Felhasználók</h1>
     </div>
 
     <div class="users__actions">
-      <input pInputText type="text" placeholder="Search user..." [(ngModel)]="search"
+      <input pInputText type="text" placeholder="Felhasználó keresése..." [(ngModel)]="search"
       />
      
     </div>
@@ -19,7 +19,7 @@
   <div class="users__table">
 
     <p-table
-      [value]="users"
+      [value]="filteredUsers"
       responsiveLayout="scroll"
       [paginator]="true"
       [rows]="10"
@@ -29,10 +29,10 @@
       <ng-template pTemplate="header">
         <tr>
           <th>ID</th>
-          <th>Name</th>
+          <th>Név</th>
           <th>Email</th>
-          <th>Role</th>
-          <th>Actions</th>
+          <th>Szerep</th>
+          <th>Műveletek</th>
         </tr>
       </ng-template>
 
@@ -62,7 +62,7 @@
           <td class="actions text-end">
            
             <button class="btn-danger" [disabled]="user.id === loggeduserId" (click)="delete(user.id, user.name)">
-              Delete
+              Törlés
             </button>
           </td>
         </tr>

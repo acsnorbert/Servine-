@@ -24,6 +24,10 @@ module.exports = (sequelize) => {
         allowNull: true,
         defaultValue: 'Feldolgozás alatt'
       },
+      total_price: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
       createdAt: {
           type: DataTypes.DATE,
           allowNull: false,

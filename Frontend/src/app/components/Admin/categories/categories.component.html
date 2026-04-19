@@ -5,13 +5,13 @@
 
     <div class="categories__title">
       <span class="section-label">Admin</span>
-      <h1>Categories</h1>
+      <h1>Kategóriák</h1>
     </div>
 
-    <div class="categories__actions">
-      <input  pInputText  type="text"  placeholder="Search category..."  [(ngModel)]="search"/>
+    <div class="actions">
+      <input  pInputText  type="text"  placeholder="Kategória keresése..."  [(ngModel)]="search"/>
       <button class="btn-primary" (click)="add()">
-        Add Category
+        Kategória hozzáadása
       </button>
     </div>
   </div>
@@ -30,10 +30,10 @@
       <ng-template pTemplate="header">
         <tr>
           <th>ID</th>
-          <th>Parent</th>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Actions</th>
+          <th>Szülő</th>
+          <th>Név</th>
+          <th>Típus</th>
+          <th>Műveletek</th>
         </tr>
       </ng-template>
 
@@ -58,17 +58,17 @@
                 'badge--child': cat.parent_id
               }"
             >
-              {{ cat.parent_id ? 'Subcategory' : 'Main' }}
+              {{ cat.parent_id ? 'Alkategória' : 'Fő' }}
             </span>
           </td>
 
           <td class="actions text-end">
             <button class="btn-ghost" (click)="edit(cat)">
-              Edit
+              Szerkesztés
             </button>
 
             <button class="btn-danger" (click)="delete(cat.id,cat.name)">
-              Delete
+              Törlés
             </button>
           </td>
         </tr>
@@ -82,33 +82,37 @@
   [closable]="true"
   [style]="{ width: '420px' }"
   styleClass="lux-dialog"
-  [header]="isEditMode ? 'Edit Category' : 'Add Category'">
+  [header]="isEditMode ? 'Kategória szerkesztése' : 'Kategória hozzáatása'">
     <!-- DIALOG -->
     <div class="dialog-content">
       <!-- NAME-->
       <div class="field">
-        <label>Name</label>
+        <label>Név</label>
         <input type="text" pInputText [(ngModel)]="NewCategory.name"/>
       </div>
        <!-- PARENT -->
       <div class="field">
-        <label>Parent Category</label>
+        <label>Szülő kategória</label>
         <select class="lux-select"[(ngModel)]="NewCategory.parent_id" required>
           <option [ngValue]="null" disabled selected>
-            Select parent category
+            Válasszon szülő kategóriát
           </option>
 
-          <option *ngFor="let cat of categories" [ngValue]="cat.id">
-            {{ cat.name }}
-          </option>
+          <ng-container *ngFor="let cat of categories">
+            <option 
+              *ngIf="cat.id !== NewCategory.id"
+              [ngValue]="cat.id">
+              {{ cat.name }}
+            </option>
+          </ng-container>
         </select>
       </div>
     </div>
     <!-- FOOTER -->
     <ng-template pTemplate="footer">
       <div class="dialog-footer">
-        <button  class="btn-ghost" (click)="displayDialog = false"> Cancel</button>
-        <button class="btn-primary"(click)="save()"> Save</button>
+        <button  class="btn-ghost" (click)="displayDialog = false"> Mégse</button>
+        <button class="btn-primary"(click)="save()"> Mentés</button>
       </div>
     </ng-template>
   </p-dialog>

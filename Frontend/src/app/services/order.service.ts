@@ -27,4 +27,13 @@ export class OrderService {
   getOrders(){
     return this.http.get(`${this.API}`, this.tokenHeader());
   }
+  UpdateOrderStatus(id:string, data:object){
+    return this.http.patch(`${this.API}/${id}/status`,data, this.tokenHeader());
+  }
+  UpdateTotalPrice(id:string){
+    return this.http.patch(`${this.API}/${id}/total`,{}, this.tokenHeader());
+  }
+  DeleteOrder(id: string){
+    return this.http.delete(`${this.API}/${id}`, this.tokenHeader());
+  }
 }
