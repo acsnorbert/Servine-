@@ -87,6 +87,10 @@
           [disabled]="!name || !email || !message || submitting">
           {{ submitting ? 'Küldés...' : 'Üzenet küldése →' }}
         </button>
+
+        <div *ngIf="errorMessage" style="margin-top:12px;color:#e53935;font-size:14px;">
+          {{ errorMessage }}
+        </div>
       </div>
 
     </div>
