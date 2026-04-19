@@ -58,7 +58,7 @@ export class UsersComponent implements OnInit {
   rolechange(id: string,role: string) {
     
     if(this.loggeduserId == id){
-      this.messageService.show('warn', 'WARNING', 'you cannot change your own role');
+      this.messageService.show('warn', 'FIGYELEM', 'A saját szerepedet nem tudod állítani');
       return;
     }
     if(role == "user"){
@@ -72,35 +72,35 @@ export class UsersComponent implements OnInit {
     }
     this.api.ChangeUserRole(id, this.data).subscribe({
           next: () => {
-            this.messageService.show('success', 'SUCCESS', 'A felhasználó szerepe sikeresen frissült');
+            this.messageService.show('success', 'SIKER', 'A felhasználó szerepe sikeresen frissült');
            
             this.getUsers();
           },
           error: (err: any) => {
-            this.messageService.show('error', 'ERROR', err.message?.error || 'Hiba történt a felhasználó szerepének megváltoztatásakor');
+            this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a felhasználó szerepének megváltoztatásakor');
           
           }
     }); 
   }
   delete(id: string,name: string) {
     if(this.loggeduserId == id){
-      this.messageService.show('warn', 'WARNING', 'you cannot delete your own account here');
+      this.messageService.show('warn', 'FIGYELEM', 'A saját fiókodat nem tudod törölni');
       return;
     }
     this.confirmationService.confirm({
-      message: `Are you sure you want to delete this user?|: ${name}`,
-      header: 'Confirmation',
+      message: `Biztosan ki szeretnéd törölni ezt a felhasználót?|: ${name}`,
+      header: 'Megerősítés',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         
         this.api.DeleteUser(id).subscribe({
           next: () => {
-            this.messageService.show('success', 'SUCCESS', 'The User was successfully deleted');
+            this.messageService.show('success', 'SIKER', 'A felhasználó sikeresen törölve lett');
            
             this.getUsers();
           },
           error: (err: any) => {
-            this.messageService.show('error', 'ERROR', err.message?.error || 'An error occurred while deleting the User');
+            this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a felhasználó törlése közben');
           
           }
         });
@@ -115,7 +115,7 @@ export class UsersComponent implements OnInit {
         
       },
       error: (err)=>{
-        this.messageService.show('error', 'ERROR', err.message?.error || 'An error occurred while finding the users');
+        this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a felhasználók lehívásakor');
       }
     })
   }

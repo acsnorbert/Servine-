@@ -40,6 +40,10 @@ Authorization: Bearer {{userToken}}
 GET {{url}}/api/orders/my
 Authorization: Bearer {{userToken}}
 
+### Rendelések bevételének listázása
+GET {{url}}/api/orders/stats/monthly
+Authorization: Bearer {{adminToken}}
+
 ### Egy rendelés részletei
 GET {{url}}/api/orders/1
 Authorization: Bearer {{userToken}}

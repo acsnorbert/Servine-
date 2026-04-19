@@ -8,6 +8,7 @@ export interface Product {
   sku: string;
   image: string;
   createdAt?: Date;
+  updatedAt?:Date;
   category?: {
     id: string;
     parent_id: string | null;

@@ -24,5 +24,7 @@ router.patch('/:id/total', auth, isAdmin, orderController.updateOrderTotal);
 
 // DELETE /api/orders/:id
 router.delete('/:id', auth, isAdmin, orderController.deleteOrder);
+// GET /api/orders/stats/monthly
+router.get('/stats/monthly', auth, isAdmin, orderController.getMonthlyRevenue);
 
 module.exports = router;

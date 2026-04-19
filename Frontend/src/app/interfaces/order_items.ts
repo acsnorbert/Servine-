@@ -5,6 +5,8 @@ export interface Order_item {
   product_id: string;
   quantity: number;
   price: number;
+  createdAt?:Date;
+  updatedAt?:Date;
   product?:{
     id:string;
     name:string;

@@ -1,9 +1,10 @@
+
 <div class="dashboard">
 
   <!-- HEADER -->
   <div class="dashboard__header">
     <div>
-      <span class="section-label">Overview</span>
+      <span class="section-label">Áttekintés</span>
       <h1>Dashboard</h1>
     </div>
   </div>
@@ -11,35 +12,47 @@
   <!-- STATS -->
   <div class="dashboard__stats">
 
+    <!-- USERS -->
     <div class="stat">
       <div class="stat__icon"><i class="pi pi-users"></i></div>
       <div>
-        <span class="stat__label">Users</span>
-        <span class="stat__value">1,284</span>
+        <span class="stat__label">Felhasználók</span>
+        <span class="stat__value">{{ users.length }}</span>
       </div>
     </div>
 
+    <!-- ORDERS -->
     <div class="stat">
       <div class="stat__icon"><i class="pi pi-shopping-cart"></i></div>
       <div>
-        <span class="stat__label">Orders</span>
-        <span class="stat__value">324</span>
+        <span class="stat__label">Rendelések</span>
+        <span class="stat__value">{{ orders.length }}</span>
       </div>
     </div>
 
+    <!-- REVENUE -->
     <div class="stat">
       <div class="stat__icon"><i class="pi pi-dollar"></i></div>
       <div>
-        <span class="stat__label">Revenue</span>
-        <span class="stat__value">$12,540</span>
+        <span class="stat__label">Bevétel (aktuális hónap)</span>
+        <span class="stat__value">
+          {{ currentRevenue | currency:'USD':'symbol':'1.0-0' }}
+        </span>
       </div>
     </div>
 
+    <!-- GROWTH -->
     <div class="stat">
       <div class="stat__icon"><i class="pi pi-chart-line"></i></div>
       <div>
-        <span class="stat__label">Growth</span>
-        <span class="stat__value">+14%</span>
+        <span class="stat__label">Növekedés</span>
+        <span class="stat__value"
+              [ngClass]="{
+                'text-green': growth >= 0,
+                'text-red': growth < 0
+              }">
+          {{ growth | number:'1.0-0' }}%
+        </span>
       </div>
     </div>
 
@@ -50,66 +63,88 @@
 
     <!-- CHART -->
     <div class="card">
-      <div class="card__header">Revenue Overview</div>
+      <div class="card__header">Bevételek áttekintése</div>
 
       <p-chart
+        *ngIf="chartData"
         type="line"
         [data]="chartData"
         [options]="chartOptions"
         height="300">
       </p-chart>
+
+      <div *ngIf="!chartData">Betöltés...</div>
     </div>
 
     <!-- ACTIVITY -->
     <div class="card">
-      <div class="card__header">Recent Activity</div>
+      <div class="card__header">Legutóbbi tevékenység</div>
 
       <ul class="activity">
-        <li><span></span>New user registered</li>
-        <li><span></span>Order #3021 completed</li>
-        <li><span></span>Payment received</li>
-        <li><span></span>New support ticket</li>
+        <li *ngFor="let act of recentActivity">
+          <span></span>
+          {{ act.text }}
+          <small class="muted">
+            {{ act.date | date:'yyyy.MM.dd HH:mm' }}
+          </small>
+        </li>
       </ul>
+
+      <div *ngIf="recentActivity.length === 0">
+        Nincs adat
+      </div>
     </div>
 
   </div>
 
   <!-- TABLE -->
   <div class="card">
-    <div class="card__header">Latest Users</div>
+    <div class="card__header">Legújabb felhasználók</div>
 
     <p-table
-      [value]="users"
+      [value]="latestUsers"
       responsiveLayout="scroll"
       styleClass="lux-table">
 
       <ng-template pTemplate="header">
         <tr>
-          <th>Name</th>
+          <th>Név</th>
           <th>Email</th>
-          <th>Status</th>
-          <th>Role</th>
+          <th>Szerep</th>
+          <th>Létrehozva</th>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="body" let-user>
         <tr>
 
-          <td>{{user.name}}</td>
-          <td class="muted">{{user.email}}</td>
+          <td>{{ user.name }}</td>
+
+          <td class="muted">{{ user.email }}</td>
 
           <td>
-            <span class="badge badge--success">
-              {{user.status}}
+            <span class="badge"
+                  [ngClass]="{
+                    'badge--success': user.role === 'admin',
+                    'badge--info': user.role !== 'admin'
+                  }">
+              {{ user.role }}
             </span>
           </td>
 
-          <td>{{user.role}}</td>
+          <td>
+            {{ user.createdAt | date:'yyyy.MM.dd HH:mm' }}
+          </td>
 
         </tr>
       </ng-template>
 
     </p-table>
+
+    <div *ngIf="latestUsers.length === 0">
+      Nincs felhasználó
+    </div>
   </div>
 
 </div>
+

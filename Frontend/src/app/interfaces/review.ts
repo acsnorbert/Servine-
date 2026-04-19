@@ -5,5 +5,6 @@ export interface Review {
   user_id:string;
   rating:number;
   comment?:string;
-  createdAt:Date;
+  createdAt?:Date;
+  updatedAt?:Date;
 }

@@ -161,6 +161,28 @@ async function deleteOrder(req, res) {
     return res.status(500).json({ message: 'Szerverhiba.' });
   }
 }
+async function getMonthlyRevenue(req, res) {
+  try {
+    const result = await Order.findAll({
+      attributes: [
+        [sequelize.fn('YEAR', sequelize.col('createdAt')), 'year'],
+        [sequelize.fn('MONTH', sequelize.col('createdAt')), 'month'],
+        [sequelize.fn('SUM', sequelize.col('total_price')), 'total']
+      ],
+      group: ['year', 'month'],
+      order: [
+        [sequelize.literal('year'), 'ASC'],
+        [sequelize.literal('month'), 'ASC']
+      ]
+    });
+
+    return res.status(200).json(result);
+
+  } catch (err) {
+    console.error('getMonthlyRevenue error:', err);
+    return res.status(500).json({ message: 'Szerverhiba.' });
+  }
+}
 module.exports = {
    createOrder, 
    getMyOrders, 
@@ -168,6 +190,7 @@ module.exports = {
    getAllOrders, 
    updateOrderStatus,
    updateOrderTotal,
-   deleteOrder
+   deleteOrder,
+   getMonthlyRevenue
 
   };

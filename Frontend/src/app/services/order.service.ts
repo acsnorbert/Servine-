@@ -36,4 +36,7 @@ export class OrderService {
   DeleteOrder(id: string){
     return this.http.delete(`${this.API}/${id}`, this.tokenHeader());
   }
+  GetRevenue(){
+    return this.http.get(`${this.API}/stats/monthly`, this.tokenHeader());
+  }
 }
