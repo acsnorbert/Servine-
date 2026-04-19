@@ -20,6 +20,7 @@ const categoryRoutes = require('../routes/category.routes');
 const orderRoutes = require('../routes/order.routes');
 const reviewRoutes = require('../routes/review.routes');
 const order_itemRoutes  = require('../routes/order_items.routes');
+const mailRoutes = require('../routes/mail.routes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
@@ -28,6 +29,7 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/order-items', order_itemRoutes);
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/mail', mailRoutes);
 
 app.get('/', (_req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });

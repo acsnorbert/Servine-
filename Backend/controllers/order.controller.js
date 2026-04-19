@@ -1,33 +1,69 @@
 const { Order, OrderItem, Product, User, sequelize } = require('../models/index');
+const { sendMail } = require('../services/mail.service');
+const ejs = require('ejs');
+const path = require('path');
 
 async function createOrder(req, res) {
   const t = await sequelize.transaction();
   try {
     const { items } = req.body;
-    const order = await Order.create({ user_id: req.user.id }, { transaction: t });
-    let totalPrice = 0;
+
+    // Termékek előzetes lekérése és stock ellenőrzés
+    const resolvedItems = [];
     for (const item of items) {
       const product = await Product.findByPk(item.product_id, { transaction: t });
       if (!product || product.stock < item.quantity) {
         await t.rollback();
         return res.status(400).json({ message: `Nincs elegendő készlet: ${product?.name ?? 'ismeretlen termék'}` });
       }
+      resolvedItems.push({ product, quantity: item.quantity });
+    }
+    
+    const totalPrice = resolvedItems.reduce((sum, i) => sum + i.product.price * i.quantity, 0);
 
-      const itemTotal = product.price * item.quantity;
-      totalPrice += itemTotal;
+    const order = await Order.create({ user_id: req.user.id, total_price: totalPrice }, { transaction: t });
 
+    for (const { product, quantity } of resolvedItems) {
       await OrderItem.create({
         order_id: order.id,
-        product_id: item.product_id,
-        quantity: item.quantity,
+        product_id: product.id,
+        quantity,
         price: product.price
       }, { transaction: t });
 
-      product.stock -= item.quantity;
+      product.stock -= quantity;
       await product.save({ transaction: t });
     }
 
     await t.commit();
+
+    // Rendelés visszaigazoló email küldése
+    try {
+      const user = await User.findByPk(req.user.id);
+      const emailItems = await OrderItem.findAll({
+        where: { order_id: order.id },
+        include: [{ model: Product, as: 'product' }]
+      });
+      const html = await ejs.renderFile(
+        path.join(__dirname, '../Emailtemplates/order.email.ejs'),
+        {
+          username: user.name,
+          orderNumber: order.id.slice(0, 8).toUpperCase(),
+          orderDate: new Date().toLocaleDateString('hu-HU'),
+          location: user.address ?? 'Nincs megadva',
+          items: emailItems.map(i => ({
+            name: i.product.name,
+            quantity: i.quantity,
+            price: `${i.price.toLocaleString('hu-HU')} Ft`
+          })),
+          totalPrice: `${totalPrice.toLocaleString('hu-HU')} Ft`
+        }
+      );
+      await sendMail({ to: user.email, subject: 'SERVINE – Rendelés visszaigazolása', message: html });
+    } catch (mailErr) {
+      console.error('Order email sending error:', mailErr.message);
+    }
+
     return res.status(201).json({ message: 'Rendeles létrehozva.', order });
 
   } catch (err) {
