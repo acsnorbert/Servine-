@@ -1,12 +1,12 @@
 <div class="page-wrapper">
-
+ 
   <div class="page-header" @fadeSlide>
     <h1 class="page-title">KOLLEKCIÓ</h1>
     <p class="page-subtitle" *ngIf="!isLoading">{{ filteredProducts.length }} termék</p>
   </div>
-
+ 
   <div class="filter-bar" @fadeSlide>
-
+ 
     <div class="filter-top-row">
       <div class="category-tabs">
         <button
@@ -23,7 +23,7 @@
           {{ cat.name }}
         </button>
       </div>
-
+ 
       <div class="search-box">
         <span class="search-icon">🔍</span>
         <input
@@ -34,7 +34,7 @@
           class="search-input" />
       </div>
     </div>
-
+ 
     <div class="filter-bottom-row">
       <div class="price-filter">
         <input
@@ -56,7 +56,7 @@
           class="price-input" />
         <span class="price-currency">Ft</span>
       </div>
-
+ 
       <label class="stock-checkbox">
         <input
           type="checkbox"
@@ -65,7 +65,7 @@
         <span class="checkmark"></span>
         Csak raktáron
       </label>
-
+ 
       <select class="sort-select" [(ngModel)]="sortBy" (ngModelChange)="onAdvancedFilterChange()">
         <option value="default">Sorrend</option>
         <option value="price_asc">Ár: növekvő</option>
@@ -73,26 +73,26 @@
       </select>
     </div>
   </div>
-
+ 
   <div class="loading-state" *ngIf="isLoading">
     <div class="spinner"></div>
   </div>
-
+ 
   <div class="error-state" *ngIf="errorMessage && !isLoading" @fadeSlide>
     <div class="error-icon">⚠</div>
     <p>{{ errorMessage }}</p>
   </div>
-
+ 
   <div class="products-grid" *ngIf="!isLoading && !errorMessage && filteredProducts.length > 0">
     <div
       class="product-card"
       *ngFor="let product of paginatedProducts"
       [routerLink]="['/products', product.id]"
       @fadeSlide>
-
+ 
       <div class="card-image">
         <img *ngIf="product.image; else iconPlaceholder"
-             [src]="'/products/' + product.image"
+             [src]="'http://localhost:3000/products/' + product.image"
              [alt]="product.name"
              class="card-img" />
         <ng-template #iconPlaceholder>
@@ -104,14 +104,14 @@
           <span class="overlay-text">Részletek →</span>
         </div>
       </div>
-
+ 
       <div class="card-info">
         <div class="card-name">{{ product.name }}</div>
         <div class="card-price">{{ product.price | number:'1.0-0' }} Ft</div>
       </div>
     </div>
   </div>
-
+ 
   <!-- Pagination -->
   <div class="pagination" *ngIf="!isLoading && totalPages > 1" @fadeSlide>
     <button
@@ -120,7 +120,7 @@
       [disabled]="currentPage === 1">
       &#8592;
     </button>
-
+ 
     <ng-container *ngFor="let page of pageNumbers">
       <span *ngIf="page < 0" class="page-ellipsis">…</span>
       <button
@@ -131,7 +131,7 @@
         {{ page }}
       </button>
     </ng-container>
-
+ 
     <button
       class="page-btn page-btn--arrow"
       (click)="goToPage(currentPage + 1)"
@@ -139,7 +139,7 @@
       &#8594;
     </button>
   </div>
-
+ 
   <!-- Üres állapot -->
   <div class="empty-state"
     *ngIf="!isLoading && !errorMessage && filteredProducts.length === 0"
@@ -149,5 +149,5 @@
     <p class="empty-sub">Próbálj más keresési feltételt!</p>
     <button class="reset-btn" (click)="resetFilters()">Szűrők törlése</button>
   </div>
-
+ 
 </div>

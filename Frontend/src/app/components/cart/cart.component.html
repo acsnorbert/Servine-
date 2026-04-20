@@ -1,45 +1,51 @@
 <div class="cart-container">
   <h1 class="page-title">Kosarad</h1>
-
+ 
   <div *ngIf="cartItems.length === 0" class="empty-cart">
     <p>A kosarad jelenleg üres.</p>
     <a routerLink="/products" class="btn-primary">Vásárlás folytatása</a>
   </div>
-
+ 
   <div *ngIf="cartItems.length > 0" class="cart-content">
     <div class="cart-items">
       <div class="cart-item" *ngFor="let item of cartItems; let i = index">
         <div class="item-image">
-          </div>
-        
+  <img *ngIf="item.product.image; else noImg"
+       [src]="'http://localhost:3000/products/' + item.product.image"
+       [alt]="item.product.name" />
+  <ng-template #noImg>
+    <div class="img-placeholder">✦</div>
+  </ng-template>
+</div>
+       
         <div class="item-details">
           <h3>{{ item.product.name }}</h3>
           <p class="size">Méret: <span>{{ item.size }}</span></p>
           <p class="price">{{ item.product.price | number }} Ft</p>
         </div>
-
+ 
         <div class="item-quantity-control">
-          <button 
-            class="qty-btn" 
-            (click)="decreaseQuantity(i)" 
+          <button
+            class="qty-btn"
+            (click)="decreaseQuantity(i)"
             [disabled]="item.quantity <= 1">
             -
           </button>
-          
+         
           <span class="qty-value">{{ item.quantity }} db</span>
-          
-          <button 
-            class="qty-btn" 
-            (click)="increaseQuantity(i)" 
+         
+          <button
+            class="qty-btn"
+            (click)="increaseQuantity(i)"
             [disabled]="item.quantity >= item.product.stock">
             +
           </button>
         </div>
-
+ 
         <button class="remove-btn" (click)="removeItem(i)">✕</button>
       </div>
     </div>
-
+ 
     <div class="cart-summary">
       <h2>Összesítés</h2>
       <div class="summary-row">

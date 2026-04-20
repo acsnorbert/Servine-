@@ -1,7 +1,7 @@
 const { Product, Category, Review, Sequelize, operatorMap, User } = require('../models/index');
 const { Op } = require('sequelize');
-
-// Összes termék lekérése szűrőkkel
+ 
+// osszes termek lekerese szuresi es rendezesi lehetosegekkel
 async function getAllProducts(req, res) {
   try {
     const { category_id, min_price, max_price, sort } = req.query;
@@ -9,23 +9,23 @@ async function getAllProducts(req, res) {
     if (category_id) where.category_id = category_id;
     if (min_price) where.price = { [Op.gte]: parseFloat(min_price) };
     if (max_price) where.price = { [Op.lte]: parseFloat(max_price) };
-
+ 
     const order = sort === 'price_asc' ? [['price', 'ASC']] : sort === 'price_desc' ? [['price', 'DESC']] : [['createdAt', 'DESC']];
-
+ 
     const products = await Product.findAll({
       where,
       include: [{ model: Category, as: 'category', attributes: ['id', 'name'] }],
       order
     });
-
+ 
     return res.status(200).json(products);
   } catch (err) {
     console.error('getAllProducts error:', err);
     return res.status(500).json({ message: 'Szerverhiba.' });
   }
 }
-
-// Egy termék lekérése
+ 
+// egy termek lekerese
 async function getProductById(req, res) {
   try {
     const product = await Product.findByPk(req.params.id, {
@@ -35,39 +35,40 @@ async function getProductById(req, res) {
       ]
     });
     if (!product) return res.status(404).json({ message: 'Termék nem található.' });
-
-    // Átlagos rating
+ 
+    // atlagos ertekeles
     const avgRating = product.reviews.length ? (product.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length).toFixed(1) : null;
-
+ 
     return res.status(200).json({ ...product.toJSON(), avgRating });
   } catch (err) {
     console.error('getProductById error:', err);
     return res.status(500).json({ message: 'Szerverhiba.' });
   }
 }
-
-// Keresés
+ 
+// kereses
 async function searchProducts(req, res) {
   try {
     const { q } = req.query;
     if (!q) return res.status(400).json({ message: 'Keresőszó szükséges.' });
-
+ 
     const products = await Product.findAll({
       where: { name: { [Op.like]: `%${q}%` } },
       include: [{ model: Category, as: 'category' }]
     });
-
+ 
     return res.status(200).json(products);
   } catch (err) {
     console.error('searchProducts error:', err);
     return res.status(500).json({ message: 'Szerverhiba.' });
   }
 }
-
-// Új termék
+ 
 async function createProduct(req, res) {
   try {
-    const { name, description, price, stock, sku, image, category_id } = req.body;
+    const { name, description, price, stock, sku, category_id } = req.body;
+    const image = req.file ? req.file.filename : req.body.image || null;
+   
     const product = await Product.create({ name, description, price, stock, sku, image, category_id });
     return res.status(201).json({ message: 'Termék létrehozva.', product });
   } catch (err) {
@@ -75,27 +76,29 @@ async function createProduct(req, res) {
     return res.status(500).json({ message: 'Szerverhiba.' });
   }
 }
-
-// Frissítés
+ 
 async function updateProduct(req, res) {
   try {
     const product = await Product.findByPk(req.params.id);
     if (!product) return res.status(404).json({ message: 'Termék nem található.' });
-
-    await product.update(req.body);
+ 
+    const updateData = { ...req.body };
+    if (req.file) updateData.image = req.file.filename;
+   
+    await product.update(updateData);
     return res.status(200).json({ message: 'Termék frissítve.', product });
   } catch (err) {
     console.error('updateProduct error:', err);
     return res.status(500).json({ message: 'Szerverhiba.' });
   }
 }
-
-// Törlés
+ 
+// torles
 async function deleteProduct(req, res) {
   try {
     const product = await Product.findByPk(req.params.id);
     if (!product) return res.status(404).json({ message: 'Termék nem található.' });
-
+ 
     await product.destroy();
     return res.status(200).json({ message: 'Termék törölve.' });
   } catch (err) {
@@ -103,5 +106,5 @@ async function deleteProduct(req, res) {
     return res.status(500).json({ message: 'Szerverhiba.' });
   }
 }
-
+ 
 module.exports = { getAllProducts, getProductById, searchProducts, createProduct, updateProduct, deleteProduct };
