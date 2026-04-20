@@ -1,4 +1,5 @@
 const { Order, OrderItem, Product, User, sequelize } = require('../models/index');
+const { Op } = require('sequelize');
 const { sendMail } = require('../services/mail.service');
 const ejs = require('ejs');
 const path = require('path');
@@ -205,6 +206,13 @@ async function getMonthlyRevenue(req, res) {
         [sequelize.fn('MONTH', sequelize.col('createdAt')), 'month'],
         [sequelize.fn('SUM', sequelize.col('total_price')), 'total']
       ],
+
+      where: {
+        status: {
+          [Op.not]: 'törölve'
+        }
+      },
+
       group: ['year', 'month'],
       order: [
         [sequelize.literal('year'), 'ASC'],

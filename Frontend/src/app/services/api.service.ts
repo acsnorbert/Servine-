@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../enviroments/environment';
 
-const BASE = 'http://localhost:3000/api';
+const BASE = `${environment.serverUrl}`;
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
 
   constructor(private http: HttpClient) {}
-  private tokenName ="Servine";
+  private tokenName =environment.tokenName;
 
   getToken(): String | null {
    

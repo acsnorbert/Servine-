@@ -2,47 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../enviroments/environment';
+import { Order } from '../interfaces/order';
+import { UpdateProfilePayload } from '../interfaces/UpdateProfilePayload';
+import { User } from '../interfaces/user';
 
-export interface UserProfile {
-  id: string;
-  name: string;
-  email: string;
-  phone: string | null;
-  address: string | null;
-  role: 'user' | 'admin';
-  createdAt: string;
-}
-
-export interface UpdateProfilePayload {
-  name: string;
-  email: string;
-  phone?: string;
-  address?: string;
-}
 
 export interface ChangePasswordPayload {
   currentPassword: string;
   newPassword: string;
-}
-
-export interface OrderItem {
-  id: string;
-  product_id: string;
-  quantity: number;
-  price: number;
-  product?: {
-    name: string;
-    image_url?: string;
-  };
-}
-
-export interface Order {
-  id: string;
-  user_id: string;
-  order_date: string;
-  status: string;
-  total?: number;
-  items?: OrderItem[];
 }
 
 @Injectable({ providedIn: 'root' })
@@ -66,13 +33,13 @@ export class UserService {
   }
 
   // ── GET /api/users/profile ────────────────────
-  getProfile(): Observable<UserProfile> {
-    return this.http.get<UserProfile>(`${this.API}/profile`, this.tokenHeader());
+  getProfile(): Observable<User> {
+    return this.http.get<User>(`${this.API}/profile`, this.tokenHeader());
   }
 
   // ── PATCH /api/users/profile ──────────────────
-  updateProfile(payload: UpdateProfilePayload): Observable<{ message: string; user: UserProfile }> {
-    return this.http.patch<{ message: string; user: UserProfile }>(
+  updateProfile(payload: UpdateProfilePayload): Observable<{ message: string; user: User }> {
+    return this.http.patch<{ message: string; user: User }>(
       `${this.API}/profile`,
       payload,
       this.tokenHeader()

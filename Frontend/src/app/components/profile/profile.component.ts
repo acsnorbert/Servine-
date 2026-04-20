@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { UserService, UserProfile, Order } from '../../services/user.service';
+import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
-import { RouterLink } from '@angular/router';
 import { MessageService } from '../../services/message.service';
+import { Order } from '../../interfaces/order';
+import { User } from '../../interfaces/user';
 
 // =====================
 // CUSTOM VALIDATOR
@@ -26,7 +27,7 @@ function passwordMatchValidator(group: AbstractControl): ValidationErrors | null
     CommonModule,
     ReactiveFormsModule,
     DecimalPipe,
-    RouterLink
+    
   ],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
@@ -46,7 +47,7 @@ export class ProfileComponent implements OnInit {
   activeTab: 'personal' | 'orders' | 'security' = 'personal';
 
   // ── Adatok ────────────────────────────────────
-  profile: UserProfile | null = null;
+  profile: User | null = null;
   orders: Order[] = [];
   isLoading = true;
 
@@ -144,7 +145,7 @@ export class ProfileComponent implements OnInit {
 
   // ── Rendelés összeg számítás ──────────────────
   getOrderTotal(order: Order): number {
-    if (order.total) return order.total;
+    if (order.total_price) return order.total_price;
     return order.items?.reduce((sum, i) => sum + i.price * i.quantity, 0) ?? 0;
   }
 
@@ -228,7 +229,7 @@ openOrderModal(order: Order): void {
   if (order.items && order.items.length > 0) return;
 
   this.isModalLoading = true;
-  this.userService.getOrderById(order.id).subscribe({
+  this.userService.getOrderById(order.id!).subscribe({
     next: (fullOrder) => {
       this.selectedOrder = fullOrder;
       this.isModalLoading = false;

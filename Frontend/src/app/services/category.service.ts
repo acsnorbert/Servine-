@@ -1,17 +1,18 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../enviroments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
 
-   private readonly API = 'http://localhost:3000/api/categories';
+   private readonly API = `${environment.serverUrl}/api/categories`;
   
     constructor(private http: HttpClient) {}
 
     getToken(): string | null {
-      return localStorage.getItem('Servine');
+      return localStorage.getItem(environment.tokenName);
     } 
 
     tokenHeader():{ headers: HttpHeaders }{

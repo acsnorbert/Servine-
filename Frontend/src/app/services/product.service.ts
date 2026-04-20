@@ -1,17 +1,18 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../enviroments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-   private readonly API = 'http://localhost:3000/api/products';
+   private readonly API = `${environment.serverUrl}/api/products`;
     
       constructor(private http: HttpClient) {}
   
       getToken(): string | null {
-        return localStorage.getItem('Servine');
+        return localStorage.getItem(environment.tokenName);
       } 
   
       tokenHeader():{ headers: HttpHeaders }{

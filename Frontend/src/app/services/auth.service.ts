@@ -4,25 +4,14 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../enviroments/environment';
 import { CartService } from './cart.service';
+import { User } from '../interfaces/user';
 
-export interface AuthUser {
-  id: string;
-  name: string;
-  email: string;
-  role: 'user' | 'admin';
-}
-
-export interface AuthResponse {
-  message: string;
-  token: string;
-  user: AuthUser;
-}
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly API = 'http://localhost:3000/api/auth';
+  private readonly API = `${environment.serverUrl}/api/auth`;
 
-  currentUser = signal<AuthUser | null>(this.loadUser());
+  currentUser = signal<User | null>(this.loadUser());
 
   private tokenName = environment.tokenName;
 
@@ -35,7 +24,7 @@ export class AuthService {
     private cartService: CartService) {}
 
   // ── Bejelentkezés ─────────────────────────────
-  login(token: string, user?: AuthUser): void {
+  login(token: string, user?: User): void {
     sessionStorage.setItem(this.tokenName, token);
     this.isLoggedIn.next(true);
 
@@ -101,7 +90,7 @@ export class AuthService {
     return !!(sessionStorage.getItem(this.tokenName) ?? localStorage.getItem(this.tokenName));
   }
 
-  private loadUser(): AuthUser | null {
+  private loadUser(): User | null {
     try {
       // Előbb sessionStorage, aztán localStorage
       const raw = sessionStorage.getItem('user') ?? localStorage.getItem('user');

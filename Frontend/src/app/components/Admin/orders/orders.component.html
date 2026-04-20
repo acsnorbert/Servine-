@@ -53,7 +53,7 @@
             {{ order.order_date ? (order.order_date | date:'yyyy-MM-dd HH:mm') : '—' }}
           </td>
           <td>
-            {{order.total_price}}
+            {{order.total_price}} Ft
           </td>
           <td>
             <span
@@ -128,7 +128,7 @@
           </td>
 
           <td>
-            ${{ item.price * item.quantity | number:'1.2-2' }}
+            {{ item.price * item.quantity | number:'1.2-2' }} Ft
           </td>
           <td>
             <button class="btn-ghost" (click)="saveItems(item)">
