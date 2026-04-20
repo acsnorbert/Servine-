@@ -500,14 +500,14 @@ html { scroll-behavior: smooth; }
   .hero__title-row { padding-top: 36px; }
   .hero__brand     { font-size: clamp(28px, 8vw, 48px); letter-spacing: .4em; }
 
-  // a stage-t átrendezzük: kép felül, szöveg alul
+
   .hero__stage {
     flex-direction: column;
     align-items: stretch;
     min-height: unset;
   }
 
-  // kép kilép az absolute-ból, normál flow-ban van
+
   .hero__model {
     position: relative;
     left: unset;
@@ -520,7 +520,7 @@ html { scroll-behavior: smooth; }
     flex-shrink: 0;
   }
 
-  // szöveg blokk a kép alatt
+
   .hero__left {
     position: relative;
     width: 100%;
