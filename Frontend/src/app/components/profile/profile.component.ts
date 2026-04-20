@@ -156,18 +156,29 @@ export class ProfileComponent implements OnInit {
 
   // ── Profil mentése ────────────────────────────
   savePersonal(): void {
-    if (this.profileForm.invalid) {
-      this.profileForm.markAllAsTouched();
-      return;
-    }
-    this.userService.updateProfile(this.profileForm.value).subscribe({
-      next: (res) => {
-        this.profile = res.user;
-        this.messageService.show('success', 'Success', 'Sikeres személyes adatok mentés');
-      },
-      error: () => this.messageService.show('error', 'Error', 'Mentés sikertelen.')
-    });
+  if (this.profileForm.invalid) {
+    this.profileForm.markAllAsTouched();
+    return;
   }
+  this.userService.updateProfile(this.profileForm.value).subscribe({
+    next: (res) => {
+      this.profile = res.user;
+      this.messageService.show('success', 'Success', 'Sikeres személyes adatok mentés');
+    },
+    error: (err) => {
+      const isEmailTaken =
+        err?.status === 409 ||
+        err?.error?.message?.toLowerCase().includes('email') ||
+        err?.error?.code === 'EMAIL_TAKEN';
+
+      const msg = isEmailTaken
+        ? 'Ez az email cím már foglalt.'
+        : 'Mentés sikertelen.';
+
+      this.messageService.show('error', 'Error', msg);
+    }
+  });
+}
 
   // ── Cím mentése ───────────────────────────────
   saveAddress(): void {
