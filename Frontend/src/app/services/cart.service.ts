@@ -36,7 +36,7 @@ export class CartService {
 
   addToCart(product: Product, size: string | null, quantity: number): void {
     const existing = this.cartItems.find(
-      i => i.product.id === product.id && i.size === size
+      (i) => i.product.id === product.id && i.size === size,
     );
     if (existing) {
       existing.quantity += quantity;
@@ -56,7 +56,16 @@ export class CartService {
     this.emit();
   }
 
+  clearCartDisplay(): void {
+    this.cartSubject.next([]);
+  }
+
   getItems(): CartItem[] {
-  return [...this.cartItems];
-}
+    return [...this.cartItems];
+  }
+
+  restoreCart(): void {
+    this.cartItems = this.loadFromStorage();
+    this.cartSubject.next([...this.cartItems]);
+  }
 }
