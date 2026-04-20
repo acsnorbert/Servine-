@@ -157,18 +157,20 @@ export class ProfileComponent implements OnInit {
 
   // ── Profil mentése ────────────────────────────
   savePersonal(): void {
-    if (this.profileForm.invalid) {
-      this.profileForm.markAllAsTouched();
-      return;
-    }
-    this.userService.updateProfile(this.profileForm.value).subscribe({
-      next: (res) => {
-        this.profile = res.user;
-        this.messageService.show('success', 'Success', 'Sikeres személyes adatok mentés');
-      },
-      error: () => this.messageService.show('error', 'Error', 'Mentés sikertelen.')
-    });
+  if (this.profileForm.invalid) {
+    this.profileForm.markAllAsTouched();
+    return;
   }
+  this.userService.updateProfile(this.profileForm.value).subscribe({
+    next: (res) => {
+      this.profile = res.user;
+      this.messageService.show('success', 'Success', 'Sikeres személyes adatok mentés');
+    },
+    error: (err) => {
+  this.messageService.show('error', 'HIBA', err.error?.message || 'Mentés sikertelen.');
+  }
+  });
+}
 
   // ── Cím mentése ───────────────────────────────
   saveAddress(): void {

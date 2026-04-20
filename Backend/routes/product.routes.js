@@ -4,27 +4,27 @@ const productController = require('../controllers/product.controller');
 const { auth, isAdmin } = require('../middlewares/auth.middleware');
 const { validate, createProductValidation, updateProductValidation } = require('../middlewares/validation.middleware');
 const upload = require('../middlewares/upload.middleware');
-
+ 
 // GET /api/products – Összes termék lekérése (nyilvános, opcionális szűrők: ?category_id=1&min_price=100&sort=price_asc)
 router.get('/', productController.getAllProducts);
-
+ 
 // GET /api/products/search – Termék keresés (nyilvános, ?q=keresoszo)
 router.get('/search', productController.searchProducts);
-
+ 
 // GET /api/products/:id – Egy termék részletei (nyilvános)
 router.get('/:id', productController.getProductById);
-
+ 
 // POST /api/products – Új termék létrehozása (admin)
 router.post('/', auth, isAdmin, createProductValidation, validate, productController.createProduct);
-
+ 
 // PATCH /api/products/:id – Termék frissítése (admin)
 router.patch('/:id', auth, isAdmin, updateProductValidation, validate, productController.updateProduct);
-
+ 
 // DELETE /api/products/:id – Termék törlése (admin)
 router.delete('/:id', auth, isAdmin, productController.deleteProduct);
-
+ 
 // admin fajl feltoltese
-router.post('/', auth, isAdmin, upload.single('image'), productController.createProduct);
-router.patch('/:id', auth, isAdmin, upload.single('image'), productController.updateProduct);
-
+router.post('/', auth, isAdmin, upload.single('image'), createProductValidation, validate, productController.createProduct);
+router.patch('/:id', auth, isAdmin, upload.single('image'), updateProductValidation, validate, productController.updateProduct);
+ 
 module.exports = router;

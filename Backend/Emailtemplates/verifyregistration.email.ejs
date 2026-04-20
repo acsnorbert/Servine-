@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
   <meta charset="UTF-8" />
-  <title>Verify Your Email</title>
+  <title>Sikeres regisztráció</title>
   <style>
     body {
       margin: 0;
       padding: 0;
       background-color: #0a0a0a;
-      
       color: #eaeaea;
     }
 
@@ -46,33 +45,17 @@
       font-size: 15px;
       line-height: 1.8;
       color: #cccccc;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
-    .button-wrapper {
-      text-align: center;
-      margin: 40px 0;
-    }
-
-    .verify-btn {
-      display: inline-block;
-      padding: 14px 42px;
-      border: 1px solid #d4af37;
-      color: #d4af37;
-      text-decoration: none;
-      font-size: 13px;
-      letter-spacing: 2px;
-      border-radius: 40px;
-      transition: all 0.3s ease;
-    }
-
-    .verify-btn:hover {
-      background-color: #d4af37;
-      color: #000000;
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(212, 175, 55, 0.15);
+      margin: 35px 0;
     }
 
     .signature {
-      margin-top: 40px;
+      margin-top: 30px;
       font-size: 14px;
       color: #b5b5b5;
     }
@@ -92,29 +75,23 @@
       <div class="logo">SERVINE</div>
 
       <div class="content">
-        <h2>Dear <%= username %>,</h2>
+        <h2>Kedves <%= username %>!</h2>
 
         <p>
-          Welcome to SERVINE.
-          Your account has been successfully created.  
-          To ensure the security and authenticity of your registration,
-          please confirm your email address.
+          Köszönjük, hogy csatlakoztál a SERVINE közösséghez.
+          Regisztrációd sikeresen rögzítettük, fiókod mostantól aktív és használatra kész.
         </p>
-
-        <div class="button-wrapper">
-          <a href="<%= verificationUrl %>" class="verify-btn">
-            VERIFY EMAIL
-          </a>
-        </div>
 
         <p>
-          This verification link is intended solely for you.
-          If you did not initiate this request, no further action is required.
+          Örömmel várjuk, hogy felfedezd exkluzív kollekcióinkat,
+          és megtaláld azt, ami igazán hozzád illik.
         </p>
+
+        <hr class="divider" />
 
         <div class="signature">
-          With elegance,<br />
-          <strong>The SERVINE Team</strong>
+          Üdvözlettel,<br />
+          <strong>A SERVINE csapata</strong>
         </div>
       </div>
 

@@ -29,6 +29,9 @@ const updateProfile = async (req, res) => {
     await user.update({ name, email, phone, address });
     res.json({ message: 'Profil sikeresen frissítve', user });
   } catch (err) {
+    if (err.name === 'SequelizeUniqueConstraintError') {
+      return res.status(409).json({ message: 'Ez az email cím már foglalt.' });
+    }
     console.error(err);
     res.status(500).json({ message: 'Szerver hiba' });
   }

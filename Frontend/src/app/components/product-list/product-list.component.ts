@@ -7,7 +7,7 @@ import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ApiService } from '../../services/api.service';
 import { Category } from '../../interfaces/category';
-import { Product } from '../../interfaces/product'; // Fontos: a Product interfészben legyen benne a 'stock' attribútum!
+import { Product } from '../../interfaces/product';
 
 @Component({
   selector: 'app-product-list',
@@ -36,11 +36,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
   selectedCategory: string | null = null;
   searchQuery = '';
   sortBy = 'default';
-  
-  // ÚJ: Kiterjesztett szűrők
   minPrice: number | null = null;
   maxPrice: number | null = null;
   inStockOnly: boolean = false;
+
+  // Pagination
+  currentPage = 1;
+  pageSize = 12;
 
   private searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
@@ -65,12 +67,52 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  // ── Pagination ────────────────────────────────
+  get totalPages(): number {
+    return Math.ceil(this.filteredProducts.length / this.pageSize);
+  }
+
+  get paginatedProducts(): Product[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.filteredProducts.slice(start, start + this.pageSize);
+  }
+
+  get pageNumbers(): number[] {
+    const total = this.totalPages;
+    const current = this.currentPage;
+
+    if (total <= 7) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+
+    const pages: number[] = [1];
+
+    if (current > 3) pages.push(-1);
+
+    const start = Math.max(2, current - 1);
+    const end   = Math.min(total - 1, current + 1);
+
+    for (let i = start; i <= end; i++) pages.push(i);
+
+    if (current < total - 2) pages.push(-2);
+
+    pages.push(total);
+    return pages;
+  }
+
+  goToPage(page: number): void {
+    if (page < 1 || page > this.totalPages) return;
+    this.currentPage = page;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── API ───────────────────────────────────────
   private loadProducts(): void {
     this.isLoading = true;
     this.api.getProducts().subscribe({
       next: (res: Product[]) => {
         this.allProducts = res;
-        this.applyLocalFilters(); 
+        this.applyLocalFilters();
         this.isLoading = false;
       },
       error: () => {
@@ -83,8 +125,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
   private loadCategories(): void {
     this.api.getCategories().subscribe({
       next: (res: Category[]) => {
-        this.allCategories = res; // Eltároljuk az összeset a szűréshez
-        this.categories = res.filter(c => c.parent_id === null); // Gombokhoz fő kategóriák
+        this.allCategories = res;
+        this.categories = res.filter(c => c.parent_id === null);
       },
       error: (err) => {
         console.error('Nem sikerült betölteni a kategóriákat.', err);
@@ -92,16 +134,15 @@ export class ProductListComponent implements OnInit, OnDestroy {
     });
   }
 
-  // --- KÖZÖS SZŰRŐ LOGIKA ---
+  // ── Szűrő logika ──────────────────────────────
   applyLocalFilters(): void {
     let list = [...this.allProducts];
 
-    // 1. Kategória szűrés
+    // 1. Kategória
     if (this.selectedCategory !== null) {
       const validCategoryIds = this.allCategories
         .filter(c => c.parent_id === this.selectedCategory || c.id === this.selectedCategory)
         .map(c => c.id);
-
       list = list.filter(p => validCategoryIds.includes(p.category_id));
     }
 
@@ -111,25 +152,18 @@ export class ProductListComponent implements OnInit, OnDestroy {
       list = list.filter(p => p.name.toLowerCase().includes(query));
     }
 
-    // 3. Ár szűrés (HÜLYEBIZTOSÍTVA)
+    // 3. Ár szűrés
     let actualMin = this.minPrice !== null && this.minPrice >= 0 ? this.minPrice : null;
-    let actualMax = this.maxPrice !== null && this.maxPrice > 0 ? this.maxPrice : null;
+    let actualMax = this.maxPrice !== null && this.maxPrice > 0  ? this.maxPrice : null;
 
-    // Ha a júzer véletlenül fordítva írta be (Min > Max), a háttérben megcseréljük
     if (actualMin !== null && actualMax !== null && actualMin > actualMax) {
-      const temp = actualMin;
-      actualMin = actualMax;
-      actualMax = temp;
+      [actualMin, actualMax] = [actualMax, actualMin];
     }
 
-    if (actualMin !== null) {
-      list = list.filter(p => p.price >= actualMin!);
-    }
-    if (actualMax !== null) {
-      list = list.filter(p => p.price <= actualMax!);
-    }
+    if (actualMin !== null) list = list.filter(p => p.price >= actualMin!);
+    if (actualMax !== null) list = list.filter(p => p.price <= actualMax!);
 
-    // 4. Csak raktáron lévők
+    // 4. Csak raktáron
     if (this.inStockOnly) {
       list = list.filter(p => p.stock > 0);
     }
@@ -141,7 +175,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
     }
 
     this.filteredProducts = list;
+    this.currentPage = 1;
   }
+
   setCategory(id: string | null): void {
     this.selectedCategory = id;
     this.applyLocalFilters();
@@ -151,7 +187,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.searchSubject.next(this.searchQuery);
   }
 
-  // Ezt hívjuk meg, ha az ár vagy a checkbox változik
   onAdvancedFilterChange(): void {
     this.applyLocalFilters();
   }

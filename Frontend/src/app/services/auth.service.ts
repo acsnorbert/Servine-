@@ -19,9 +19,10 @@ export class AuthService {
   isLoggedIn$ = this.isLoggedIn.asObservable();
 
   constructor(
-    private http: HttpClient, 
-    private router: Router, 
-    private cartService: CartService) {}
+    private http: HttpClient,
+    private router: Router,
+    private cartService: CartService,
+  ) {}
 
   // ── Bejelentkezés ─────────────────────────────
   login(token: string, user?: User): void {
@@ -33,6 +34,8 @@ export class AuthService {
       localStorage.setItem('user', JSON.stringify(user));
       this.currentUser.set(user);
     }
+
+    this.cartService.restoreCart();
   }
 
   // ── Kijelentkezés ─────────────────────────────
@@ -41,26 +44,36 @@ export class AuthService {
     sessionStorage.removeItem('user');
     localStorage.removeItem(this.tokenName);
     localStorage.removeItem('user');
-     localStorage.removeItem('servine_cart');
     this.currentUser.set(null);
     this.isLoggedIn.next(false);
+    this.cartService.clearCartDisplay();
     this.router.navigate(['/login']);
   }
 
   // ── Elfelejtett jelszó ────────────────────────
   forgotPassword(email: string): Observable<{ message: string }> {
-    return this.http.post<{ message: string }>(`${this.API}/forgot-password`, { email });
+    return this.http.post<{ message: string }>(`${this.API}/forgot-password`, {
+      email,
+    });
   }
 
   // ── Jelszó visszaállítása ─────────────────────
-  resetPassword(token: string, password: string): Observable<{ message: string }> {
-    return this.http.post<{ message: string }>(`${this.API}/reset-password`, { token, password });
+  resetPassword(
+    token: string,
+    password: string,
+  ): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.API}/reset-password`, {
+      token,
+      password,
+    });
   }
 
   // ── Token lekérése ────────────────────────────
   getTokenValue(): string | null {
-    return sessionStorage.getItem(this.tokenName)
-      ?? localStorage.getItem(this.tokenName);
+    return (
+      sessionStorage.getItem(this.tokenName) ??
+      localStorage.getItem(this.tokenName)
+    );
   }
 
   // ── Be van-e jelentkezve ──────────────────────
@@ -87,13 +100,17 @@ export class AuthService {
 
   // ── Privát segédek ────────────────────────────
   private hasToken(): boolean {
-    return !!(sessionStorage.getItem(this.tokenName) ?? localStorage.getItem(this.tokenName));
+    return !!(
+      sessionStorage.getItem(this.tokenName) ??
+      localStorage.getItem(this.tokenName)
+    );
   }
 
   private loadUser(): User | null {
     try {
       // Előbb sessionStorage, aztán localStorage
-      const raw = sessionStorage.getItem('user') ?? localStorage.getItem('user');
+      const raw =
+        sessionStorage.getItem('user') ?? localStorage.getItem('user');
       return raw ? JSON.parse(raw) : null;
     } catch {
       return null;
@@ -101,13 +118,13 @@ export class AuthService {
   }
 
   storeUser(token: string): void {
-  localStorage.setItem(this.tokenName, token);
-}
+    localStorage.setItem(this.tokenName, token);
+  }
 
-getToken(): string | null {
-  return sessionStorage.getItem(this.tokenName)
-    ?? localStorage.getItem(this.tokenName);
+  getToken(): string | null {
+    return (
+      sessionStorage.getItem(this.tokenName) ??
+      localStorage.getItem(this.tokenName)
+    );
+  }
 }
-
-}
-
