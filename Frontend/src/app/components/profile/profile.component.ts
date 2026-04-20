@@ -166,17 +166,8 @@ export class ProfileComponent implements OnInit {
       this.messageService.show('success', 'Success', 'Sikeres személyes adatok mentés');
     },
     error: (err) => {
-      const isEmailTaken =
-        err?.status === 409 ||
-        err?.error?.message?.toLowerCase().includes('email') ||
-        err?.error?.code === 'EMAIL_TAKEN';
-
-      const msg = isEmailTaken
-        ? 'Ez az email cím már foglalt.'
-        : 'Mentés sikertelen.';
-
-      this.messageService.show('error', 'Error', msg);
-    }
+  this.messageService.show('error', 'HIBA', err.error?.message || 'Mentés sikertelen.');
+  }
   });
 }
 

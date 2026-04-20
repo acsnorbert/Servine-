@@ -6,24 +6,23 @@
   </div>
 
   <div class="filter-bar" @fadeSlide>
-    
+
     <div class="filter-top-row">
       <div class="category-tabs">
-      <button
-        class="cat-btn"
-        [class.active]="selectedCategory === null"
-        (click)="setCategory(null)">
-        ÖSSZES
-      </button>
-      
-      <button
-        class="cat-btn"
-        *ngFor="let cat of categories"
-        [class.active]="selectedCategory === cat.id"
-        (click)="setCategory(cat.id!)">
-        {{ cat.name }}
-      </button>
-    </div>
+        <button
+          class="cat-btn"
+          [class.active]="selectedCategory === null"
+          (click)="setCategory(null)">
+          ÖSSZES
+        </button>
+        <button
+          class="cat-btn"
+          *ngFor="let cat of categories"
+          [class.active]="selectedCategory === cat.id"
+          (click)="setCategory(cat.id!)">
+          {{ cat.name }}
+        </button>
+      </div>
 
       <div class="search-box">
         <span class="search-icon">🔍</span>
@@ -38,20 +37,20 @@
 
     <div class="filter-bottom-row">
       <div class="price-filter">
-        <input 
-          type="number" 
-          [(ngModel)]="minPrice" 
-          (ngModelChange)="onAdvancedFilterChange()" 
-          placeholder="Min ár" 
+        <input
+          type="number"
+          [(ngModel)]="minPrice"
+          (ngModelChange)="onAdvancedFilterChange()"
+          placeholder="Min ár"
           min="0"
           oninput="validity.valid||(value='');"
           class="price-input" />
         <span class="price-separator">-</span>
-        <input 
-          type="number" 
-          [(ngModel)]="maxPrice" 
-          (ngModelChange)="onAdvancedFilterChange()" 
-          placeholder="Max ár" 
+        <input
+          type="number"
+          [(ngModel)]="maxPrice"
+          (ngModelChange)="onAdvancedFilterChange()"
+          placeholder="Max ár"
           min="0"
           oninput="validity.valid||(value='');"
           class="price-input" />
@@ -59,9 +58,9 @@
       </div>
 
       <label class="stock-checkbox">
-        <input 
-          type="checkbox" 
-          [(ngModel)]="inStockOnly" 
+        <input
+          type="checkbox"
+          [(ngModel)]="inStockOnly"
           (ngModelChange)="onAdvancedFilterChange()" />
         <span class="checkmark"></span>
         Csak raktáron
@@ -87,7 +86,7 @@
   <div class="products-grid" *ngIf="!isLoading && !errorMessage && filteredProducts.length > 0">
     <div
       class="product-card"
-      *ngFor="let product of filteredProducts"
+      *ngFor="let product of paginatedProducts"
       [routerLink]="['/products', product.id]"
       @fadeSlide>
 
@@ -113,13 +112,41 @@
     </div>
   </div>
 
+  <!-- Pagination -->
+  <div class="pagination" *ngIf="!isLoading && totalPages > 1" @fadeSlide>
+    <button
+      class="page-btn page-btn--arrow"
+      (click)="goToPage(currentPage - 1)"
+      [disabled]="currentPage === 1">
+      &#8592;
+    </button>
+
+    <ng-container *ngFor="let page of pageNumbers">
+      <span *ngIf="page < 0" class="page-ellipsis">…</span>
+      <button
+        *ngIf="page > 0"
+        class="page-btn"
+        [class.active]="page === currentPage"
+        (click)="goToPage(page)">
+        {{ page }}
+      </button>
+    </ng-container>
+
+    <button
+      class="page-btn page-btn--arrow"
+      (click)="goToPage(currentPage + 1)"
+      [disabled]="currentPage === totalPages">
+      &#8594;
+    </button>
+  </div>
+
+  <!-- Üres állapot -->
   <div class="empty-state"
     *ngIf="!isLoading && !errorMessage && filteredProducts.length === 0"
     @fadeSlide>
     <div class="empty-icon">🔍</div>
     <p class="empty-title">Nem található termék</p>
     <p class="empty-sub">Próbálj más keresési feltételt!</p>
-    
     <button class="reset-btn" (click)="resetFilters()">Szűrők törlése</button>
   </div>
 

@@ -1,8 +1,7 @@
-
-$gold:         #cba46b; 
+$gold:         #cba46b;
 $text-main:    #ffffff;
 $text-muted:   #777777;
-$bg-dark:      #050505; 
+$bg-dark:      #050505;
 $border-thin:  rgba(255, 255, 255, 0.15);
 
 :host {
@@ -44,7 +43,7 @@ $border-thin:  rgba(255, 255, 255, 0.15);
   }
 }
 
-// ── SZŰRŐSÁV (Elegáns, vonalas) ───────────────
+// ── SZŰRŐSÁV ──────────────────────────────────
 .filter-bar {
   display: flex;
   flex-direction: column;
@@ -94,7 +93,7 @@ $border-thin:  rgba(255, 255, 255, 0.15);
 
   &:focus-within { border-color: $gold; }
   .search-icon { font-size: 14px; color: $text-muted; }
-  
+
   .search-input {
     background: transparent;
     border: none;
@@ -106,15 +105,14 @@ $border-thin:  rgba(255, 255, 255, 0.15);
   }
 }
 
-// Ár bemenetek 
 input[type="number"] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
-input[type="number"]::-webkit-inner-spin-button, 
-input[type="number"]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .price-filter {
@@ -132,7 +130,7 @@ input[type="number"]::-webkit-outer-spin-button {
     padding: 6px 0;
     text-align: center;
     transition: border-color 0.3s;
-    
+
     &:focus { border-color: $gold; outline: none; }
     &::placeholder { color: $text-muted; }
   }
@@ -164,7 +162,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
   input:checked + .checkmark {
     border-color: $gold;
-    &::after { content: ''; width: 6px; height: 6px; background: $gold; }
+    &::after { content: ''; width: 6px; height: 6px; background: $gold; display: block; }
   }
 
   &:hover { color: $text-main; }
@@ -180,13 +178,12 @@ input[type="number"]::-webkit-outer-spin-button {
   outline: none;
   cursor: pointer;
   appearance: none;
-  background-position: right 0 center;
 
   &:focus { border-color: $gold; color: $gold; }
   option { background: $bg-dark; color: $text-main; }
 }
 
-// ── TERMÉKRÁCS (Keret nélkül, magazin hatás) ──
+// ── TERMÉKRÁCS ────────────────────────────────
 .products-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -196,7 +193,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .product-card {
   background: transparent;
   cursor: pointer;
-  
+
   &:hover {
     .card-img { transform: scale(1.03); }
     .card-name { color: $gold; }
@@ -207,7 +204,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .card-image {
   position: relative;
   aspect-ratio: 3 / 4;
-  background: #0f0f0f; // Sötétebb, elegánsabb helykitöltő a szürke dobozok helyett
+  background: #0f0f0f;
   overflow: hidden;
   margin-bottom: 20px;
 }
@@ -237,7 +234,7 @@ input[type="number"]::-webkit-outer-spin-button {
   justify-content: center;
   opacity: 0;
   transition: opacity 0.4s;
-  
+
   .overlay-text {
     font-size: 10px;
     letter-spacing: 3px;
@@ -248,9 +245,7 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 }
 
-.card-info {
-  text-align: center;
-}
+.card-info { text-align: center; }
 
 .card-name {
   font-size: 18px;
@@ -263,6 +258,57 @@ input[type="number"]::-webkit-outer-spin-button {
   font-size: 12px;
   letter-spacing: 2px;
   color: $text-muted;
+}
+
+// ── PAGINATION ────────────────────────────────
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 80px;
+}
+
+.page-btn {
+  background: transparent;
+  border: 1px solid $border-thin;
+  color: $text-muted;
+  width: 36px;
+  height: 36px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover:not(:disabled) {
+    border-color: rgba(255,255,255,0.4);
+    color: $text-main;
+  }
+
+  &.active {
+    border-color: $gold;
+    color: $gold;
+  }
+
+  &:disabled {
+    opacity: 0.2;
+    cursor: default;
+  }
+
+  &--arrow {
+    font-size: 14px;
+  }
+}
+
+.page-ellipsis {
+  color: $text-muted;
+  font-size: 13px;
+  width: 36px;
+  text-align: center;
+  user-select: none;
 }
 
 // ── ÁLLAPOTOK ─────────────────────────────────
@@ -281,7 +327,7 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0 auto;
 }
 
-.empty-title {font-size: 24px; margin-bottom: 8px; }
+.empty-title { font-size: 24px; margin-bottom: 8px; }
 .empty-sub { font-size: 13px; color: $text-muted; margin-bottom: 24px; }
 
 .reset-btn {
@@ -304,6 +350,8 @@ input[type="number"]::-webkit-outer-spin-button {
   .filter-top-row, .filter-bottom-row { flex-direction: column; align-items: stretch; text-align: center; }
   .price-filter, .category-tabs, .search-box { justify-content: center; }
   .sort-select { margin-top: 10px; }
+  .pagination { gap: 6px; }
+  .page-btn { width: 32px; height: 32px; font-size: 11px; }
 }
 @media (max-width: 480px) { .products-grid { grid-template-columns: 1fr; } }
 
