@@ -6,7 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { CartService, CartItem } from '../../services/cart.service';
 import { OrderService } from '../../services/order.service';
 import { MessageService } from '../../services/message.service';
-import { UserService, UserProfile } from '../../services/user.service';
+import { UserService } from '../../services/user.service';
+import { User } from '../../interfaces/user';
 
 type PaymentMethod = 'card' | 'cod';
 type Step = 'payment' | 'success';
@@ -26,7 +27,7 @@ export class CheckoutComponent implements OnInit {
   isSubmitting = false;
   errorMessage = '';
   orderId = '';
-  userProfile: UserProfile | null = null;
+  userProfile: User | null = null;
   hasShippingAddress = false;
 
   // Kártya mezők (szimuláció)
