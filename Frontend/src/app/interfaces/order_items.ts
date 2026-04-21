@@ -12,6 +12,7 @@ export interface Order_item {
     name:string;
     price:number;
     sku:string;
+    image_url?: string;
 
   };
 }

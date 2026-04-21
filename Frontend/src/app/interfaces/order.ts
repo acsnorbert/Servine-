@@ -1,3 +1,4 @@
+import { Order_item } from "./order_items";
 
 export interface Order {
   id?: string;
@@ -11,9 +12,5 @@ export interface Order {
     name:string;
     email:string;
   }//Order items
-  items?:{
-    name:string;
-    quantity: number;
-    price: number;
-  }
+  items?:Order_item[];
 }

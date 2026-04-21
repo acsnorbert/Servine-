@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
   <meta charset="UTF-8" />
-  <title>Your Order Confirmation</title>
+  <title>Rendelés visszaigazolás</title>
   <style>
     body {
       margin: 0;
@@ -49,7 +49,6 @@
       margin-bottom: 28px;
     }
 
-    /* Order Summary */
     .summary-box {
       border-top: 1px solid rgba(212, 175, 55, 0.25);
       border-bottom: 1px solid rgba(212, 175, 55, 0.25);
@@ -69,7 +68,6 @@
       color: #ffffff;
     }
 
-    /* Items Table */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -126,36 +124,35 @@
       <div class="logo">SERVINE</div>
 
       <div class="content">
-        <h2>Dear <%= username %>,</h2>
+        <h2>Kedves <%= username %>!</h2>
 
         <p>
-          Thank you for your order.
-          We are pleased to confirm that your purchase has been successfully received
-          and is currently being prepared with care.
+          Köszönjük rendelésedet!
+          Örömmel értesítünk, hogy megrendelésedet sikeresen rögzítettük,
+          és azt már gondosan készítjük elő számodra.
         </p>
 
         <div class="summary-box">
           <div class="summary-row">
-            <span>Order Number</span>
+            <span>Rendelésszám</span>
             <strong>#<%= orderNumber %></strong>
           </div>
           <div class="summary-row">
-            <span>Order Date</span>
+            <span>Rendelés dátuma</span>
             <strong><%= orderDate %></strong>
           </div>
           <div class="summary-row">
-            <span>Location</span>
+            <span>Szállítási cím</span>
             <strong><%= location %></strong>
           </div>
         </div>
 
-        <!-- Ordered Items -->
         <table>
           <thead>
             <tr>
-              <th>Item</th>
-              <th>Qty</th>
-              <th>Price</th>
+              <th>Termék</th>
+              <th>Db</th>
+              <th>Ár</th>
             </tr>
           </thead>
           <tbody>
@@ -168,20 +165,20 @@
             <% }) %>
 
             <tr class="total-row">
-              <td colspan="2">Total</td>
+              <td colspan="2">Végösszeg</td>
               <td><%= totalPrice %></td>
             </tr>
           </tbody>
         </table>
 
         <p style="margin-top: 35px;">
-          You will receive another notification once your order has been dispatched.
-          Should you require any assistance, our support team is always at your service.
+          Amint a csomagod útra kel, egy újabb értesítést küldünk majd számodra.
+          Ha bármilyen kérdésed merülne fel, ügyfélszolgálatunk készséggel áll rendelkezésedre.
         </p>
 
         <div class="signature">
-          With elegance,<br />
-          <strong>The SERVINE Team</strong>
+          Üdvözlettel,<br />
+          <strong>A SERVINE csapata</strong>
         </div>
       </div>
 

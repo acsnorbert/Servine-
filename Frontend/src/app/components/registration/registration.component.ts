@@ -35,6 +35,7 @@ export class RegistrationComponent {
   emailRegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   TermsAccept = false;
   
+  isLoading:boolean=false
   showTerms: boolean = false;
 
   openTerms(event: Event) {
@@ -47,6 +48,9 @@ export class RegistrationComponent {
   }
 
   async register() {
+    if (this.isLoading) return;
+
+    this.isLoading = true;
     //Hiányzó adatok ellenőrzése
     if(!this.user.name || !this.user.email || !this.user.password || !this.user.confirm){
        this.messageService.show('warn', 'FIGYELEM', 'Kérjük, töltse ki az összes űrlapot!');
@@ -75,12 +79,14 @@ export class RegistrationComponent {
     await this.api.register(this.user).subscribe({
       
       next: (res)=>{
-       
+        
         this.login()
+        this.isLoading = false;
       },
       error: (err)=>{
        
         this.messageService.show('error', 'HIBA', err.error?.message || "Hiba történt regisztráció közben" );
+        this.isLoading = false;
       }
     });
 

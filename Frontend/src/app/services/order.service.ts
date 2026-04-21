@@ -1,15 +1,16 @@
 // services/order.service.ts
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../enviroments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
-  private readonly API = 'http://localhost:3000/api/orders';
+  private readonly API = `${environment.serverUrl}/api/orders`;
 
   constructor(private http: HttpClient) {}
 
   private tokenHeader(): { headers: HttpHeaders } {
-    const token = localStorage.getItem('Servine');
+    const token = localStorage.getItem(environment.tokenName);
     return { headers: new HttpHeaders({ Authorization: `Bearer ${token}` }) };
   }
 
