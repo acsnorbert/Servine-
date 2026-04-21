@@ -17,7 +17,7 @@
         <div class="main-image-wrapper">
           <img
             *ngIf="product.image; else iconPlaceholder"
-            [src]="'/products/' + product.image"
+            [src]="'http://localhost:3000/products/' + product.image"
             [alt]="product.name"
             class="main-img"
           />
@@ -26,9 +26,6 @@
               <span class="placeholder-icon">✦</span>
             </div>
           </ng-template>
-          <button class="favorite-btn" (click)="toggleFavorite()" [class.active]="isFavorite">
-            {{ isFavorite ? '♥' : '♡' }}
-          </button>
         </div>
       </div>
 

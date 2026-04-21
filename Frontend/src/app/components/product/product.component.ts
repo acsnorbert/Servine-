@@ -47,7 +47,6 @@ export class ProductComponent implements OnInit {
   selectedSize: string | null = null;
   quantity = 1;
   activeTab: 'description' | 'reviews' = 'description';
-  isFavorite = false;
 
   newRating = 0;
   newComment = '';
@@ -212,9 +211,6 @@ export class ProductComponent implements OnInit {
     if (this.quantity > 1) this.quantity--;
   }
 
-  toggleFavorite(): void {
-    this.isFavorite = !this.isFavorite;
-  }
 
   addToCart(): void {
     if (!this.product) return;
