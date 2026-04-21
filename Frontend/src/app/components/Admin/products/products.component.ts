@@ -14,6 +14,7 @@ import { MessageService } from '../../../services/message.service';
 import { CategoryService } from '../../../services/category.service';
 import { Category } from '../../../interfaces/category';
 import { UploadService } from '../../../services/upload.service';
+import { environment } from '../../../enviroments/environment';
 
 
 @Component({
@@ -52,6 +53,7 @@ isEditMode: any;
     this.getCategories();
   }
   ImageFile?: File | null = null;
+  serverUrl = environment.serverUrl
   
 
   categories: Category[]=[]
@@ -72,13 +74,16 @@ isEditMode: any;
     );
   }
    //Kép műveletek------------------------------------------------------------------------------
-    onFileSelected(event: any) {
-      const file: File = event.target.files[0];
-      if (file) {
-        this.ImageFile = file;
-        this.newProduct.image = URL.createObjectURL(file);
-      }
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.ImageFile = file;
+      console.log(this.ImageFile)
     }
+  }
+  getImageUrl(path: string) {
+    return 'http://localhost:3000' + path;
+  }
   //Adatok lekérése---------------------------------------------------------------------
   getProducts(){
     this.api.getProducts().subscribe({
@@ -120,40 +125,41 @@ isEditMode: any;
     this.displayDialog = true;
     }
   save() {
-    if (this.isEditMode) {
-      this.imgApi.uploadImage(this.ImageFile!).subscribe({
-        error:(err)=>{
-          this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a termék képének létrehozása közben');
-        }
-      })
-      this.api.updateProduct(this.newProduct, this.newProduct.id!).subscribe({
-      next: () => {
-        this.messageService.show('success', 'SIKER', 'A termék sikeresen frissült');
-         this.getProducts();
-      },
-      error: (err)=>{
-        this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a termék frissítése közben');
-      }
-    });
-    } else {
-      this.imgApi.uploadImage(this.ImageFile!).subscribe({
-        error:(err)=>{
-          this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a termék képének létrehozása közben');
-        }
-      })
-      this.api.insertProduct(this.newProduct).subscribe({
-      next: () => {
-        this.messageService.show('success', 'SIKER', 'A termék sikeresen létre lett hozva');
-         this.getProducts();
-      },
-      error: (err)=>{
-        this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a termék létrehozása közben');
-      }
-    });
-    }
+  if (this.ImageFile) {
+    this.imgApi.uploadImage(this.ImageFile).subscribe({
+      next: (res) => {
+        this.newProduct.image = res.path;
 
-    this.displayDialog = false;
+        this.saveProduct(); 
+      },
+      error: (err) => {
+        this.messageService.show('error', 'HIBA', 'Kép feltöltési hiba');
+      }
+    });
+  } else {
+    this.saveProduct(); 
   }
+}
+
+private saveProduct() {
+  if (this.isEditMode) {
+    this.api.updateProduct(this.newProduct, this.newProduct.id!).subscribe({
+      next: () => {
+        this.messageService.show('success', 'SIKER', 'Frissítve');
+        this.getProducts();
+      }
+    });
+  } else {
+    this.api.insertProduct(this.newProduct).subscribe({
+      next: () => {
+        this.messageService.show('success', 'SIKER', 'Létrehozva');
+        this.getProducts();
+      }
+    });
+  }
+
+  this.displayDialog = false;
+}
 
   delete(id:string, name:string){
     this.confirmationService.confirm({

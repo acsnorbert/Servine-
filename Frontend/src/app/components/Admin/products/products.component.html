@@ -43,7 +43,7 @@
     <ng-template pTemplate="body" let-product>
       <tr>
         <td>
-          <img [src]="product.image" class="product-img" />
+          <img [src]="getImageUrl(product.image)" class="product-img" />
         </td>
 
         <td class="product-name">
@@ -139,7 +139,8 @@
           <label for="formFile" class="form-label">Kép URL</label>
           <input class="form-control" type="file" id="formFile"(change)="onFileSelected($event)">
         </div>
-        <img *ngIf="isEditMode" [src]="newProduct.image" style="max-width: 400px; width: 100%; height: 100%;" class="product-img" />
+        <img *ngIf="isEditMode" [src]="getImageUrl(newProduct.image)" style="max-width: 400px; width: 100%; height: 100%;" class="product-img" />
+
     </div>
     
 
