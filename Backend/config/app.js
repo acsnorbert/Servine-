@@ -19,6 +19,7 @@ const productRoutes = require('../routes/product.routes');
 const categoryRoutes = require('../routes/category.routes');
 const orderRoutes = require('../routes/order.routes');
 const reviewRoutes = require('../routes/review.routes');
+const uploadRoutes = require('../routes/upload.routes')
 const order_itemRoutes  = require('../routes/order_items.routes');
 const mailRoutes = require('../routes/mail.routes');
 
@@ -28,6 +29,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/order-items', order_itemRoutes);
+app.use('/api/upload',uploadRoutes)
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/mail', mailRoutes);
 
