@@ -20,7 +20,9 @@
        
         <div class="item-details">
           <h3>{{ item.product.name }}</h3>
-          <p class="size">Méret: <span>{{ item.size }}</span></p>
+          <p class="size" *ngIf="item.size && item.size !== 'N/A'">
+          Méret: <span>{{ item.size }}</span>
+          </p>
           <p class="price">{{ item.product.price | number }} Ft</p>
         </div>
  
