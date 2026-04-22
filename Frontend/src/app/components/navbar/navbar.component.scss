@@ -80,7 +80,14 @@ $glass-border:rgba(255, 255, 255, 0.12);
   text-decoration: none;
   flex-shrink: 0;
   transition: background 0.2s, transform 0.2s;
- 
+  &.bump {
+    animation: cartBump 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  &.bump .badge {
+    animation: badgePop 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
   img {
     width: 20px;
     height: 20px;
@@ -424,4 +431,61 @@ $glass-border:rgba(255, 255, 255, 0.12);
   font-size: 16px;
   color: $gold-light;
   margin-bottom: 8px;
+}
+
+
+.cart-icon-inline {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  text-decoration: none;
+  font-size: 17px;
+  transition: transform 0.2s;
+  margin-left: 4px;
+  cursor: pointer;
+
+  .badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ff4a4a;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+    border: 2px solid #0d0d0d;
+  }
+
+  &:hover { transform: scale(1.15); }
+  &.bump  { animation: cartBump 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+  &.bump .badge { animation: badgePop 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+}
+
+.cart-icon-wrapper.bump {
+  animation: cartBump 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes cartBump {
+  0%   { transform: scale(1)    rotate(0deg);   }
+  25%  { transform: scale(1.25) rotate(-12deg); }
+  55%  { transform: scale(0.92) rotate(6deg);   }
+  75%  { transform: scale(1.1)  rotate(-3deg);  }
+  100% { transform: scale(1)    rotate(0deg);   }
+}
+
+@keyframes badgePop {
+  0%   { transform: scale(1);    background: #ff4a4a; }
+  40%  { transform: scale(1.6);  background: #d4af37; }
+  70%  { transform: scale(0.85);                      }
+  100% { transform: scale(1);    background: #ff4a4a; }
 }

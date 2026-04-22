@@ -11,13 +11,12 @@
 
   <ng-container *ngIf="!isLoading && !errorMessage && product">
     <div class="product-layout" @fadeSlide>
-
       <!-- BAL - Kep -->
       <div class="gallery-section">
         <div class="main-image-wrapper">
           <img
             *ngIf="product.image; else iconPlaceholder"
-            [src]="'http://localhost:3000/products/' + product.image"
+            [src]="product.image"
             [alt]="product.name"
             class="main-img"
           />
@@ -31,7 +30,6 @@
 
       <!-- JOBB - Info -->
       <div class="info-section">
-
         <div class="product-category-label">{{ product.category?.name }}</div>
         <h1 class="product-name">{{ product.name }}</h1>
 
@@ -41,7 +39,9 @@
             <span
               *ngFor="let type of getStarTypes(avgRating)"
               class="star"
-              [class.filled]="type === 'filled'">★</span>
+              [class.filled]="type === 'filled'"
+              >★</span
+            >
           </div>
           <span class="rating-value">{{ avgRating }}.0</span>
           <span class="review-count">({{ reviews.length }} értékelés)</span>
@@ -51,7 +51,9 @@
 
         <!-- Ar -->
         <div class="price-row">
-          <span class="price-current">{{ product.price | number:'1.0-0' }} Ft</span>
+          <span class="price-current"
+            >{{ product.price | number: "1.0-0" }} Ft</span
+          >
         </div>
 
         <!-- Keszlet -->
@@ -77,11 +79,14 @@
               class="size-btn"
               *ngFor="let size of sizes"
               [class.active]="selectedSize === size"
-              (click)="selectSize(size)">
+              (click)="selectSize(size)"
+            >
               {{ size }}
             </button>
           </div>
-          <span class="size-hint" *ngIf="!selectedSize">Kérjük válasszon méretet</span>
+          <span class="size-hint" *ngIf="!selectedSize"
+            >Kérjük válasszon méretet</span
+          >
         </div>
 
         <!-- Mennyiseg + Kosar -->
@@ -94,17 +99,30 @@
           <button
             class="cart-btn"
             (click)="addToCart()"
-            [disabled]="(hasSizes() && !selectedSize) || availableStock === 0">
-            {{ availableStock === 0 ? 'Elfogyott' : 'Kosárba →' }}
+            [class.success]="cartBtnState === 'success'"
+            [disabled]="(hasSizes() && !selectedSize) || availableStock === 0"
+          >
+            <span>{{
+              availableStock === 0
+                ? "Elfogyott"
+                : cartBtnState === "success"
+                  ? "Kosárban!"
+                  : "Kosárba →"
+            }}</span>
           </button>
         </div>
 
         <div class="extras">
-          <div class="extra-item"><span>Ingyenes szállítás 20 000 Ft felett</span></div>
-          <div class="extra-item"><span>30 napos visszaküldési lehetőség</span></div>
-          <div class="extra-item"><span>Prémium minőség, kézzel válogatva</span></div>
+          <div class="extra-item">
+            <span>Ingyenes szállítás 20 000 Ft felett</span>
+          </div>
+          <div class="extra-item">
+            <span>30 napos visszaküldési lehetőség</span>
+          </div>
+          <div class="extra-item">
+            <span>Prémium minőség, kézzel válogatva</span>
+          </div>
         </div>
-
       </div>
     </div>
 
@@ -114,20 +132,28 @@
         <button
           class="tab-btn"
           [class.active]="activeTab === 'description'"
-          (click)="activeTab = 'description'">
+          (click)="activeTab = 'description'"
+        >
           Leírás
         </button>
         <button
           class="tab-btn"
           [class.active]="activeTab === 'reviews'"
-          (click)="activeTab = 'reviews'">
+          (click)="activeTab = 'reviews'"
+        >
           Értékelések ({{ reviews.length }})
         </button>
       </div>
 
       <!-- Leiras -->
-      <div class="tab-content glass-card" *ngIf="activeTab === 'description'" @fadeIn>
-        <p class="description-text">{{ product.description ?? 'Nincs leírás.' }}</p>
+      <div
+        class="tab-content glass-card"
+        *ngIf="activeTab === 'description'"
+        @fadeIn
+      >
+        <p class="description-text">
+          {{ product.description ?? "Nincs leírás." }}
+        </p>
         <div class="detail-grid">
           <div class="detail-item">
             <span class="detail-label">SKU</span>
@@ -146,20 +172,23 @@
 
       <!-- Ertekelesek -->
       <div class="tab-content" *ngIf="activeTab === 'reviews'" @fadeIn>
-
         <div class="reviews-list" *ngIf="reviews.length > 0">
           <div class="review-card glass-card" *ngFor="let review of reviews">
             <div class="review-header">
               <div class="review-avatar">{{ getUserInitial(review) }}</div>
               <div class="review-meta">
                 <span class="review-author">{{ getUserName(review) }}</span>
-                <span class="review-date">{{ review.createdAt | date:'yyyy. MM. dd.' }}</span>
+                <span class="review-date">{{
+                  review.createdAt | date: "yyyy. MM. dd."
+                }}</span>
               </div>
               <div class="review-stars">
                 <span
                   *ngFor="let type of getStarTypes(review.rating)"
                   class="star small"
-                  [class.filled]="type === 'filled'">★</span>
+                  [class.filled]="type === 'filled'"
+                  >★</span
+                >
               </div>
             </div>
             <p class="review-comment">{{ review.comment }}</p>
@@ -171,7 +200,11 @@
         </div>
 
         <!-- Ertekeles irasa -->
-        <div class="review-form glass-card" *ngIf="isLoggedIn(); else loginPrompt" @fadeSlide>
+        <div
+          class="review-form glass-card"
+          *ngIf="isLoggedIn(); else loginPrompt"
+          @fadeSlide
+        >
           <div class="section-title">Értékelés írása</div>
 
           <div class="review-success" *ngIf="reviewSuccess">
@@ -186,10 +219,12 @@
             <span class="star-picker-label">Értékelés</span>
             <div class="star-picker-stars">
               <span
-                *ngFor="let s of [1,2,3,4,5]"
+                *ngFor="let s of [1, 2, 3, 4, 5]"
                 class="pick-star"
                 [class.active]="s <= newRating"
-                (click)="setNewRating(s)">★</span>
+                (click)="setNewRating(s)"
+                >★</span
+              >
             </div>
           </div>
 
@@ -198,15 +233,17 @@
             <textarea
               [(ngModel)]="newComment"
               placeholder="Írd le tapasztalataidat..."
-              rows="4">
+              rows="4"
+            >
             </textarea>
           </div>
 
           <button
             class="primary-btn"
             (click)="submitReview()"
-            [disabled]="newRating === 0 || reviewSubmitting">
-            {{ reviewSubmitting ? 'Küldés...' : 'Értékelés beküldése →' }}
+            [disabled]="newRating === 0 || reviewSubmitting"
+          >
+            {{ reviewSubmitting ? "Küldés..." : "Értékelés beküldése →" }}
           </button>
         </div>
 
@@ -216,9 +253,7 @@
             <a routerLink="/login" class="primary-btn">Bejelentkezés →</a>
           </div>
         </ng-template>
-
       </div>
     </div>
-
   </ng-container>
 </div>
