@@ -13,7 +13,7 @@ import { MessageService } from '../../services/message.service';
 
 const CLOTHING_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 const SHOE_SIZES     = ['36', '37', '38', '39', '40', '41', '42', '43', '44', '45'];
-
+const PERFUME_SIZES = ['100ml'];
 @Component({
   selector: 'app-product',
   standalone: true,
@@ -90,44 +90,52 @@ export class ProductComponent implements OnInit {
   }
 
   private getSizesForProduct(product: any): string[] {
-    if (!product?.category) return [];
+  if (!product?.category) return [];
 
-    // normalizalas: kis betu, ékezetek eltavolitasa, trimmelés
-    const normalize = (s: string) =>
-      s.toLowerCase().trim()
-       .replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i')
-       .replace(/ó/g, 'o').replace(/ö/g, 'o').replace(/ő/g, 'o')
-       .replace(/ú/g, 'u').replace(/ü/g, 'u').replace(/ű/g, 'u');
+  const normalize = (s: string) =>
+    s.toLowerCase().trim()
+      .replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i')
+      .replace(/ó/g, 'o').replace(/ö/g, 'o').replace(/ő/g, 'o')
+      .replace(/ú/g, 'u').replace(/ü/g, 'u').replace(/ű/g, 'u');
 
-    const catName    = normalize(product.category.name || '');
-    const parentName = normalize(product.category.parent?.name || '');
+  const catName = normalize(product.category.name || '');
+  const parentName = normalize(product.category.parent?.name || '');
 
-    const isClothing =
-      catName.includes('ruha') ||
-      catName.includes('ruhazat') ||
-      catName.includes('clothing') ||
-      catName.includes('felso') ||
-      catName.includes('nadrag') ||
-      catName.includes('polo') ||
-      catName.includes('ing') ||
-      catName.includes('kabat') ||
-      parentName.includes('ruha') ||
-      parentName.includes('ruhazat') ||
-      parentName.includes('clothing');
+  const isClothing =
+    catName.includes('ruha') ||
+    catName.includes('ruhazat') ||
+    catName.includes('clothing') ||
+    catName.includes('felso') ||
+    catName.includes('nadrag') ||
+    catName.includes('polo') ||
+    catName.includes('ing') ||
+    catName.includes('kabat') ||
+    parentName.includes('ruha') ||
+    parentName.includes('ruhazat') ||
+    parentName.includes('clothing');
 
-    const isShoe =
-      catName.includes('cipo') ||
-      catName.includes('shoe') ||
-      catName.includes('footwear') ||
-      catName.includes('szandal') ||
-      catName.includes('csizma') ||
-      parentName.includes('cipo') ||
-      parentName.includes('shoe');
+  const isShoe =
+    catName.includes('cipo') ||
+    catName.includes('shoe') ||
+    catName.includes('footwear') ||
+    catName.includes('szandal') ||
+    catName.includes('csizma') ||
+    parentName.includes('cipo') ||
+    parentName.includes('shoe');
 
-    if (isClothing) return CLOTHING_SIZES;
-    if (isShoe)     return SHOE_SIZES;
-    return [];
-  }
+  const isPerfume =
+    catName.includes('parfum') ||
+    catName.includes('parfume') ||
+    catName.includes('perfume') ||
+    parentName.includes('parfum') ||
+    parentName.includes('perfume');
+
+  if (isClothing) return CLOTHING_SIZES;
+  if (isShoe) return SHOE_SIZES;
+  if (isPerfume) return PERFUME_SIZES;
+
+  return [];
+}
 
   // Kosarban levo mennyiseg ugyanehhez a termekhez+merethez
   get cartQuantity(): number {

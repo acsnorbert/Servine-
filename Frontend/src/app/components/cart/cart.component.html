@@ -11,7 +11,7 @@
       <div class="cart-item" *ngFor="let item of cartItems; let i = index">
         <div class="item-image">
   <img *ngIf="item.product.image; else noImg"
-       [src]="item.product.image"
+       [src]="'http://localhost:3000/products/' + item.product.image"
        [alt]="item.product.name" />
   <ng-template #noImg>
     <div class="img-placeholder">✦</div>
@@ -20,9 +20,7 @@
        
         <div class="item-details">
           <h3>{{ item.product.name }}</h3>
-          <p class="size" *ngIf="item.size && item.size !== 'N/A'">
-          Méret: <span>{{ item.size }}</span>
-          </p>
+          <p class="size">Méret: <span>{{ item.size }}</span></p>
           <p class="price">{{ item.product.price | number }} Ft</p>
         </div>
  
