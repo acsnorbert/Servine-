@@ -78,11 +78,10 @@ isEditMode: any;
     const file: File = event.target.files[0];
     if (file) {
       this.ImageFile = file;
-      console.log(this.ImageFile)
     }
   }
   getImageUrl(path: string) {
-    return 'http://localhost:3000' + path;
+    return path;
   }
   //Adatok lekérése---------------------------------------------------------------------
   getProducts(){
@@ -129,7 +128,7 @@ isEditMode: any;
     this.imgApi.uploadImage(this.ImageFile).subscribe({
       next: (res) => {
         this.newProduct.image = res.path;
-
+        console.log(res.path)
         this.saveProduct(); 
       },
       error: (err) => {
