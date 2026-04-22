@@ -87,8 +87,9 @@
   <p-dialog
   [(visible)]="displayDialog"
   [modal]="true"
+  (onHide)="resetDialog()"
   [closable]="true"
-  [style]="{ width: '420px' }"
+  [style]="{ width: '500px' }"
   styleClass="lux-dialog"
   [header]="isEditMode ? 'Termék szerkesztése' : 'Termék hozzáadása'">
 
@@ -139,7 +140,8 @@
           <label for="formFile" class="form-label">Kép URL</label>
           <input class="form-control" type="file" id="formFile"(change)="onFileSelected($event)">
         </div>
-        <img *ngIf="isEditMode" [src]="getImageUrl(newProduct.image)" style="max-width: 400px; width: 100%; height: 100%;" class="product-img" />
+        <img *ngIf="ImageFile" [src]="imagePreview" style="max-width: 400px; width: 100%; height: 100%;" class="product-img" />
+        <img *ngIf="isEditMode && !imagePreview" [src]="getImageUrl(newProduct.image)" style="max-width: 400px; width: 100%; height: 100%;" class="product-img" />
 
     </div>
     
