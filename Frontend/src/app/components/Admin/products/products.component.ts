@@ -53,6 +53,7 @@ isEditMode: any;
     this.getCategories();
   }
   ImageFile?: File | null = null;
+  imagePreview: string | null = null;
   serverUrl = environment.serverUrl
   
 
@@ -78,10 +79,26 @@ isEditMode: any;
     const file: File = event.target.files[0];
     if (file) {
       this.ImageFile = file;
+
+      this.imagePreview = URL.createObjectURL(file);
     }
   }
   getImageUrl(path: string) {
     return path;
+  }
+  resetDialog(){
+    this.newProduct = {
+    category_id: '',
+    name: '',
+    price: 0,
+    stock: 0,
+    sku: '',
+    image: ''
+  };
+
+  this.ImageFile = null;
+  this.imagePreview = null;
+  this.isEditMode = false;
   }
   //Adatok lekérése---------------------------------------------------------------------
   getProducts(){
@@ -107,12 +124,14 @@ isEditMode: any;
   }
   //Adatok műveletei-----------------------------------------------------------------
   edit(product:any){
-     this.isEditMode = true;
+    this.isEditMode = true;
     this.newProduct = { ...product };
+    this.imagePreview = null;
     this.displayDialog = true;
   }
   add() {
     this.isEditMode = false;
+    this.imagePreview = null;
     this.newProduct = {
       id:'',
       category_id: '',
