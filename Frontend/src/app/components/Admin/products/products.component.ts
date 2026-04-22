@@ -119,12 +119,18 @@ isEditMode: any;
       name: '',
       price: 0,
       stock: 0,
-      sku: '',
+      sku: 'SKU-',
       image: '' };
     this.displayDialog = true;
     }
   save() {
   if (this.ImageFile) {
+    const filename = this.newProduct.image?.split('/').pop();
+    this.imgApi.deleteImage(filename!).subscribe({
+      error:(err)=>{
+        this.messageService.show('error', 'HIBA', 'Nem sikerült a képet törölni');
+      }
+    })
     this.imgApi.uploadImage(this.ImageFile).subscribe({
       next: (res) => {
         this.newProduct.image = res.path;
@@ -160,15 +166,23 @@ private saveProduct() {
   this.displayDialog = false;
 }
 
-  delete(id:string, name:string){
+  delete(product:Product){
     this.confirmationService.confirm({
-      message: `Biztosan ki szeretnéd törölni ezt a terméket?|: ${name}`,
+      message: `Biztosan ki szeretnéd törölni ezt a terméket?|: ${product.name}`,
       header: 'Megerősítés',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
+        const filename = product.image?.split('/').pop();
+
+         this.imgApi.deleteImage(filename!).subscribe({
+            error:(err)=>{
+              this.messageService.show('error', 'HIBA', 'Nem sikerült a képet törölni');
+            }
+          })
         
-        this.api.deleteProductById(id).subscribe({
+        this.api.deleteProductById(product.id!).subscribe({
           next: () => {
+            
             this.messageService.show('success', 'SIKER', 'A termék sikeresen törölve lett');
            
             this.getProducts();
