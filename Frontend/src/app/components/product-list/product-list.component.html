@@ -92,7 +92,7 @@
  
       <div class="card-image">
         <img *ngIf="product.image; else iconPlaceholder"
-             [src]="'http://localhost:3000/products/' + product.image"
+             [src]="product.image"
              [alt]="product.name"
              class="card-img" />
         <ng-template #iconPlaceholder>

@@ -31,7 +31,7 @@
         <th>Kép</th>
         <th>Név</th>
         <th>Ár</th>
-        <th>Mennyiség</th>
+        <th>Készlet</th>
         <th>Leírás</th>
         <th>SKU</th>
         <th>Kategória</th>
@@ -43,7 +43,7 @@
     <ng-template pTemplate="body" let-product>
       <tr>
         <td>
-          <img [src]="product.image" class="product-img" />
+          <img [src]="getImageUrl(product.image)" class="product-img" />
         </td>
 
         <td class="product-name">
@@ -72,7 +72,7 @@
 
         <td class="actions text-end">
           <button class="btn-ghost"  (click)="edit(product)">Szerkesztés</button>
-          <button class="btn-danger" (click)="delete(product.id, product.name)">Törlés</button>
+          <button class="btn-danger" (click)="delete(product)">Törlés</button>
         </td>
       </tr>
     </ng-template>
@@ -106,7 +106,7 @@
       </div>
       <!-- NAME -->
       <div class="field">
-        <label>Mennyiség</label>
+        <label>Készlet</label>
         <input type="number" pInputText [(ngModel)]="newProduct.stock" />
       </div>
 
@@ -139,7 +139,8 @@
           <label for="formFile" class="form-label">Kép URL</label>
           <input class="form-control" type="file" id="formFile"(change)="onFileSelected($event)">
         </div>
-        <img *ngIf="isEditMode" [src]="newProduct.image" style="max-width: 400px; width: 100%; height: 100%;" class="product-img" />
+        <img *ngIf="isEditMode" [src]="getImageUrl(newProduct.image)" style="max-width: 400px; width: 100%; height: 100%;" class="product-img" />
+
     </div>
     
 

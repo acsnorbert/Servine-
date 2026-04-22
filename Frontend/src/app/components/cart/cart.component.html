@@ -11,7 +11,7 @@
       <div class="cart-item" *ngFor="let item of cartItems; let i = index">
         <div class="item-image">
   <img *ngIf="item.product.image; else noImg"
-       [src]="'http://localhost:3000/products/' + item.product.image"
+       [src]="item.product.image"
        [alt]="item.product.name" />
   <ng-template #noImg>
     <div class="img-placeholder">✦</div>

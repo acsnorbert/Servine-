@@ -9,6 +9,7 @@ import { CartService } from '../../services/cart.service';
 import { AuthService } from '../../services/auth.service';
 import { Product } from '../../interfaces/product';
 import { Review } from '../../interfaces/review';
+import { MessageService } from '../../services/message.service';
 
 const CLOTHING_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 const SHOE_SIZES     = ['36', '37', '38', '39', '40', '41', '42', '43', '44', '45'];
@@ -42,12 +43,12 @@ export class ProductComponent implements OnInit {
   avgRating = 0;
   isLoading = true;
   errorMessage = '';
+  cartBtnState: 'idle' | 'success' = 'idle';
 
   sizes: string[] = [];
   selectedSize: string | null = null;
   quantity = 1;
   activeTab: 'description' | 'reviews' = 'description';
-  isFavorite = false;
 
   newRating = 0;
   newComment = '';
@@ -60,7 +61,8 @@ export class ProductComponent implements OnInit {
     private productService: ProductService,
     private reviewService: ReviewService,
     private cartService: CartService,
-    private authService: AuthService
+    private authService: AuthService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -212,18 +214,25 @@ export class ProductComponent implements OnInit {
     if (this.quantity > 1) this.quantity--;
   }
 
-  toggleFavorite(): void {
-    this.isFavorite = !this.isFavorite;
-  }
 
   addToCart(): void {
-    if (!this.product) return;
-    if (this.hasSizes() && !this.selectedSize) {
-      alert('Kerlek valassz meretet!');
-      return;
-    }
-    if (this.availableStock <= 0) return;
-    this.cartService.addToCart(this.product, this.selectedSize ?? 'N/A', this.quantity);
-    this.quantity = 1;
+  if (!this.product) return;
+  if (this.hasSizes() && !this.selectedSize) {
+    this.messageService.show('warn', 'Méret szükséges', 'Kérlek válassz méretet!');
+    return;
   }
+  if (this.availableStock <= 0) return;
+
+  this.cartService.addToCart(this.product, this.selectedSize ?? 'N/A', this.quantity);
+
+  this.cartBtnState = 'success';       
+  this.messageService.show(
+    'success',
+    'Kosárba rakva!',
+    `${this.product.name}${this.selectedSize ? ' – ' + this.selectedSize : ''} sikeresen a kosárba került.`
+  );
+
+  setTimeout(() => { this.cartBtnState = 'idle'; }, 500);
+  this.quantity = 1;
+}
 }

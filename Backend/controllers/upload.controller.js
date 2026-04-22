@@ -13,7 +13,7 @@ async function uploadImage(req, res) {
       return res.status(400).json({ message: 'Nincs fájl feltöltve!' });
     }
 
-    const filePath = `/products/${req.file.filename}`;
+    const filePath = `${req.protocol}://${req.get('host')}/products/${req.file.filename}`;
 
     return res.status(200).json({
       message: 'Fájl sikeresen feltöltve',

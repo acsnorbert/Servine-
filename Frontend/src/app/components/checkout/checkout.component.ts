@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { CartService, CartItem } from '../../services/cart.service';
 import { OrderService } from '../../services/order.service';
 import { MessageService } from '../../services/message.service';
+import { UserService } from '../../services/user.service';
+import { User } from '../../interfaces/user';
 
 type PaymentMethod = 'card' | 'cod';
 type Step = 'payment' | 'success';
@@ -15,7 +17,7 @@ type Step = 'payment' | 'success';
   standalone: true,
   imports: [NgIf, NgFor, DecimalPipe, RouterLink, FormsModule],
   templateUrl: './checkout.component.html',
-  styleUrls: ['./checkout.component.scss']
+  styleUrls: ['./checkout.component.scss'],
 })
 export class CheckoutComponent implements OnInit {
   cartItems: CartItem[] = [];
@@ -25,6 +27,8 @@ export class CheckoutComponent implements OnInit {
   isSubmitting = false;
   errorMessage = '';
   orderId = '';
+  userProfile: User | null = null;
+  hasShippingAddress = false;
 
   // Kártya mezők (szimuláció)
   cardNumber = '';
@@ -36,25 +40,49 @@ export class CheckoutComponent implements OnInit {
     private cartService: CartService,
     private orderService: OrderService,
     private messageService: MessageService,
-    private router: Router
+    private userService: UserService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
-    this.cartService.cart$.subscribe(items => {
+    this.cartService.cart$.subscribe((items) => {
       this.cartItems = items;
       if (items.length === 0 && this.step === 'payment') {
         this.router.navigate(['/cart']);
       }
-      this.totalPrice = items.reduce((s, i) => s + i.product.price * i.quantity, 0);
+      this.totalPrice = items.reduce(
+        (s, i) => s + i.product.price * i.quantity,
+        0,
+      );
+    });
+    this.userService.getProfile().subscribe({
+      next: (profile) => {
+        this.userProfile = profile;
+        this.hasShippingAddress = !!(
+          profile.address && profile.address.trim().length > 0
+        );
+      },
+      error: () => {
+        this.hasShippingAddress = false;
+      },
     });
   }
 
   placeOrder(): void {
     if (this.isSubmitting) return;
-
+    if (!this.hasShippingAddress) {
+      this.errorMessage =
+        'Nincs megadott szállítási cím! Kérlek add meg a profilodban.';
+      return;
+    }
     // Kártyás fizetésnél minimális validáció
     if (this.paymentMethod === 'card') {
-      if (!this.cardNumber || !this.cardName || !this.cardExpiry || !this.cardCvc) {
+      if (
+        !this.cardNumber ||
+        !this.cardName ||
+        !this.cardExpiry ||
+        !this.cardCvc
+      ) {
         this.errorMessage = 'Kérlek töltsd ki az összes kártyaadatot!';
         return;
       }
@@ -63,10 +91,10 @@ export class CheckoutComponent implements OnInit {
     this.isSubmitting = true;
     this.errorMessage = '';
 
-    const items = this.cartItems.map(i => ({
+    const items = this.cartItems.map((i) => ({
       product_id: (i.product as any).id,
       quantity: i.quantity,
-      price: i.product.price
+      price: i.product.price,
     }));
 
     this.orderService.createOrder(items).subscribe({
@@ -76,13 +104,14 @@ export class CheckoutComponent implements OnInit {
         this.step = 'success';
         this.isSubmitting = false;
         this.router.navigate(['/order-success'], {
-          state: { order: { id: res.order.id, total: this.totalPrice } }
+          state: { order: { id: res.order.id, total: this.totalPrice } },
         });
       },
       error: (err) => {
-        this.errorMessage = err?.error?.message ?? 'Hiba történt a rendelés leadásakor.';
+        this.errorMessage =
+          err?.error?.message ?? 'Hiba történt a rendelés leadásakor.';
         this.isSubmitting = false;
-      }
+      },
     });
   }
 
