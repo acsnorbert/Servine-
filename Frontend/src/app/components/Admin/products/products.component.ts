@@ -101,6 +101,11 @@ isEditMode: any;
   this.isEditMode = false;
   }
   //Adatok lekérése---------------------------------------------------------------------
+  generateSku(): string {
+    const random = Math.floor(10000 + Math.random() * 90000); 
+    return `SKU-${random}`;
+  }
+
   getProducts(){
     this.api.getProducts().subscribe({
       next: (res)=>{
@@ -138,7 +143,7 @@ isEditMode: any;
       name: '',
       price: 0,
       stock: 0,
-      sku: 'SKU-',
+      sku: this.generateSku(),
       image: '' };
     this.displayDialog = true;
     }
