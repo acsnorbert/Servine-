@@ -22,9 +22,4 @@ router.patch('/:id', auth, isAdmin, updateProductValidation, validate, productCo
  
 // DELETE /api/products/:id – Termék törlése (admin)
 router.delete('/:id', auth, isAdmin, productController.deleteProduct);
- 
-// admin fajl feltoltese
-router.post('/', auth, isAdmin, upload.single('image'), createProductValidation, validate, productController.createProduct);
-router.patch('/:id', auth, isAdmin, upload.single('image'), updateProductValidation, validate, productController.updateProduct);
- 
 module.exports = router;
