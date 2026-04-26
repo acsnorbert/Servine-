@@ -107,7 +107,7 @@ export class ProfileComponent implements OnInit {
       },
       error: () => {
         this.isLoading = false;
-        this.messageService.show('error', 'Error', 'Nem sikerült betölteni a profilt.');
+        this.messageService.show('error', 'HIBA', 'Nem sikerült betölteni a profilt.');
       }
     });
   }
@@ -164,7 +164,7 @@ export class ProfileComponent implements OnInit {
   this.userService.updateProfile(this.profileForm.value).subscribe({
     next: (res) => {
       this.profile = res.user;
-      this.messageService.show('success', 'Success', 'Sikeres személyes adatok mentés');
+      this.messageService.show('success', 'SIKER', 'Sikeres személyes adatok mentés');
     },
     error: (err) => {
   this.messageService.show('error', 'HIBA', err.error?.message || 'Mentés sikertelen.');
@@ -179,8 +179,8 @@ export class ProfileComponent implements OnInit {
       email:   this.profileForm.get('email')?.value,
       address: this.addressForm.get('address')?.value,
     }).subscribe({
-      next: () => this.messageService.show('success', 'Success', 'Sikeres cím mentés'),
-      error: () => this.messageService.show('error', 'Error', 'Mentés sikertelen.')
+      next: () => this.messageService.show('success', 'SIKER', 'Sikeres cím mentés'),
+      error: () => this.messageService.show('error', 'HIBA', 'Mentés sikertelen.')
     });
   }
 
@@ -193,11 +193,11 @@ export class ProfileComponent implements OnInit {
     const { currentPassword, newPassword } = this.passwordForm.value;
     this.userService.changePassword({ currentPassword, newPassword }).subscribe({
       next: () => {
-        this.messageService.show('success', 'Success', 'Sikeres jelszócsere');
+        this.messageService.show('success', 'SIKER', 'Sikeres jelszócsere');
         this.passwordForm.reset();
       },
       error: (err) => {
-        this.messageService.show('error', 'Error', "Sikertelen!");
+        this.messageService.show('error', 'HIBA', "Sikertelen!");
       }
     });
   }
@@ -208,7 +208,7 @@ export class ProfileComponent implements OnInit {
   if (confirmed) {
     this.userService.deleteAccount().subscribe({
       next: () => this.authService.logout(),
-      error: () => this.messageService.show('error', 'Error', 'Törlés sikertelen.')
+      error: () => this.messageService.show('error', 'HIBA', 'Törlés sikertelen.')
     });
   }
 }
@@ -216,6 +216,7 @@ export class ProfileComponent implements OnInit {
   // ── Kijelentkezés ─────────────────────────────
   logout(): void {
     this.authService.logout();
+    this.messageService.show('success', 'SIKER', 'Sikeresen kijelentkezett');
   }
 
   // ── Modal ─────────────────────────────────────
@@ -238,7 +239,7 @@ openOrderModal(order: Order): void {
     },
     error: () => {
       this.isModalLoading = false;
-      this.messageService.show('error', 'Error', 'Nem sikerült betölteni a rendelés részleteit.');
+      this.messageService.show('error', 'HIBA', 'Nem sikerült betölteni a rendelés részleteit.');
     }
   });
 }

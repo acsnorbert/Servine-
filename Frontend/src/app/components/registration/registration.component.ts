@@ -54,26 +54,31 @@ export class RegistrationComponent {
     //Hiányzó adatok ellenőrzése
     if(!this.user.name || !this.user.email || !this.user.password || !this.user.confirm){
        this.messageService.show('warn', 'FIGYELEM', 'Kérjük, töltse ki az összes űrlapot!');
+       this.isLoading = false;
       return
     }
      //Email ellenőrzése
     if (!this.emailRegExp.test(this.user.email)) {
       this.messageService.show('error', 'HIBA', "Érvénytelen email formátum!");
+      this.isLoading = false;
       return;
     }
     //Jelszó ellenőrzése
     if (!this.passwdRegExp.test(this.user.password)) {
       this.messageService.show('error', 'HIBA', "A jelszónak legalább 8 karakter hosszúnak kell lennie, tartalmaznia kell kis- és nagybetűket, valamint számokat!");
+      this.isLoading = false;
       return;
     }
     //Jelszavak ugyanazok-e
     if (this.user.password !== this.user.confirm) {
       this.messageService.show('error', 'HIBA', "A két jelszó nem ugyanaz!");
+      this.isLoading = false;
       return;
     }
     //Elfogadta a szolgáltatási feltételek
     if (!this.TermsAccept) {
       this.messageService.show('error', 'HIBA', "Kérjük, fogadja el a Szolgáltatási Feltételeket!");
+      this.isLoading = false;
       return;
     }
     await this.api.register(this.user).subscribe({

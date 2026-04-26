@@ -11,9 +11,146 @@
   --p-button-primary-hover-border-color:color-mix(in srgb, #f0deac, transparent 10%) !important;
   --p-primary-color: #c9a84c !important;
   --p-primary-contrast-color: #000 !important;
+  //Primeng dark mode
+  --dark-bg: #18181b;
+  --dark-border: #444;
+  --dark-text: #f5f5f5;
+  --dark-placeholder: #999;
+  --dark-focus: #3b82f6;
+}
+//P-TABLE DAKR MODE----------------------------------------------------------------------------------------------------------------------
+/* PrimeNG Table Dark Mode */
+.p-datatable {
+  background-color: var(--dark-bg) !important;
+  color: var(--dark-text) !important;
+  border-radius: 20px;
 }
 
-// vars
+/* Header */
+.p-datatable .p-datatable-thead > tr > th {
+  background-color: #080808 !important;
+  color: var(--dark-text) !important;
+  border-color: var(--dark-border) !important;
+}
+
+/* Body */
+.p-datatable .p-datatable-tbody > tr {
+  background-color: var(--dark-bg) !important;
+  color: var(--dark-text) !important;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  border-color: var(--dark-border) !important;
+}
+
+/* Hover */
+.p-datatable .p-datatable-tbody > tr:hover {
+  background-color: #2a2a2a !important;
+}
+
+/* Striped rows */
+.p-datatable.p-datatable-striped .p-datatable-tbody > tr:nth-child(even) {
+  background-color: #242424 !important;
+}
+
+/* Paginator */
+.p-paginator {
+  background-color: var(--dark-bg) !important;
+  border-color: var(--dark-border) !important;
+  color: var(--dark-text) !important;
+}
+
+.p-paginator .p-paginator-page,
+.p-paginator .p-paginator-next,
+.p-paginator .p-paginator-prev,
+.p-paginator .p-paginator-first,
+.p-paginator .p-paginator-last {
+  color: var(--dark-text) !important;
+}
+
+/* Sort icon */
+.p-sortable-column-icon {
+  color: var(--dark-text) !important;
+}
+
+/* Table borders */
+.p-datatable table {
+  border-color: var(--dark-border) !important;
+}
+
+/* Empty message */
+.p-datatable .p-datatable-emptymessage td {
+  color: var(--dark-placeholder) !important;
+}
+//P-DIALOG DARK MODE---------------------------------------------------------------------------------------------------------------------
+.p-dialog {
+  background-color: var(--dark-bg) !important;
+  color: var(--dark-text) !important;
+  border: 1px solid var(--dark-border) !important;
+  border-radius: 10px;
+}
+
+/* Dialog Header */
+.p-dialog .p-dialog-header {
+  background-color: #18181b !important;
+  color: var(--dark-text) !important;
+  border-bottom: 1px solid var(--dark-border) !important;
+}
+
+/* Dialog Content */
+.p-dialog .p-dialog-content {
+  background-color: var(--dark-bg) !important;
+  color: var(--dark-text) !important;
+}
+
+/* Dialog Footer */
+.p-dialog .p-dialog-footer {
+  background-color: #18181b !important;
+  border-top: 1px solid var(--dark-border) !important;
+  color: var(--dark-text) !important;
+}
+
+/* Close / Maximize icons */
+.p-dialog .p-dialog-header-icon {
+  color: var(--dark-text) !important;
+}
+
+.p-dialog .p-dialog-header-icon:hover {
+  background-color: #333 !important;
+  color: #fff !important;
+}
+
+/* Overlay backdrop */
+.p-dialog-mask {
+  background-color: rgba(0, 0, 0, 0.65) !important;
+}
+
+/* Resize handle */
+.p-dialog .p-resizable-handle {
+  background-color: var(--dark-border) !important;
+}
+
+/* Inputs inside dialog */
+.p-dialog .p-inputtext,
+.p-dialog .p-inputtextarea,
+.p-dialog .p-dropdown,
+.p-dialog .p-calendar input {
+  background-color: #222 !important;
+  color: var(--dark-text) !important;
+  border-color: var(--dark-border) !important;
+}
+
+/* Buttons inside dialog */
+.p-dialog .p-button {
+  
+  color: var(--dark-text) !important;
+}
+
+.p-dialog .p-button:hover {
+  background-color: #3a3a3a !important;
+}
+
+// vars--------------------------------------------------------------------------------------------------------------------------------
 $gold:  #c9a84c;
 $bg:    #080808;
 $line:  rgba(255,255,255,.08);
