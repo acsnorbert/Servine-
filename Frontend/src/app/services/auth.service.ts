@@ -6,15 +6,11 @@ import { environment } from '../enviroments/environment';
 import { CartService } from './cart.service';
 import { User } from '../interfaces/user';
 
-
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly API = `${environment.serverUrl}/api/auth`;
-
   currentUser = signal<User | null>(this.loadUser());
-
   private tokenName = environment.tokenName;
-
   private isLoggedIn = new BehaviorSubject<boolean>(!!this.hasToken());
   isLoggedIn$ = this.isLoggedIn.asObservable();
 
@@ -22,20 +18,23 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
     private cartService: CartService,
-  ) {}
+  ) {
+    const user = this.currentUser();
+    if (user?.id) {
+      this.cartService.switchToUser(user.id);
+    }
+  }
 
   // ── Bejelentkezés ─────────────────────────────
   login(token: string, user?: User): void {
     sessionStorage.setItem(this.tokenName, token);
     this.isLoggedIn.next(true);
-
     if (user) {
       sessionStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('user', JSON.stringify(user));
       this.currentUser.set(user);
+      this.cartService.switchToUser(user.id!);
     }
-
-    this.cartService.restoreCart();
   }
 
   // ── Kijelentkezés ─────────────────────────────
@@ -48,6 +47,11 @@ export class AuthService {
     this.isLoggedIn.next(false);
     this.cartService.clearCartDisplay();
     this.router.navigate(['/login']);
+  }
+
+  onRegisterSuccess(token: string, user: User): void {
+    this.cartService.mergeGuestCartToUser(user.id!);
+    this.login(token, user);
   }
 
   // ── Elfelejtett jelszó ────────────────────────
@@ -86,7 +90,7 @@ export class AuthService {
     return this.currentUser()?.role === 'admin';
   }
 
-  // ── JWT payload dekódolás (ha szükséges) ──────
+  // ── JWT payload dekódolás ─────────────────────
   loggedUser(): any {
     const token = sessionStorage.getItem(this.tokenName);
     if (!token) return null;
@@ -108,7 +112,6 @@ export class AuthService {
 
   private loadUser(): User | null {
     try {
-      // Előbb sessionStorage, aztán localStorage
       const raw =
         sessionStorage.getItem('user') ?? localStorage.getItem('user');
       return raw ? JSON.parse(raw) : null;

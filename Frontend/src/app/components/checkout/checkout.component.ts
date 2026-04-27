@@ -84,7 +84,7 @@ export class CheckoutComponent implements OnInit {
     return null;
   }
 
-  /** Kártyaszám formázása és csak számok engedése */
+  /** kartyaszam formazasa es csak szamok engedese */
   formatCardNumber(e: any): void {
     const raw = e.target.value.replace(/\D/g, '').substring(0, 16);
     this.cardNumber = raw.replace(/(.{4})/g, '$1 ').trim();
@@ -92,7 +92,7 @@ export class CheckoutComponent implements OnInit {
     e.target.value = this.cardNumber;
   }
 
-  /** Lejárat formázása MM/ÉÉ formátumra, csak számokat enged */
+  /** lejarat rendesen kezeli a honapot evet */
   formatExpiry(e: any): void {
     const raw = e.target.value.replace(/\D/g, '').substring(0, 4);
     if (raw.length >= 3) {
@@ -103,7 +103,7 @@ export class CheckoutComponent implements OnInit {
     e.target.value = this.cardExpiry;
   }
 
-  /** CVC: csak számokat enged */
+  /** cvc csak szamot */
   onCvcInput(e: any): void {
     const raw = e.target.value.replace(/\D/g, '').substring(0, 3);
     this.cardCvc = raw;
@@ -125,7 +125,7 @@ export class CheckoutComponent implements OnInit {
       return;
     }
 
-    // Kártyás fizetésnél validáció
+    // kartyas fizetes
     if (this.paymentMethod === 'card') {
       if (
         !this.cardNumber ||
@@ -148,7 +148,7 @@ export class CheckoutComponent implements OnInit {
         return;
       }
 
-      // Lejárat formátum ellenőrzés MM/ÉÉ
+      // lejarti formatum ellenorzes
       if (!/^\d{2}\/\d{2}$/.test(this.cardExpiry)) {
         this.errorMessage = 'Érvénytelen lejárati dátum (pl. 08/27).';
         return;
