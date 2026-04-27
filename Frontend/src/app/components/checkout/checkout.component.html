@@ -1,12 +1,11 @@
-<!-- checkout.component.html -->
 <div class="checkout-wrapper">
-  <!-- FIZETÉSI OLDAL -->
+  <!-- fizetesi oldal -->
   <ng-container *ngIf="step === 'payment'">
     <a routerLink="/cart" class="back-link">← Vissza a kosárhoz</a>
     <h1 class="page-title">Fizetés</h1>
 
     <div class="checkout-layout">
-      <!-- BAL: Fizetési mód -->
+      <!-- fizetesi mod -->
       <div class="payment-section">
         <div class="section-card">
           <h2>Fizetési mód</h2>
@@ -42,18 +41,60 @@
           </div>
         </div>
 
-        <!-- Kártya mezők -->
+        <!-- kartya mezok -->
         <div class="section-card card-fields" *ngIf="paymentMethod === 'card'">
-          <h2>Kártyaadatok</h2>
+          <h2>
+            Kártyaadatok
+            <!-- kartyatipus -->
+            <span class="card-type-badge" *ngIf="cardType === 'visa'">
+              <svg
+                class="card-logo visa-logo"
+                viewBox="0 0 48 16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <text
+                  x="0"
+                  y="13"
+                  font-size="14"
+                  font-weight="700"
+                  font-family="Arial"
+                  fill="#1A1F71"
+                  letter-spacing="1"
+                >
+                  VISA
+                </text>
+              </svg>
+            </span>
+            <span class="card-type-badge" *ngIf="cardType === 'mastercard'">
+              <svg
+                class="card-logo mc-logo"
+                viewBox="0 0 38 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle cx="13" cy="12" r="11" fill="#EB001B" />
+                <circle cx="25" cy="12" r="11" fill="#F79E1B" />
+                <path
+                  d="M19 4.8a11 11 0 0 1 0 14.4A11 11 0 0 1 19 4.8z"
+                  fill="#FF5F00"
+                />
+              </svg>
+            </span>
+            <span class="card-type-unknown" *ngIf="cardNumber && !cardType">
+              ⚠ Ismeretlen kártya
+            </span>
+          </h2>
 
           <div class="form-group">
             <label>Kártyaszám</label>
             <input
               type="text"
-              [(ngModel)]="cardNumber"
+              [value]="cardNumber"
               (input)="formatCardNumber($event)"
               placeholder="1234 5678 9012 3456"
               maxlength="19"
+              inputmode="numeric"
+              [class.input-valid]="cardType !== null"
+              [class.input-invalid]="cardNumber && !cardType"
             />
           </div>
 
@@ -63,6 +104,7 @@
               type="text"
               [(ngModel)]="cardName"
               placeholder="Kovács János"
+              (input)="onNameInput($event)"
             />
           </div>
 
@@ -71,27 +113,38 @@
               <label>Lejárat</label>
               <input
                 type="text"
-                [(ngModel)]="cardExpiry"
+                [value]="cardExpiry"
+                (input)="formatExpiry($event)"
                 placeholder="MM/ÉÉ"
                 maxlength="5"
+                inputmode="numeric"
               />
             </div>
             <div class="form-group">
               <label>CVC</label>
               <input
                 type="text"
-                [(ngModel)]="cardCvc"
+                [value]="cardCvc"
+                (input)="onCvcInput($event)"
                 placeholder="123"
                 maxlength="3"
+                inputmode="numeric"
               />
             </div>
+          </div>
+
+          <!-- Elfogadott kartyak -->
+          <div class="accepted-cards">
+            <span class="accepted-label">Elfogadott kártyák:</span>
+            <span class="accepted-badge visa">VISA</span>
+            <span class="accepted-badge mc">Mastercard</span>
           </div>
         </div>
 
         <!-- Utánvét info -->
         <div class="section-card cod-info" *ngIf="paymentMethod === 'cod'">
           <p>
-            📦 A csomag érkezésekor fizetsz a futárnak készpénzben vagy
+            A csomag érkezésekor fizetsz a futárnak készpénzben vagy
             bankkártyával.
           </p>
         </div>
@@ -111,7 +164,7 @@
         </button>
       </div>
 
-      <!-- JOBB: Összesítő -->
+      <!-- osszesito -->
       <div class="order-summary">
         <div class="section-card">
           <h2>Rendelés összesítő</h2>
@@ -143,7 +196,7 @@
     </div>
   </ng-container>
 
-  <!-- SIKERES RENDELÉS -->
+  <!-- sikeres rendeles -->
   <div class="success-screen" *ngIf="step === 'success'">
     <div class="success-icon">✓</div>
     <h1>Köszönjük a rendelést!</h1>

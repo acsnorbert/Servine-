@@ -128,8 +128,45 @@ $radius:      12px;
   }
 }
 
-// kartyaadatok
+// ── Kártyatípus badge ────────────────────────────────
+.card-type-badge {
+  display: inline-flex;
+  align-items: center;
+  background: $surface2;
+  border: 1px solid $border;
+  border-radius: 6px;
+  padding: 3px 8px;
+  animation: fadeIn 0.2s ease;
 
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.85); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+}
+
+.card-logo {
+  display: block;
+
+  &.visa-logo {
+    width: 38px;
+    height: 14px;
+  }
+
+  &.mc-logo {
+    width: 32px;
+    height: 20px;
+  }
+}
+
+.card-type-unknown {
+  font-size: 0.72rem;
+  color: #ff6b7a;
+  letter-spacing: 0.05em;
+  text-transform: none;
+  font-weight: 500;
+}
+
+// kartyaadatok
 .form-group {
   margin-bottom: 18px;
 
@@ -159,6 +196,15 @@ $radius:      12px;
     &:focus {
       border-color: $gold;
     }
+
+    // Kártyaszám validálás vizuális jelzése
+    &.input-valid {
+      border-color: rgba(74, 222, 128, 0.5);
+    }
+
+    &.input-invalid {
+      border-color: rgba(220, 53, 69, 0.5);
+    }
   }
 }
 
@@ -166,6 +212,43 @@ $radius:      12px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
+}
+
+// ── Elfogadott kártyák ───────────────────────────────
+.accepted-cards {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  padding-top: 16px;
+  border-top: 1px solid $border;
+}
+
+.accepted-label {
+  font-size: 0.72rem;
+  color: $text-muted;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-right: 4px;
+}
+
+.accepted-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border-radius: 4px;
+  padding: 3px 8px;
+
+  &.visa {
+    background: #1A1F71;
+    color: #fff;
+  }
+
+  &.mc {
+    background: #252525;
+    color: #F79E1B;
+    border: 1px solid #444;
+  }
 }
 
 // utanvet
@@ -324,6 +407,7 @@ $radius:      12px;
   color: $text-muted;
   font-size: 0.95rem;
 }
+
 // figyelmeztetes profilban nincs megadva cim
 .warning-msg {
   color: #b45309;
