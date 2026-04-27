@@ -68,7 +68,6 @@ export class CategoriesComponent implements OnInit {
   //edit/add mentés gomb
   save() {
     if (this.isEditMode) {
-      console.log('UPDATE', this.NewCategory);
       this.api.updateCategories(this.NewCategory, this.NewCategory.id!).subscribe({
       next: () => {
         this.messageService.show('success', 'SIKER', 'A kategória sikeresen frissült');

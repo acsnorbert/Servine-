@@ -158,7 +158,6 @@ isEditMode: any;
     this.imgApi.uploadImage(this.ImageFile).subscribe({
       next: (res) => {
         this.newProduct.image = res.path;
-        console.log(res.path)
         this.saveProduct(); 
       },
       error: (err) => {

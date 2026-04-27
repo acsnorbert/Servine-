@@ -79,8 +79,8 @@ export class ProductComponent implements OnInit {
         this.sizes     = this.getSizesForProduct(res);
         this.isLoading = false;
         // debug: nezd meg mit kap vissza a kategoria
-        console.log('category:', res.category);
-        console.log('sizes:', this.sizes);
+        //console.log('category:', res.category);
+        //console.log('sizes:', this.sizes);
       },
       error: () => {
         this.errorMessage = 'A termek nem talalhato.';

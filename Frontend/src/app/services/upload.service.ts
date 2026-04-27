@@ -13,7 +13,7 @@ export class UploadService {
 
   getToken(): String | null {
    
-    console.log(sessionStorage.getItem(this.tokenName));
+    //console.log(sessionStorage.getItem(this.tokenName));
     return sessionStorage.getItem(this.tokenName);
   }
 

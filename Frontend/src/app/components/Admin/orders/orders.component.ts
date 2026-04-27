@@ -191,9 +191,7 @@ export class OrdersComponent implements OnInit {
       }
     })
   }
-  edit(order: any) {
-    console.log('edit', order);
-  }
+
   statusChange(id: string,status: string) {
     switch(status){
       case "Feldolgozás alatt":
