@@ -96,11 +96,21 @@
             <div class="form-row">
               <div class="form-group full">
                 <label>Teljes cím</label>
-                <input type="text" formControlName="address" placeholder="pl. 1234 Budapest, Váci út 12." />
+                <input
+                  type="text"
+                  formControlName="address"
+                  placeholder="pl. 1234 Budapest, Váci út 12." />
+
+                <span class="field-error"
+                  *ngIf="addressForm.get('address')?.hasError('invalidAddress') && addressForm.get('address')?.touched">
+                  Helyes formátum: <strong>1234 Város, Utca neve 12.</strong>
+                </span>
               </div>
             </div>
             <div class="gold-divider"></div>
-            <button type="submit" class="primary-btn">Cím mentése →</button>
+            <button type="submit" class="primary-btn">
+              Cím mentése →
+            </button>
           </form>
         </div>
 
@@ -220,7 +230,6 @@
           <div class="modal-section-label">Tételek</div>
 
           <div class="modal-item-row" *ngFor="let item of selectedOrder.items">
-            
             <div class="modal-item-info">
               <div class="modal-item-name">
                 {{ item.product?.name ?? 'Termék #' + item.product_id.slice(0, 8) }}

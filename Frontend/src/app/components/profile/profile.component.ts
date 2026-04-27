@@ -9,12 +9,36 @@ import { Order } from '../../interfaces/order';
 import { User } from '../../interfaces/user';
 
 // =====================
-// CUSTOM VALIDATOR
+// CUSTOM VALIDATOR — Jelszó egyezés
 // =====================
 function passwordMatchValidator(group: AbstractControl): ValidationErrors | null {
   const newPw   = group.get('newPassword')?.value;
   const confirm = group.get('confirmPassword')?.value;
   return newPw && confirm && newPw !== confirm ? { mismatch: true } : null;
+}
+
+// =====================
+// CUSTOM VALIDATOR — Magyar szállítási cím
+// =====================
+function hungarianAddressValidator(control: AbstractControl): ValidationErrors | null {
+  if (!control.value) return null;
+
+  const value = control.value.trim();
+
+  // Formátum: 4 jegyű irányítószám, szóköz, város (min 2 kar), vessző+szóköz, utcanév + házszám
+  const pattern = /^\d{4}\s+[A-ZÁÉÍÓÖŐÚÜŰa-záéíóöőúüű\s\-]{2,},\s*[A-ZÁÉÍÓÖŐÚÜŰa-záéíóöőúüű0-9\s\.\-\/]{5,}$/;
+
+  if (!pattern.test(value)) {
+    return { invalidAddress: true };
+  }
+
+  // Irányítószám 1000–9999 között
+  const zip = parseInt(value.substring(0, 4), 10);
+  if (zip < 1000 || zip > 9999) {
+    return { invalidZip: true };
+  }
+
+  return null;
 }
 
 // =====================
@@ -27,7 +51,6 @@ function passwordMatchValidator(group: AbstractControl): ValidationErrors | null
     CommonModule,
     ReactiveFormsModule,
     DecimalPipe,
-    
   ],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
@@ -50,8 +73,6 @@ export class ProfileComponent implements OnInit {
   profile: User | null = null;
   orders: Order[] = [];
   isLoading = true;
-
-
 
   // ── Forms ─────────────────────────────────────
   profileForm!:  FormGroup;
@@ -80,7 +101,7 @@ export class ProfileComponent implements OnInit {
     });
 
     this.addressForm = this.fb.group({
-      address: [''],
+      address: ['', [Validators.required, Validators.minLength(10), hungarianAddressValidator]],
     });
 
     this.passwordForm = this.fb.group({
@@ -107,7 +128,7 @@ export class ProfileComponent implements OnInit {
       },
       error: () => {
         this.isLoading = false;
-        this.messageService.show('error', 'Error', 'Nem sikerült betölteni a profilt.');
+        this.messageService.show('error', 'HIBA', 'Nem sikerült betölteni a profilt.');
       }
     });
   }
@@ -157,30 +178,35 @@ export class ProfileComponent implements OnInit {
 
   // ── Profil mentése ────────────────────────────
   savePersonal(): void {
-  if (this.profileForm.invalid) {
-    this.profileForm.markAllAsTouched();
-    return;
+    if (this.profileForm.invalid) {
+      this.profileForm.markAllAsTouched();
+      return;
+    }
+    this.userService.updateProfile(this.profileForm.value).subscribe({
+      next: (res) => {
+        this.profile = res.user;
+        this.messageService.show('success', 'SIKER', 'Sikeres személyes adatok mentés');
+      },
+      error: (err) => {
+        this.messageService.show('error', 'HIBA', err.error?.message || 'Mentés sikertelen.');
+      }
+    });
   }
-  this.userService.updateProfile(this.profileForm.value).subscribe({
-    next: (res) => {
-      this.profile = res.user;
-      this.messageService.show('success', 'Success', 'Sikeres személyes adatok mentés');
-    },
-    error: (err) => {
-  this.messageService.show('error', 'HIBA', err.error?.message || 'Mentés sikertelen.');
-  }
-  });
-}
 
   // ── Cím mentése ───────────────────────────────
   saveAddress(): void {
+    if (this.addressForm.invalid) {
+      this.addressForm.markAllAsTouched();
+      this.messageService.show('error', 'HIBA', 'Kérjük, adj meg egy érvényes magyar szállítási címet.');
+      return;
+    }
     this.userService.updateProfile({
       name:    this.profileForm.get('name')?.value,
       email:   this.profileForm.get('email')?.value,
       address: this.addressForm.get('address')?.value,
     }).subscribe({
-      next: () => this.messageService.show('success', 'Success', 'Sikeres cím mentés'),
-      error: () => this.messageService.show('error', 'Error', 'Mentés sikertelen.')
+      next: () => this.messageService.show('success', 'SIKER', 'Sikeres cím mentés'),
+      error: () => this.messageService.show('error', 'HIBA', 'Mentés sikertelen.')
     });
   }
 
@@ -193,59 +219,59 @@ export class ProfileComponent implements OnInit {
     const { currentPassword, newPassword } = this.passwordForm.value;
     this.userService.changePassword({ currentPassword, newPassword }).subscribe({
       next: () => {
-        this.messageService.show('success', 'Success', 'Sikeres jelszócsere');
+        this.messageService.show('success', 'SIKER', 'Sikeres jelszócsere');
         this.passwordForm.reset();
       },
-      error: (err) => {
-        this.messageService.show('error', 'Error', "Sikertelen!");
+      error: () => {
+        this.messageService.show('error', 'HIBA', 'Sikertelen!');
       }
     });
   }
 
   // ── Fiók törlése ──────────────────────────────
   deleteAccount(): void {
-  const confirmed = window.confirm('Biztosan törölni szeretnéd a fiókodat? Ez a művelet visszavonhatatlan.');
-  if (confirmed) {
-    this.userService.deleteAccount().subscribe({
-      next: () => this.authService.logout(),
-      error: () => this.messageService.show('error', 'Error', 'Törlés sikertelen.')
-    });
+    const confirmed = window.confirm('Biztosan törölni szeretnéd a fiókodat? Ez a művelet visszavonhatatlan.');
+    if (confirmed) {
+      this.userService.deleteAccount().subscribe({
+        next: () => this.authService.logout(),
+        error: () => this.messageService.show('error', 'HIBA', 'Törlés sikertelen.')
+      });
+    }
   }
-}
 
   // ── Kijelentkezés ─────────────────────────────
   logout(): void {
     this.authService.logout();
+    this.messageService.show('success', 'SIKER', 'Sikeresen kijelentkezett');
   }
 
   // ── Modal ─────────────────────────────────────
-selectedOrder: Order | null = null;
-isModalOpen = false;
-isModalLoading = false;
+  selectedOrder: Order | null = null;
+  isModalOpen = false;
+  isModalLoading = false;
 
-openOrderModal(order: Order): void {
-  this.selectedOrder = order;
-  this.isModalOpen = true;
+  openOrderModal(order: Order): void {
+    this.selectedOrder = order;
+    this.isModalOpen = true;
 
-  // Ha az items már be van töltve, nem kell újra lekérni
-  if (order.items && order.items.length > 0) return;
+    // Ha az items már be van töltve, nem kell újra lekérni
+    if (order.items && order.items.length > 0) return;
 
-  this.isModalLoading = true;
-  this.userService.getOrderById(order.id!).subscribe({
-    next: (fullOrder) => {
-      this.selectedOrder = fullOrder;
-      this.isModalLoading = false;
-    },
-    error: () => {
-      this.isModalLoading = false;
-      this.messageService.show('error', 'Error', 'Nem sikerült betölteni a rendelés részleteit.');
-    }
-  });
-}
+    this.isModalLoading = true;
+    this.userService.getOrderById(order.id!).subscribe({
+      next: (fullOrder) => {
+        this.selectedOrder = fullOrder;
+        this.isModalLoading = false;
+      },
+      error: () => {
+        this.isModalLoading = false;
+        this.messageService.show('error', 'HIBA', 'Nem sikerült betölteni a rendelés részleteit.');
+      }
+    });
+  }
 
-closeModal(): void {
-  this.isModalOpen = false;
-  this.selectedOrder = null;
-}
-  
+  closeModal(): void {
+    this.isModalOpen = false;
+    this.selectedOrder = null;
+  }
 }

@@ -51,7 +51,7 @@ const changePasswordValidation = [
   body('currentPassword').notEmpty().withMessage('A jelenlegi jelszó megadása kötelező.'),
   body('newPassword')
     .notEmpty().withMessage('Az új jelszó megadása kötelező.')
-    .isLength({ min: 6 }).withMessage('Az új jelszó legalább 6 karakter legyen.')
+    .isLength({ min: 8 }).withMessage('Az új jelszó legalább 8 karakter legyen.')
 ];
 
 // Product validációk

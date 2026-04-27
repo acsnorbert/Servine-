@@ -18,14 +18,15 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { OrderSuccessComponent } from './components/order-success/order-success.component';
 import { adminGuard } from './guards/admin.guard';
+import { userGuard } from './guards/user.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
 
   // PUBLIC
-  { path: 'login', component: LoginComponent },
-  { path: 'registration', component: RegistrationComponent },
+  { path: 'login', component: LoginComponent, canActivate:[userGuard] },
+  { path: 'registration', component: RegistrationComponent, canActivate:[userGuard] },
   { path: 'products', component: ProductListComponent },
   { path: 'products/:id', component: ProductComponent },
   { path: 'contact', component: ContactComponent },
