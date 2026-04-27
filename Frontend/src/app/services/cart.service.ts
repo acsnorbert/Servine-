@@ -8,17 +8,23 @@ export interface CartItem {
   quantity: number;
 }
 
-const CART_KEY = 'servine_cart';
+const GUEST_KEY = 'cart_guest';
+
+function cartKey(userId: string | number): string {
+  return `cart_${userId}`;
+}
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
-  private cartItems: CartItem[] = this.loadFromStorage();
-  private cartSubject = new BehaviorSubject<CartItem[]>(this.cartItems);
+  private currentKey: string = GUEST_KEY;
+  private cartItems: CartItem[] = [];
+  private cartSubject = new BehaviorSubject<CartItem[]>([]);
   cart$ = this.cartSubject.asObservable();
 
-  private loadFromStorage(): CartItem[] {
+  // storage
+  private loadFromStorage(key: string): CartItem[] {
     try {
-      const raw = localStorage.getItem(CART_KEY);
+      const raw = localStorage.getItem(key);
       return raw ? JSON.parse(raw) : [];
     } catch {
       return [];
@@ -26,7 +32,7 @@ export class CartService {
   }
 
   private saveToStorage(): void {
-    localStorage.setItem(CART_KEY, JSON.stringify(this.cartItems));
+    localStorage.setItem(this.currentKey, JSON.stringify(this.cartItems));
   }
 
   private emit(): void {
@@ -34,9 +40,54 @@ export class CartService {
     this.saveToStorage();
   }
 
+  // user bejelentkezeskor hivando
+  switchToUser(userId: string | number): void {
+    const key = cartKey(userId);
+    this.currentKey = key;
+    this.cartItems = this.loadFromStorage(key);
+    this.cartSubject.next([...this.cartItems]);
+  }
+
+  // guestkosar --> uj user
+  mergeGuestCartToUser(userId: string | number): void {
+    const guestItems = this.loadFromStorage(GUEST_KEY);
+    if (guestItems.length === 0) return;
+
+    const key = cartKey(userId);
+    const userItems = this.loadFromStorage(key);
+
+    for (const guestItem of guestItems) {
+      const existing = userItems.find(
+        (i) => i.product.id === guestItem.product.id && i.size === guestItem.size
+      );
+      if (existing) {
+        existing.quantity += guestItem.quantity;
+      } else {
+        userItems.push(guestItem);
+      }
+    }
+
+    localStorage.setItem(key, JSON.stringify(userItems));
+    localStorage.removeItem(GUEST_KEY);
+
+    // ha epp ez az aktiv user
+    if (this.currentKey === key) {
+      this.cartItems = userItems;
+      this.cartSubject.next([...this.cartItems]);
+    }
+  }
+
+  // kijelentkezeskor torlodik a kosar
+  clearCartDisplay(): void {
+    this.currentKey = GUEST_KEY;
+    this.cartItems = [];
+    this.cartSubject.next([]);
+  }
+
+  // kosar muveletek
   addToCart(product: Product, size: string | null, quantity: number): void {
     const existing = this.cartItems.find(
-      (i) => i.product.id === product.id && i.size === size,
+      (i) => i.product.id === product.id && i.size === size
     );
     if (existing) {
       existing.quantity += quantity;
@@ -56,16 +107,12 @@ export class CartService {
     this.emit();
   }
 
-  clearCartDisplay(): void {
-    this.cartSubject.next([]);
-  }
-
   getItems(): CartItem[] {
     return [...this.cartItems];
   }
 
   restoreCart(): void {
-    this.cartItems = this.loadFromStorage();
+    this.cartItems = this.loadFromStorage(this.currentKey);
     this.cartSubject.next([...this.cartItems]);
   }
 }
