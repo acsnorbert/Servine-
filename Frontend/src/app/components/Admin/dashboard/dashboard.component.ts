@@ -80,7 +80,7 @@ export class DashboardComponent implements OnInit {
         this.calculateRecentActivity();
       },
       error: (err) => {
-        this.messageService.show('error', 'ERROR', err.message?.error || 'Hiba történt a felhasználók lehívásakor');
+        this.messageService.show('error', 'HIBA', err.message?.error || 'Hiba történt a felhasználók lehívásakor');
       }
     });
   }
