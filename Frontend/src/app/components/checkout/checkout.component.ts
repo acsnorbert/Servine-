@@ -30,7 +30,7 @@ export class CheckoutComponent implements OnInit {
   userProfile: User | null = null;
   hasShippingAddress = false;
 
-  // Kártya mezők (szimuláció)
+  // kartya mezok
   cardNumber = '';
   cardName = '';
   cardExpiry = '';
@@ -55,6 +55,7 @@ export class CheckoutComponent implements OnInit {
         0,
       );
     });
+
     this.userService.getProfile().subscribe({
       next: (profile) => {
         this.userProfile = profile;
@@ -68,14 +69,63 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
+  /** kartyatipus felismerese */
+  get cardType(): 'visa' | 'mastercard' | null {
+    const raw = this.cardNumber.replace(/\s/g, '');
+    if (!raw) return null;
+    if (/^4/.test(raw)) return 'visa';
+    // Mastercard: 51–55 vagy 2221–2720
+    if (
+      /^5[1-5]/.test(raw) ||
+      /^2(2[2-9][1-9]|[3-6]\d{2}|7[01]\d|720)/.test(raw)
+    ) {
+      return 'mastercard';
+    }
+    return null;
+  }
+
+  /** Kártyaszám formázása és csak számok engedése */
+  formatCardNumber(e: any): void {
+    const raw = e.target.value.replace(/\D/g, '').substring(0, 16);
+    this.cardNumber = raw.replace(/(.{4})/g, '$1 ').trim();
+    // Visszaírjuk a formázott értéket az inputba
+    e.target.value = this.cardNumber;
+  }
+
+  /** Lejárat formázása MM/ÉÉ formátumra, csak számokat enged */
+  formatExpiry(e: any): void {
+    const raw = e.target.value.replace(/\D/g, '').substring(0, 4);
+    if (raw.length >= 3) {
+      this.cardExpiry = raw.substring(0, 2) + '/' + raw.substring(2);
+    } else {
+      this.cardExpiry = raw;
+    }
+    e.target.value = this.cardExpiry;
+  }
+
+  /** CVC: csak számokat enged */
+  onCvcInput(e: any): void {
+    const raw = e.target.value.replace(/\D/g, '').substring(0, 3);
+    this.cardCvc = raw;
+    e.target.value = raw;
+  }
+
+  onNameInput(e: any): void {
+    const raw = e.target.value.replace(/[^a-zA-ZáéíóöőúüűÁÉÍÓÖŐÚÜŰ\s\-']/g, '');
+    this.cardName = raw;
+    e.target.value = raw;
+  }
+
   placeOrder(): void {
     if (this.isSubmitting) return;
+
     if (!this.hasShippingAddress) {
       this.errorMessage =
         'Nincs megadott szállítási cím! Kérlek add meg a profilodban.';
       return;
     }
-    // Kártyás fizetésnél minimális validáció
+
+    // Kártyás fizetésnél validáció
     if (this.paymentMethod === 'card') {
       if (
         !this.cardNumber ||
@@ -84,6 +134,28 @@ export class CheckoutComponent implements OnInit {
         !this.cardCvc
       ) {
         this.errorMessage = 'Kérlek töltsd ki az összes kártyaadatot!';
+        return;
+      }
+
+      const rawNumber = this.cardNumber.replace(/\s/g, '');
+      if (rawNumber.length < 16) {
+        this.errorMessage = 'Érvénytelen kártyaszám (16 számjegy szükséges).';
+        return;
+      }
+
+      if (!this.cardType) {
+        this.errorMessage = 'Csak Visa vagy Mastercard kártyát fogadunk el.';
+        return;
+      }
+
+      // Lejárat formátum ellenőrzés MM/ÉÉ
+      if (!/^\d{2}\/\d{2}$/.test(this.cardExpiry)) {
+        this.errorMessage = 'Érvénytelen lejárati dátum (pl. 08/27).';
+        return;
+      }
+
+      if (this.cardCvc.length < 3) {
+        this.errorMessage = 'Érvénytelen CVC kód.';
         return;
       }
     }
@@ -113,10 +185,5 @@ export class CheckoutComponent implements OnInit {
         this.isSubmitting = false;
       },
     });
-  }
-
-  formatCardNumber(e: any): void {
-    let v = e.target.value.replace(/\D/g, '').substring(0, 16);
-    this.cardNumber = v.replace(/(.{4})/g, '$1 ').trim();
   }
 }
